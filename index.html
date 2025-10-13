@@ -200,12 +200,6 @@
                                  <option value="all">Semua PPD</option>
                              </select>
                          </div>
-                         <div>
-                             <label for="checklist-filter-sekolah" class="block text-sm font-medium text-gray-700">Tapis Sekolah:</label>
-                             <select id="checklist-filter-sekolah" class="mt-1 block w-full md:w-64 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled>
-                                 <option value="all">Semua Sekolah</option>
-                             </select>
-                         </div>
                          <div class="self-end">
                              <button id="checklist-reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Set Semula</button>
                          </div>
@@ -474,7 +468,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Elements for Checklist Page
     const checklistFilterPPD = document.getElementById('checklist-filter-ppd');
-    const checklistFilterSekolah = document.getElementById('checklist-filter-sekolah');
     const checklistResetFiltersBtn = document.getElementById('checklist-reset-filters-btn');
     const checklistTableBody = document.getElementById('checklist-table-body');
 
@@ -768,42 +761,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    checklistFilterPPD.addEventListener('change', () => {
-        const selectedPPD = checklistFilterPPD.value;
-        checklistFilterSekolah.innerHTML = '<option value="all">Semua Sekolah</option>';
-        if (selectedPPD === 'all') {
-            checklistFilterSekolah.disabled = true;
-        } else {
-            schoolData[selectedPPD].forEach(school => {
-                const option = document.createElement('option');
-                option.value = school.name;
-                option.textContent = school.name;
-                checklistFilterSekolah.appendChild(option);
-            });
-            checklistFilterSekolah.disabled = false;
-        }
-        applyChecklistFiltersAndRedraw();
-    });
-
-    checklistFilterSekolah.addEventListener('change', applyChecklistFiltersAndRedraw);
+    checklistFilterPPD.addEventListener('change', applyChecklistFiltersAndRedraw);
 
     checklistResetFiltersBtn.addEventListener('click', () => {
         checklistFilterPPD.value = 'all';
-        checklistFilterSekolah.innerHTML = '<option value="all">Semua Sekolah</option>';
-        checklistFilterSekolah.disabled = true;
         applyChecklistFiltersAndRedraw();
     });
 
     function applyChecklistFiltersAndRedraw() {
         let filteredData = [...fullChecklistData];
         const selectedPPD = checklistFilterPPD.value;
-        const selectedSekolah = checklistFilterSekolah.value;
 
         if (selectedPPD !== 'all') {
             filteredData = filteredData.filter(item => item.ppd === selectedPPD);
-        }
-        if (selectedSekolah !== 'all') {
-            filteredData = filteredData.filter(item => item.sekolah === selectedSekolah);
         }
         populateChecklistTable(filteredData);
     }
@@ -1024,4 +994,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
-
