@@ -243,8 +243,12 @@
                             </table>
                         </div>
                         <div class="mt-6 text-right">
-                             <button type="button" id="save-sam-list-button" class="inline-flex justify-center items-center py-2 px-5 border border-transparent shadow-sm text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                Simpan Perubahan
+                             <button type="button" id="save-sam-list-button" class="inline-flex justify-center items-center py-2 px-5 border border-transparent shadow-sm text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50">
+                                <span id="save-button-text">Simpan Perubahan</span>
+                                <svg id="save-button-spinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -391,6 +395,15 @@
             // --- GLOBAL VARIABLES ---
             let agencyTypeChart;
             let ppdDistributionChart;
+            const ppdSekolahMap = samData.reduce((acc, row) => {
+                const ppd = row[2].replace('PPD ', '');
+                const sekolah = row[4];
+                if (!acc[ppd]) {
+                    acc[ppd] = [];
+                }
+                acc[ppd].push(sekolah);
+                return acc;
+            }, {});
             
             // --- DOM ELEMENTS ---
             const formTab = document.getElementById('form-tab');
@@ -407,6 +420,9 @@
 
             const loginForm = document.getElementById('login-form');
             const loginMessage = document.getElementById('login-message');
+            
+            const ppdInput = document.getElementById('ppd');
+            const sekolahInput = document.getElementById('sekolah');
 
             const ppdFilterSam = document.getElementById('filter-ppd-sam');
             const sekolahFilterSam = document.getElementById('filter-sekolah-sam');
@@ -414,6 +430,7 @@
             const sekolahFilterAnalysis = document.getElementById('filter-sekolah-analysis');
             
             const saveSamListButton = document.getElementById('save-sam-list-button');
+            const samListMessage = document.getElementById('sam-list-message');
 
             const sections = [formSection, loginSection, senaraiSamSection, analysisSection];
             const navButtons = [formTab, senaraiSamTab, analysisTab, loginPromptButton];
@@ -454,6 +471,7 @@
             logoutButton.addEventListener('click', handleLogout);
 
             // Data Form
+            ppdInput.addEventListener('change', populateSekolahOptions);
             dataForm.addEventListener('submit', handleFormSubmit);
             statusTerimaRadio.addEventListener('change', toggleTarikhTerima);
             statusBelumTerimaRadio.addEventListener('change', toggleTarikhTerima);
@@ -475,10 +493,8 @@
             ppdFilterAnalysis.addEventListener('change', applyFilters);
             sekolahFilterAnalysis.addEventListener('input', applyFilters);
 
-            // Save button placeholder
-            saveSamListButton.addEventListener('click', () => {
-                alert('Fungsi simpanan sedang dalam pembangunan. Perubahan pada jadual ini belum disimpan.');
-            });
+            // Save button
+            saveSamListButton.addEventListener('click', handleSaveSamList);
 
 
             // --- FUNCTIONS ---
@@ -522,6 +538,24 @@
                 loginPromptButton.classList.remove('hidden');
                 adminNavItems.classList.add('hidden');
                 switchTab(formSection, formTab);
+            }
+            
+            function populateSekolahOptions() {
+                const selectedPPD = ppdInput.value.replace('PPD ', '');
+                sekolahInput.innerHTML = '<option value="" disabled selected>-- Sila Pilih Sekolah --</option>';
+
+                if (ppdSekolahMap[selectedPPD]) {
+                    ppdSekolahMap[selectedPPD].sort().forEach(namaSekolah => {
+                        const option = document.createElement('option');
+                        option.value = namaSekolah;
+                        option.textContent = namaSekolah;
+                        sekolahInput.appendChild(option);
+                    });
+                    sekolahInput.disabled = false;
+                } else {
+                    sekolahInput.innerHTML = '<option value="" disabled selected>-- Tiada Sekolah Dijumpai --</option>';
+                    sekolahInput.disabled = true;
+                }
             }
 
             function toggleTarikhTerima() {
@@ -573,6 +607,8 @@
                 const asetJenis = Array.from(dataForm.querySelectorAll('input[name="AsetJenis"]')).map(input => input.value).join('\n');
                 const asetKuantiti = Array.from(dataForm.querySelectorAll('input[name="AsetKuantiti"]')).map(input => input.value).join('\n');
                 
+                // This will be sent as 'action' in doPost
+                formData.append('action', 'submitReport');
                 formData.append('AsetJenis', asetJenis);
                 formData.append('AsetKuantiti', asetKuantiti);
 
@@ -591,6 +627,10 @@
                         asetTableBody.innerHTML = '';
                         asetCount = 0;
                         addAsetRow();
+                        // Reset sekolah dropdown
+                        sekolahInput.innerHTML = '<option value="" disabled selected>-- Sila Pilih PPD Dahulu --</option>';
+                        sekolahInput.disabled = true;
+
                     } else {
                         throw new Error(result.message || 'Berlaku ralat semasa menghantar data.');
                     }
@@ -630,28 +670,83 @@
                 }
                 data.forEach(row => {
                     const tr = document.createElement('tr');
+                    // Store the original Bil number in a data attribute
+                    tr.dataset.bil = row[0];
                     tr.innerHTML = `
-                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">${row[0]}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800 bil-cell">${row[0]}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${row[2]}</td>
                         <td class="px-4 py-3 text-sm text-gray-800 font-medium">${row[4]}</td>
                         <td class="px-4 py-3 text-sm text-gray-500">${row[7]}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${row[8]}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm">
-                            <select class="w-full p-1 border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                            <select class="w-full p-1 border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" data-field="dihubungi">
                                 <option value="YA" ${row[9] === 'YA' ? 'selected' : ''}>YA</option>
                                 <option value="TIDAK" ${row[9] === 'TIDAK' ? 'selected' : ''}>TIDAK</option>
                             </select>
                         </td>
                         <td class="px-4 py-3">
-                            <input type="text" value="${row[10]}" class="w-full p-1 border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                            <input type="text" value="${row[10]}" class="w-full p-1 border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" data-field="maklumat">
                         </td>
                         <td class="px-4 py-3">
-                            <input type="text" value="${row[11]}" class="w-full p-1 border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                            <input type="text" value="${row[11]}" class="w-full p-1 border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" data-field="catatan">
                         </td>
                     `;
                     tableBody.appendChild(tr);
                 });
             }
+            
+            async function handleSaveSamList() {
+                const button = document.getElementById('save-sam-list-button');
+                const buttonText = document.getElementById('save-button-text');
+                const spinner = document.getElementById('save-button-spinner');
+
+                button.disabled = true;
+                buttonText.classList.add('hidden');
+                spinner.classList.remove('hidden');
+                samListMessage.classList.add('hidden');
+
+                const tableRows = document.querySelectorAll('#sam-table-body tr');
+                const dataToUpdate = [];
+
+                tableRows.forEach(row => {
+                    const bil = row.dataset.bil; // Get Bil from data attribute
+                    if (bil) {
+                        const dihubungi = row.querySelector('[data-field="dihubungi"]').value;
+                        const maklumat = row.querySelector('[data-field="maklumat"]').value;
+                        const catatan = row.querySelector('[data-field="catatan"]').value;
+                        dataToUpdate.push([bil, dihubungi, maklumat, catatan]);
+                    }
+                });
+
+                const formData = new FormData();
+                formData.append('action', 'updateList');
+                formData.append('data', JSON.stringify(dataToUpdate));
+
+                 try {
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: formData,
+                    });
+                    const result = await response.json();
+                    
+                    if (result.result === 'success') {
+                        samListMessage.textContent = result.message || 'Perubahan berjaya disimpan!';
+                        samListMessage.className = 'p-4 rounded-md bg-green-100 text-green-700';
+                        // Update local data if needed, or simply show success
+                    } else {
+                        throw new Error(result.message || 'Berlaku ralat semasa menyimpan data.');
+                    }
+                } catch (error) {
+                    samListMessage.textContent = 'Gagal menyimpan. Sila cuba lagi. Ralat: ' + error.message;
+                    samListMessage.className = 'p-4 rounded-md bg-red-100 text-red-700';
+                } finally {
+                    samListMessage.classList.remove('hidden');
+                    button.disabled = false;
+                    buttonText.classList.remove('hidden');
+                    spinner.classList.add('hidden');
+                }
+            }
+
 
             function applyFilters() {
                 const ppdValue = ppdFilterSam.value || ppdFilterAnalysis.value;
