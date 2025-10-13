@@ -115,7 +115,7 @@
                                 </div>
                                 <div class="md:col-span-2">
                                     <label for="agensi" class="block text-sm font-medium text-gray-700 mb-1">Agensi</label>
-                                    <input type="text" id="agensi" name="Agensi" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Cth: UMPSA" required>
+                                    <input type="text" id="agensi" name="Agensi" class="w-full p-3 bg-gray-200 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Akan diisi secara automatik" required readonly>
                                 </div>
                                 <div class="md:col-span-1">
                                     <label for="peruntukan" class="block text-sm font-medium text-gray-700 mb-1">Peruntukan Diluluskan (RM)</label>
@@ -315,7 +315,7 @@
 
     <script>
         // --- CONFIGURATION ---
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwISDCHpyCZNnpJHo8hN-N_4Xik59Dg1sWZkLDS1ZJP8UKKTUV3gbSZxhrSSXM0sWOf/exec"; 
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwhQMOiF3AelkS1GBEe0sV8flSQbOLfc_rDkPVBbOHH6OW39wZwt_eP6MfDlexElgQJ/exec"; 
         const SHEET_URL = "https://docs.google.com/spreadsheets/d/1lGlhVPOjrxDwHyt1cTJvJOTGiEk9YimbucJm5HjsDWk/edit?usp=sharing";
         const ADMIN_USER = "SPS123";
         const ADMIN_PASS = "12345";
@@ -344,7 +344,7 @@
             ["21","PAHANG","PPD KUANTAN","CBA4067","SEKOLAH KEBANGSAAN SUNGAI KARANG","RENDAH","SK","KHAZANAH NASIONAL BERHAD","SWASTA","YA","Taklimat Penyelarasan oleh Khazanah pada 28 Ogos 2025",""],
             ["22","PAHANG","PPD KUANTAN","CBA4128","SEKOLAH KEBANGSAAN SUNGAI ISAP MURNI","RENDAH","SK","PETRONAS","SWASTA","TIDAK","",""],
             ["23","PAHANG","PPD KUANTAN","CBA4080","SEKOLAH KEBANGSAAN WIRA","RENDAH","SK","BANK ISLAM","KERAJAAN","YA","Sekolah sudah berhubung dengan pegawai Bank Islam.",""],
-            ["24","PAHANG","PPD KUANTAN","CEA4068","SEKOLAH MENENGAH KEBANGSAAN ABDUL RAHMAN TALIB","MENENGAH","SMK","CIMB","SWASTA","YA","Taklimat Penyelarasan oleh CIMB pada 28 Ogos 2025",""],
+            ["24","PAhang","PPD KUANTAN","CEA4068","SEKOLAH MENENGAH KEBANGSAAN ABDUL RAHMAN TALIB","MENENGAH","SMK","CIMB","SWASTA","YA","Taklimat Penyelarasan oleh CIMB pada 28 Ogos 2025",""],
             ["25","PAHANG","PPD KUANTAN","CEA4076","SEKOLAH MENENGAH KEBANGSAAN PAYA BESAR","MENENGAH","SMK","PERMODALAN NASIONAL BERHAD","SWASTA","YA","Khidmat Bantu dari PNB pada 24 Julai 2025",""],
             ["26","PAHANG","PPD KUANTAN","CEA4092","SEKOLAH MENENGAH KEBANGSAAN PELABUHAN","MENENGAH","SMK","DRB-HICOM","SWASTA","YA","Surat dari DRB-HICOM pada 18 September 2025.",""],
             ["27","PAHANG","PPD KUANTAN","CEA4085","SEKOLAH MENENGAH KEBANGSAAN TANJUNG LUMPUR","MENENGAH","SMK","MAYBANK","SWASTA","YA","Sesi tuisyen akan bermula September 2025",""],
@@ -395,7 +395,13 @@
             // --- GLOBAL VARIABLES ---
             let agencyTypeChart;
             let ppdDistributionChart;
-            const ppdSekolahMap = samData.reduce((acc, row) => {
+            const sekolahAgensiMap = samData.reduce((acc, row) => {
+                const sekolah = row[4];
+                const agensi = row[7];
+                acc[sekolah] = agensi;
+                return acc;
+            }, {});
+             const ppdSekolahMap = samData.reduce((acc, row) => {
                 const ppd = row[2].replace('PPD ', '');
                 const sekolah = row[4];
                 if (!acc[ppd]) {
@@ -423,6 +429,7 @@
             
             const ppdInput = document.getElementById('ppd');
             const sekolahInput = document.getElementById('sekolah');
+            const agensiInput = document.getElementById('agensi');
 
             const ppdFilterSam = document.getElementById('filter-ppd-sam');
             const sekolahFilterSam = document.getElementById('filter-sekolah-sam');
@@ -472,6 +479,7 @@
 
             // Data Form
             ppdInput.addEventListener('change', populateSekolahOptions);
+            sekolahInput.addEventListener('change', populateAgensi);
             dataForm.addEventListener('submit', handleFormSubmit);
             statusTerimaRadio.addEventListener('change', toggleTarikhTerima);
             statusBelumTerimaRadio.addEventListener('change', toggleTarikhTerima);
@@ -543,6 +551,7 @@
             function populateSekolahOptions() {
                 const selectedPPD = ppdInput.value.replace('PPD ', '');
                 sekolahInput.innerHTML = '<option value="" disabled selected>-- Sila Pilih Sekolah --</option>';
+                agensiInput.value = ''; // Reset agensi field
 
                 if (ppdSekolahMap[selectedPPD]) {
                     ppdSekolahMap[selectedPPD].sort().forEach(namaSekolah => {
@@ -555,6 +564,15 @@
                 } else {
                     sekolahInput.innerHTML = '<option value="" disabled selected>-- Tiada Sekolah Dijumpai --</option>';
                     sekolahInput.disabled = true;
+                }
+            }
+            
+            function populateAgensi() {
+                const selectedSekolah = sekolahInput.value;
+                if (sekolahAgensiMap[selectedSekolah]) {
+                    agensiInput.value = sekolahAgensiMap[selectedSekolah];
+                } else {
+                    agensiInput.value = '';
                 }
             }
 
@@ -627,9 +645,11 @@
                         asetTableBody.innerHTML = '';
                         asetCount = 0;
                         addAsetRow();
-                        // Reset sekolah dropdown
+                        // Reset sekolah dropdown and agensi field
                         sekolahInput.innerHTML = '<option value="" disabled selected>-- Sila Pilih PPD Dahulu --</option>';
                         sekolahInput.disabled = true;
+                        agensiInput.value = '';
+
 
                     } else {
                         throw new Error(result.message || 'Berlaku ralat semasa menghantar data.');
