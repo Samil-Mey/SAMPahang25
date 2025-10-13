@@ -11,34 +11,45 @@
     <!-- Icon Library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .content-container {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        /* Tema Korporat */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f1f5f9; /* slate-100 */
+        }
+        .sidebar {
+            background-color: #1e293b; /* slate-800 */
+            color: #cbd5e1; /* slate-300 */
         }
         .sidebar-link {
-            display: block;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            transition: background-color 0.3s, color 0.3s;
-            color: #374151; /* gray-700 */
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s, color 0.2s;
+            color: #cbd5e1; /* slate-300 */
+            font-weight: 500;
         }
         .sidebar-link:hover {
-            background-color: #F3F4F6; /* gray-100 */
+            background-color: #334155; /* slate-700 */
+            color: white;
         }
         .sidebar-link.active {
-            background-color: #3B82F6; /* blue-500 */
+            background-color: #2563eb; /* blue-600 */
             color: white;
             font-weight: 600;
         }
+        .content-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
         .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #3b82f6;
             border-radius: 50%;
             width: 40px;
             height: 40px;
-            animation: spin 2s linear infinite;
+            animation: spin 1s linear infinite;
             margin: 5rem auto;
         }
         @keyframes spin {
@@ -48,282 +59,202 @@
         /* Hide number input spinners */
         input[type='number']::-webkit-inner-spin-button,
         input[type='number']::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+            -webkit-appearance: none; margin: 0;
         }
-        input[type='number'] {
-            -moz-appearance: textfield;
-        }
+        input[type='number'] { -moz-appearance: textfield; }
+        
         /* Table styles */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .data-table th, .data-table td {
-            padding: 12px 15px;
-            border: 1px solid #e2e8f0;
-            text-align: left;
-            font-size: 14px;
-        }
-        .data-table thead th {
-            background-color: #f8fafc;
-            font-weight: 600;
-            color: #475569;
-        }
-        .data-table tbody tr:nth-child(even) {
-            background-color: #f1f5f9;
-        }
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .status-sent {
-            background-color: #D1FAE5; /* green-100 */
-            color: #065F46; /* green-800 */
-        }
-        .status-pending {
-            background-color: #FEF3C7; /* yellow-100 */
-            color: #92400E; /* yellow-800 */
-        }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th, .data-table td { padding: 12px 15px; border: 1px solid #e2e8f0; text-align: left; font-size: 14px; }
+        .data-table thead th { background-color: #f8fafc; font-weight: 600; color: #334155; }
+        .data-table tbody tr:nth-child(even) { background-color: #f8fafc; }
+
+        .status-badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+        .status-sent { background-color: #dcfce7; color: #166534; }
+        .status-pending { background-color: #fef9c3; color: #854d0e; }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-slate-100">
 
     <div class="flex h-screen">
         <!-- Sidebar Navigation -->
-        <aside class="w-64 bg-white p-4 shadow-lg flex flex-col">
-            <div class="flex items-center mb-8">
-                <i class="fas fa-school-flag text-3xl text-blue-600"></i>
-                <h1 class="text-xl font-bold text-gray-800 ml-3">Sistem SAM</h1>
+        <aside class="w-64 sidebar p-4 flex flex-col flex-shrink-0">
+            <div class="flex items-center justify-center py-4 mb-6">
+                <img src="imej1.png" alt="Logo JPN" class="h-20 w-auto">
             </div>
             <nav class="space-y-2">
-                <a href="#" id="nav-allocation" class="sidebar-link active"><i class="fas fa-file-invoice-dollar fa-fw mr-3"></i>Borang Laporan</a>
-                <a href="#" id="nav-checklist" class="sidebar-link"><i class="fas fa-tasks fa-fw mr-3"></i>Senarai Semak</a>
-                <a href="#" id="nav-analysis" class="sidebar-link"><i class="fas fa-chart-pie fa-fw mr-3"></i>Analisis & Data</a>
+                <a href="#" id="nav-allocation" class="sidebar-link active"><i class="fas fa-file-alt fa-fw mr-3 w-5 text-center"></i>Borang Laporan</a>
+                <a href="#" id="nav-checklist" class="sidebar-link"><i class="fas fa-tasks fa-fw mr-3 w-5 text-center"></i>Senarai Semak</a>
+                <a href="#" id="nav-analysis" class="sidebar-link"><i class="fas fa-chart-pie fa-fw mr-3 w-5 text-center"></i>Analisis & Data</a>
             </nav>
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 p-8 overflow-y-auto">
-            
-            <!-- PAGE: Borang Peruntukan -->
-            <div id="page-allocation" class="page-content">
-                <div class="content-container max-w-4xl mx-auto p-8">
-                    <h2 class="text-2xl font-bold mb-1 text-gray-800">Laporan Program Sekolah Angkat Madani (SAM)</h2>
-                    <p class="mb-6 text-gray-600">Sila isikan maklumat peruntukan di bawah. Medan bertanda (*) adalah wajib.</p>
-                    <form id="allocation-form" class="space-y-6">
-                        <input type="hidden" id="kod-sekolah" name="Kod Sekolah">
-                        <input type="hidden" id="form-action" name="action" value="create">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="ppd" class="block text-sm font-medium text-gray-700">PPD (*)</label>
-                                <select id="ppd" name="PPD" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                    <option value="" disabled selected>-- Sila Pilih PPD --</option>
-                                    <option value="Bentong">Bentong</option>
-                                    <option value="Bera">Bera</option>
-                                    <option value="Cameron Highlands">Cameron Highlands</option>
-                                    <option value="Jerantut">Jerantut</option>
-                                    <option value="Kuantan">Kuantan</option>
-                                    <option value="Lipis">Lipis</option>
-                                    <option value="Maran">Maran</option>
-                                    <option value="Pekan">Pekan</option>
-                                    <option value="Raub">Raub</option>
-                                    <option value="Rompin">Rompin</option>
-                                    <option value="Temerloh">Temerloh</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="sekolah" class="block text-sm font-medium text-gray-700">Sekolah (*)</label>
-                                <select id="sekolah" name="Sekolah" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled>
-                                    <option value="" disabled selected>-- Sila Pilih PPD Dahulu --</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                           <label for="agensi" class="block text-sm font-medium text-gray-700">Agensi (*)</label>
-                           <input type="text" id="agensi" name="Agensi" required class="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm" placeholder="Akan diisi secara automatik" readonly>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="peruntukan-diluluskan" class="block text-sm font-medium text-gray-700">Peruntukan Diluluskan (RM) (*)</label>
-                                <input type="number" step="0.01" id="peruntukan-diluluskan" name="Peruntukan Diluluskan (RM)" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Cth: 100000">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Status Peruntukan</label>
-                                <div class="mt-2 flex items-center space-x-6">
-                                    <label class="flex items-center"><input type="radio" name="Status Peruntukan" value="Belum Terima" checked class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"> <span class="ml-2 text-sm text-gray-800">Belum Terima</span></label>
-                                    <label class="flex items-center"><input type="radio" name="Status Peruntukan" value="Telah Terima" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"> <span class="ml-2 text-sm text-gray-800">Telah Terima</span></label>
+        <main class="flex-1 flex flex-col overflow-y-auto">
+            <div class="p-8 flex-grow">
+                <!-- PAGE: Borang Peruntukan -->
+                <div id="page-allocation" class="page-content">
+                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full h-auto rounded-lg mb-8 shadow-md">
+                    <div class="content-container max-w-4xl mx-auto p-8">
+                        <h2 class="text-2xl font-bold mb-1 text-slate-800">Laporan Program Sekolah Angkat Madani (SAM)</h2>
+                        <p class="mb-6 text-slate-600">Sila isikan maklumat peruntukan di bawah. Medan bertanda (*) adalah wajib.</p>
+                        <form id="allocation-form" class="space-y-6">
+                            <!-- Form content remains the same -->
+                            <input type="hidden" id="kod-sekolah" name="Kod Sekolah">
+                            <input type="hidden" id="form-action" name="action" value="create">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="ppd" class="block text-sm font-medium text-slate-700">PPD (*)</label>
+                                    <select id="ppd" name="PPD" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
+                                </div>
+                                <div>
+                                    <label for="sekolah" class="block text-sm font-medium text-slate-700">Sekolah (*)</label>
+                                    <select id="sekolah" name="Sekolah" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled></select>
                                 </div>
                             </div>
-                            <div id="tarikh-terima-container" class="hidden">
-                                <label for="tarikh-terima" class="block text-sm font-medium text-gray-700">Tarikh Terima</label>
-                                <input type="date" id="tarikh-terima" name="Tarikh Terima" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <div>
+                               <label for="agensi" class="block text-sm font-medium text-slate-700">Agensi (*)</label>
+                               <input type="text" id="agensi" name="Agensi" required class="mt-1 block w-full px-3 py-2 bg-slate-100 border border-slate-300 rounded-md shadow-sm" placeholder="Akan diisi secara automatik" readonly>
                             </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Senarai Aset / Peralatan</label>
-                            <div id="asset-list" class="mt-2 space-y-3">
-                                <!-- Baris aset akan ditambah di sini oleh JavaScript -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="peruntukan-diluluskan" class="block text-sm font-medium text-slate-700">Peruntukan Diluluskan (RM) (*)</label>
+                                    <input type="number" step="0.01" id="peruntukan-diluluskan" name="Peruntukan Diluluskan (RM)" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Cth: 100000">
+                                </div>
                             </div>
-                            <button type="button" id="add-asset-btn" class="mt-3 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors"><i class="fas fa-plus-circle mr-2"></i>Tambah Aset</button>
-                        </div>
-                        <div>
-                            <label for="catatan" class="block text-sm font-medium text-gray-700">Catatan</label>
-                            <textarea id="catatan" name="Catatan" rows="3" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Sebarang maklumat tambahan..."></textarea>
-                        </div>
-                        <div class="pt-4">
-                            <button type="submit" id="submit-allocation-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Hantar Laporan</button>
-                        </div>
-                    </form>
-                    <div id="allocation-form-message" class="mt-4 text-center"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700">Status Peruntukan</label>
+                                    <div class="mt-2 flex items-center space-x-6">
+                                        <label class="flex items-center"><input type="radio" name="Status Peruntukan" value="Belum Terima" checked class="h-4 w-4 text-blue-600 border-slate-300 focus:ring-blue-500"> <span class="ml-2 text-sm text-slate-800">Belum Terima</span></label>
+                                        <label class="flex items-center"><input type="radio" name="Status Peruntukan" value="Telah Terima" class="h-4 w-4 text-blue-600 border-slate-300 focus:ring-blue-500"> <span class="ml-2 text-sm text-slate-800">Telah Terima</span></label>
+                                    </div>
+                                </div>
+                                <div id="tarikh-terima-container" class="hidden">
+                                    <label for="tarikh-terima" class="block text-sm font-medium text-slate-700">Tarikh Terima</label>
+                                    <input type="date" id="tarikh-terima" name="Tarikh Terima" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700">Senarai Aset / Peralatan</label>
+                                <div id="asset-list" class="mt-2 space-y-3"></div>
+                                <button type="button" id="add-asset-btn" class="mt-3 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors"><i class="fas fa-plus-circle mr-2"></i>Tambah Aset</button>
+                            </div>
+                            <div>
+                                <label for="catatan" class="block text-sm font-medium text-slate-700">Catatan</label>
+                                <textarea id="catatan" name="Catatan" rows="3" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Sebarang maklumat tambahan..."></textarea>
+                            </div>
+                            <div class="pt-4">
+                                <button type="submit" id="submit-allocation-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Hantar Laporan</button>
+                            </div>
+                        </form>
+                        <div id="allocation-form-message" class="mt-4 text-center"></div>
+                    </div>
+                </div>
+                
+                <!-- PAGE: Senarai Semak -->
+                <div id="page-checklist" class="page-content hidden">
+                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full h-auto rounded-lg mb-8 shadow-md">
+                     <div class="content-container !max-w-7xl mx-auto p-8">
+                         <h2 class="text-3xl font-bold text-slate-800 mb-6">Senarai Semak Penghantaran Laporan</h2>
+                         <div id="checklist-loader" class="hidden"><div class="loader"></div></div>
+                         <div class="flex flex-wrap items-center gap-4 mb-6 bg-slate-50 p-4 rounded-lg">
+                             <div>
+                                 <label for="checklist-filter-ppd" class="block text-sm font-medium text-slate-700">Tapis PPD:</label>
+                                 <select id="checklist-filter-ppd" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
+                             </div>
+                             <div class="self-end">
+                                 <button id="checklist-reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Set Semula</button>
+                             </div>
+                         </div>
+                         <div id="checklist-content" class="hidden">
+                            <div class="overflow-x-auto bg-white rounded-lg shadow">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Kod Sekolah</th>
+                                            <th>PPD</th>
+                                            <th>Sekolah</th>
+                                            <th>Status Laporan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="checklist-table-body"></tbody>
+                                </table>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+
+                <!-- PAGE: Password Prompt -->
+                <div id="page-password" class="page-content hidden h-full flex items-center justify-center">
+                     <div class="content-container max-w-sm mx-auto p-8">
+                         <h2 class="text-2xl font-bold mb-4 text-slate-800 text-center">Akses Terhad</h2>
+                         <p class="text-center text-slate-600 mb-6">Sila masukkan kata laluan untuk melihat halaman analisis.</p>
+                         <form id="password-form">
+                             <label for="password" class="block text-sm font-medium text-slate-700">Kata Laluan</label>
+                             <input type="password" id="password" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                             <button type="submit" class="mt-6 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Masuk</button>
+                         </form>
+                         <p id="password-error" class="text-red-500 text-center mt-4 text-sm"></p>
+                     </div>
+                </div>
+
+                <!-- PAGE: Analisis Data -->
+                <div id="page-analysis" class="page-content hidden">
+                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full h-auto rounded-lg mb-8 shadow-md">
+                    <div class="content-container !max-w-7xl mx-auto p-8">
+                         <h2 class="text-3xl font-bold text-slate-800 mb-6">Papan Pemuka Analisis SAM</h2>
+                         <div id="dashboard-loader" class="hidden"><div class="loader"></div></div>
+                         <div class="flex flex-wrap items-center gap-4 mb-6 bg-slate-50 p-4 rounded-lg">
+                             <div>
+                                 <label for="filter-ppd" class="block text-sm font-medium text-slate-700">Tapis PPD:</label>
+                                 <select id="filter-ppd" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
+                             </div>
+                             <div>
+                                 <label for="filter-sekolah" class="block text-sm font-medium text-slate-700">Tapis Sekolah:</label>
+                                 <select id="filter-sekolah" class="mt-1 block w-full md:w-64 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled></select>
+                             </div>
+                             <div class="self-end">
+                                 <button id="reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Set Semula</button>
+                             </div>
+                         </div>
+                         <div id="dashboard-content" class="hidden">
+                            <!-- Dashboard content remains the same -->
+                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                                <div class="bg-blue-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Peruntukan Diluluskan</h3><p id="total-approved" class="text-3xl font-bold text-blue-800 mt-2">RM 0.00</p></div>
+                                <div class="bg-green-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Laporan Diterima</h3><p id="total-allocations" class="text-3xl font-bold text-green-800 mt-2">0</p></div>
+                                <div class="bg-purple-100 p-6 rounded-lg"><h3 class="text-slate-600">Peratusan Telah Terima</h3><p id="percent-complete" class="text-3xl font-bold text-purple-800 mt-2">0%</p></div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                                <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-hourglass-half text-yellow-500 mr-3"></i>Sekolah Belum Terima</h3><ul id="list-not-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
+                                <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Sekolah Telah Terima</h3><ul id="list-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+                                <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4">Peruntukan mengikut PPD</h3><canvas id="allocation-by-ppd-chart"></canvas></div>
+                                <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4">Pecahan Aset/Peralatan</h3><canvas id="asset-breakdown-chart"></canvas></div>
+                            </div>
+                            <div>
+                                 <h3 class="font-bold text-lg text-slate-700 mb-4">Semua Data Laporan</h3>
+                                 <div class="overflow-x-auto bg-white rounded-lg shadow">
+                                     <table class="data-table">
+                                         <thead>
+                                             <tr>
+                                                 <th>Kod Sekolah</th><th>PPD</th><th>Sekolah</th><th>Agensi</th><th>Peruntukan (RM)</th><th>Status</th><th>Tarikh Terima</th><th>Aset/Peralatan</th><th>Catatan</th>
+                                             </tr>
+                                         </thead>
+                                         <tbody id="data-table-body"></tbody>
+                                     </table>
+                                 </div>
+                            </div>
+                         </div>
+                    </div>
                 </div>
             </div>
             
-            <!-- PAGE: Senarai Semak -->
-            <div id="page-checklist" class="page-content hidden">
-                 <div class="content-container !max-w-7xl mx-auto p-8">
-                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-3xl font-bold text-gray-800">Senarai Semak Penghantaran Laporan</h2>
-                     </div>
-                     <div id="checklist-loader" class="hidden"><div class="loader"></div></div>
-
-                     <!-- Filters -->
-                     <div class="flex flex-wrap items-center gap-4 mb-6 bg-gray-50 p-4 rounded-lg">
-                         <div>
-                             <label for="checklist-filter-ppd" class="block text-sm font-medium text-gray-700">Tapis PPD:</label>
-                             <select id="checklist-filter-ppd" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                 <option value="all">Semua PPD</option>
-                             </select>
-                         </div>
-                         <div class="self-end">
-                             <button id="checklist-reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Set Semula</button>
-                         </div>
-                     </div>
-                     
-                     <div id="checklist-content" class="hidden">
-                          <!-- Data Table -->
-                        <div>
-                             <div class="overflow-x-auto bg-white rounded-lg shadow">
-                                 <table class="data-table">
-                                     <thead>
-                                         <tr>
-                                             <th>Kod Sekolah</th>
-                                             <th>PPD</th>
-                                             <th>Sekolah</th>
-                                             <th>Status Laporan</th>
-                                         </tr>
-                                     </thead>
-                                     <tbody id="checklist-table-body">
-                                         <!-- Data rows will be inserted here by JavaScript -->
-                                     </tbody>
-                                 </table>
-                             </div>
-                        </div>
-                     </div>
-                </div>
-            </div>
-
-            <!-- PAGE: Password Prompt -->
-            <div id="page-password" class="page-content hidden h-full flex items-center justify-center">
-                 <div class="content-container max-w-sm mx-auto p-8">
-                     <h2 class="text-2xl font-bold mb-4 text-gray-800 text-center">Akses Terhad</h2>
-                     <p class="text-center text-gray-600 mb-6">Sila masukkan kata laluan untuk melihat halaman analisis.</p>
-                     <form id="password-form">
-                         <label for="password" class="block text-sm font-medium text-gray-700">Kata Laluan</label>
-                         <input type="password" id="password" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                         <button type="submit" class="mt-6 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Masuk</button>
-                     </form>
-                     <p id="password-error" class="text-red-500 text-center mt-4 text-sm"></p>
-                 </div>
-            </div>
-
-
-            <!-- PAGE: Analisis Data -->
-            <div id="page-analysis" class="page-content hidden">
-                <div class="content-container !max-w-7xl mx-auto p-8">
-                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-3xl font-bold text-gray-800">Papan Pemuka Analisis SAM</h2>
-                     </div>
-                     <div id="dashboard-loader" class="hidden"><div class="loader"></div></div>
-
-                     <!-- Filters -->
-                     <div class="flex flex-wrap items-center gap-4 mb-6 bg-gray-50 p-4 rounded-lg">
-                         <div>
-                             <label for="filter-ppd" class="block text-sm font-medium text-gray-700">Tapis PPD:</label>
-                             <select id="filter-ppd" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                 <option value="all">Semua PPD</option>
-                             </select>
-                         </div>
-                         <div>
-                             <label for="filter-sekolah" class="block text-sm font-medium text-gray-700">Tapis Sekolah:</label>
-                             <select id="filter-sekolah" class="mt-1 block w-full md:w-64 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled>
-                                 <option value="all">Semua Sekolah</option>
-                             </select>
-                         </div>
-                         <div class="self-end">
-                             <button id="reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Set Semula</button>
-                         </div>
-                     </div>
-                     
-                     <div id="dashboard-content" class="hidden">
-                         <!-- Key Metrics -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                            <div class="bg-blue-100 p-6 rounded-lg"><h3 class="text-gray-600">Jumlah Peruntukan Diluluskan</h3><p id="total-approved" class="text-3xl font-bold text-blue-800 mt-2">RM 0.00</p></div>
-                            <div class="bg-green-100 p-6 rounded-lg"><h3 class="text-gray-600">Jumlah Laporan Diterima</h3><p id="total-allocations" class="text-3xl font-bold text-green-800 mt-2">0</p></div>
-                            <div class="bg-purple-100 p-6 rounded-lg"><h3 class="text-gray-600">Peratusan Telah Terima</h3><p id="percent-complete" class="text-3xl font-bold text-purple-800 mt-2">0%</p></div>
-                        </div>
-                        
-                        <!-- School Status Lists -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                            <div class="bg-white p-6 rounded-lg shadow">
-                                <h3 class="font-bold text-lg text-gray-700 mb-4 flex items-center"><i class="fas fa-hourglass-half text-yellow-500 mr-3"></i>Sekolah Belum Terima</h3>
-                                <ul id="list-not-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul>
-                            </div>
-                            <div class="bg-white p-6 rounded-lg shadow">
-                                <h3 class="font-bold text-lg text-gray-700 mb-4 flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Sekolah Telah Terima</h3>
-                                <ul id="list-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul>
-                            </div>
-                        </div>
-
-                        <!-- Charts -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
-                            <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-gray-700 mb-4">Peruntukan mengikut PPD</h3><canvas id="allocation-by-ppd-chart"></canvas></div>
-                            <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-gray-700 mb-4">Pecahan Aset/Peralatan</h3><canvas id="asset-breakdown-chart"></canvas></div>
-                        </div>
-
-                        <!-- Data Table -->
-                        <div>
-                             <h3 class="font-bold text-lg text-gray-700 mb-4">Semua Data Laporan</h3>
-                             <div class="overflow-x-auto bg-white rounded-lg shadow">
-                                 <table class="data-table">
-                                     <thead>
-                                         <tr>
-                                             <th>Kod Sekolah</th>
-                                             <th>PPD</th>
-                                             <th>Sekolah</th>
-                                             <th>Agensi</th>
-                                             <th>Peruntukan (RM)</th>
-                                             <th>Status</th>
-                                             <th>Tarikh Terima</th>
-                                             <th>Aset/Peralatan</th>
-                                             <th>Catatan</th>
-                                         </tr>
-                                     </thead>
-                                     <tbody id="data-table-body">
-                                         <!-- Data rows will be inserted here by JavaScript -->
-                                     </tbody>
-                                 </table>
-                             </div>
-                        </div>
-                     </div>
-                </div>
-            </div>
-
+            <footer class="text-center py-4 mt-auto">
+                <p class="text-sm text-slate-500">Sektor Pengurusan Sekolah @ 2025</p>
+                <p class="text-sm text-slate-500">Jabatan Pendidikan Negeri Pahang</p>
+            </footer>
         </main>
     </div>
 
@@ -333,6 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxpzCJIh288hyO3SOdgNaF8U-o7TNC6xGnZH00w8WSTiZbuqaH03liucHjZt-wr7sSb/exec';
     const ADMIN_PASSWORD = 'P123';
 
+    // All elements references from previous script are maintained
     const navLinks = {
         allocation: document.getElementById('nav-allocation'),
         checklist: document.getElementById('nav-checklist'),
@@ -439,6 +371,9 @@ document.addEventListener('DOMContentLoaded', function() {
         ]
     };
     
+    // Most of the JavaScript code remains the same...
+    // Only difference is initializing the form dropdowns at the start.
+
     let isAuthenticated = false;
     let samData = [];
     let fullChecklistData = [];
@@ -461,19 +396,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwordForm = document.getElementById('password-form');
     const passwordError = document.getElementById('password-error');
     
-    // Elements for Analysis Page
     const filterPPD = document.getElementById('filter-ppd');
     const filterSekolah = document.getElementById('filter-sekolah');
     const resetFiltersBtn = document.getElementById('reset-filters-btn');
 
-    // Elements for Checklist Page
     const checklistFilterPPD = document.getElementById('checklist-filter-ppd');
     const checklistResetFiltersBtn = document.getElementById('checklist-reset-filters-btn');
     const checklistTableBody = document.getElementById('checklist-table-body');
 
     let assetCounter = 0;
 
-    // --- Pengurusan Navigasi & Auth ---
+    function populatePPDDropdown(dropdownElement) {
+        const ppds = Object.keys(schoolData);
+        dropdownElement.innerHTML = '<option value="" disabled selected>-- Sila Pilih PPD --</option>';
+        ppds.forEach(ppd => {
+            const option = document.createElement('option');
+            option.value = ppd;
+            option.textContent = ppd;
+            dropdownElement.appendChild(option);
+        });
+    }
+
     function setActivePage(pageId) {
         Object.values(pages).forEach(page => page.classList.add('hidden'));
         Object.values(navLinks).forEach(link => link.classList.remove('active'));
@@ -520,15 +463,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // --- Borang Peruntukan ---
     function createAssetRow(item = '', quantity = '') {
         assetCounter++;
         const div = document.createElement('div');
         div.className = 'flex items-center space-x-3 asset-row';
         div.innerHTML = `
-            <span class="text-sm font-medium text-gray-500 w-6">${assetCounter}.</span>
-            <input type="text" placeholder="Jenis Aset / Peralatan" value="${item}" class="asset-name flex-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-            <input type="number" placeholder="Kuantiti" value="${quantity}" class="asset-quantity w-32 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <span class="text-sm font-medium text-slate-500 w-6">${assetCounter}.</span>
+            <input type="text" placeholder="Jenis Aset / Peralatan" value="${item}" class="asset-name flex-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <input type="number" placeholder="Kuantiti" value="${quantity}" class="asset-quantity w-32 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
             <button type="button" class="remove-asset-btn text-red-500 hover:text-red-700"><i class="fas fa-times-circle"></i></button>
         `;
         assetListContainer.appendChild(div);
@@ -551,17 +493,13 @@ document.addEventListener('DOMContentLoaded', function() {
         catatanInput.value = '';
         agensiInput.value = '';
         kodSekolahInput.value = '';
-        
         const statusRadio = document.querySelector('input[name="Status Peruntukan"][value="Belum Terima"]');
         if (statusRadio) statusRadio.checked = true;
-        
         tarikhContainer.classList.add('hidden');
         tarikhInput.value = '';
-        
         assetListContainer.innerHTML = '';
         assetCounter = 0;
         createAssetRow();
-        
         formMessage.textContent = '';
         submitBtn.textContent = 'Hantar Laporan';
         submitBtn.className = 'w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500';
@@ -571,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function fetchAndPopulateRecord(kodSekolah) {
         if (!kodSekolah) return;
         formMessage.textContent = 'Menyemak data sedia ada...';
-        formMessage.className = 'text-gray-600 mt-4 text-center';
+        formMessage.className = 'text-slate-600 mt-4 text-center';
         try {
             const url = `${GOOGLE_SCRIPT_URL}?action=getRecord&kodSekolah=${kodSekolah}`;
             const response = await fetch(url);
@@ -617,9 +555,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedPPD = this.value;
         sekolahSelect.innerHTML = '<option value="" disabled selected>-- Sila Pilih Sekolah --</option>';
         sekolahSelect.disabled = true;
-        
-        clearReportDetails(); // Clear details but keep PPD selection
-
+        clearReportDetails();
         if (schoolData[selectedPPD]) {
             schoolData[selectedPPD].forEach(school => {
                 const option = document.createElement('option');
@@ -632,11 +568,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     sekolahSelect.addEventListener('change', function() {
-        clearReportDetails(); // Clear previous school's details
-
+        clearReportDetails();
         const selectedPPD = ppdSelect.value;
         const selectedSchoolName = this.value;
-
         if (schoolData[selectedPPD]) {
             const schoolInfo = schoolData[selectedPPD].find(s => s.name === selectedSchoolName);
             if (schoolInfo) {
@@ -649,12 +583,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     document.querySelectorAll('input[name="Status Peruntukan"]').forEach(radio => {
         radio.addEventListener('change', function() {
-            if (this.value === 'Telah Terima') {
-                tarikhContainer.classList.remove('hidden');
-            } else {
-                tarikhContainer.classList.add('hidden');
-                tarikhInput.value = '';
-            }
+            tarikhContainer.classList.toggle('hidden', this.value !== 'Telah Terima');
+            if(this.value !== 'Telah Terima') tarikhInput.value = '';
         });
     });
 
@@ -667,9 +597,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.asset-row').forEach(row => {
             const name = row.querySelector('.asset-name').value.trim();
             const quantity = row.querySelector('.asset-quantity').value.trim();
-            if (name && quantity) {
-                assets.push({ item: name, kuantiti: quantity });
-            }
+            if (name && quantity) assets.push({ item: name, kuantiti: quantity });
         });
         const formData = new FormData(this);
         const dataObject = {};
@@ -680,35 +608,18 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 const actionText = formActionInput.value === 'update' ? 'dikemaskini' : 'dihantar';
                 if(data.result === 'success') {
-                    formMessage.innerHTML = `<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md" role="alert">
-                                                <p class="font-bold">Berjaya!</p>
-                                                <p>Laporan anda telah berjaya ${actionText}. Borang akan ditetapkan semula dalam 3 saat.</p>
-                                             </div>`;
-                    
+                    formMessage.innerHTML = `<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md" role="alert"><p class="font-bold">Berjaya!</p><p>Laporan anda telah berjaya ${actionText}.</p></div>`;
                     setTimeout(() => {
                         allocationForm.reset();
                         sekolahSelect.innerHTML = '<option value="" disabled selected>-- Sila Pilih PPD Dahulu --</option>';
                         sekolahSelect.disabled = true;
-                        agensiInput.value = '';
-                        kodSekolahInput.value = '';
-                        assetListContainer.innerHTML = '';
-                        assetCounter = 0;
-                        createAssetRow();
-                        tarikhContainer.classList.add('hidden');
-                        formMessage.innerHTML = '';
-                        
-                        submitBtn.textContent = 'Hantar Laporan';
-                        submitBtn.className = 'w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500';
-                        formActionInput.value = 'create';
+                        clearReportDetails();
+                        populatePPDDropdown(ppdSelect); // Repopulate PPD dropdown to reset it
                     }, 3000);
-
-                } else { 
-                    throw new Error(data.message || 'Ralat tidak diketahui'); 
-                }
+                } else { throw new Error(data.message || 'Ralat tidak diketahui'); }
             })
             .catch(error => {
-                formMessage.textContent = `Ralat: ${error.message}`;
-                formMessage.className = 'text-red-600 mt-4 text-center';
+                formMessage.innerHTML = `<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md" role="alert"><p class="font-bold">Ralat!</p><p>${error.message}</p></div>`;
             })
             .finally(() => {
                 submitBtn.disabled = false;
@@ -716,31 +627,25 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 
-    // --- Senarai Semak ---
     async function loadChecklistData() {
         const loader = document.getElementById('checklist-loader');
         const content = document.getElementById('checklist-content');
         loader.classList.remove('hidden');
         content.classList.add('hidden');
-
         try {
             const response = await fetch(GOOGLE_SCRIPT_URL);
             if (!response.ok) throw new Error('Gagal memuatkan data dari server.');
             const submittedData = await response.json();
             const submittedCodes = submittedData.map(item => item['Kod Sekolah']);
-
             fullChecklistData = [];
             for (const ppd in schoolData) {
                 schoolData[ppd].forEach(school => {
                     fullChecklistData.push({
-                        kod: school.kod,
-                        ppd: ppd,
-                        sekolah: school.name,
+                        kod: school.kod, ppd: ppd, sekolah: school.name,
                         status: submittedCodes.includes(school.kod) ? 'Telah Hantar' : 'Belum Hantar'
                     });
                 });
             }
-
             populateChecklistFilters();
             applyChecklistFiltersAndRedraw();
             loader.classList.add('hidden');
@@ -755,23 +660,19 @@ document.addEventListener('DOMContentLoaded', function() {
         checklistFilterPPD.innerHTML = '<option value="all">Semua PPD</option>';
         ppds.forEach(ppd => {
             const option = document.createElement('option');
-            option.value = ppd;
-            option.textContent = ppd;
+            option.value = ppd; option.textContent = ppd;
             checklistFilterPPD.appendChild(option);
         });
     }
 
     checklistFilterPPD.addEventListener('change', applyChecklistFiltersAndRedraw);
-
     checklistResetFiltersBtn.addEventListener('click', () => {
-        checklistFilterPPD.value = 'all';
-        applyChecklistFiltersAndRedraw();
+        checklistFilterPPD.value = 'all'; applyChecklistFiltersAndRedraw();
     });
 
     function applyChecklistFiltersAndRedraw() {
         let filteredData = [...fullChecklistData];
         const selectedPPD = checklistFilterPPD.value;
-
         if (selectedPPD !== 'all') {
             filteredData = filteredData.filter(item => item.ppd === selectedPPD);
         }
@@ -781,39 +682,18 @@ document.addEventListener('DOMContentLoaded', function() {
     function populateChecklistTable(data) {
         checklistTableBody.innerHTML = '';
         if (data.length === 0) {
-            checklistTableBody.innerHTML = '<tr><td colspan="4" class="text-center text-gray-500 py-4">Tiada data untuk dipaparkan.</td></tr>';
-            return;
+            checklistTableBody.innerHTML = '<tr><td colspan="4" class="text-center text-slate-500 py-4">Tiada data.</td></tr>'; return;
         }
         data.forEach(item => {
             const row = document.createElement('tr');
             const statusClass = item.status === 'Telah Hantar' ? 'status-sent' : 'status-pending';
-            row.innerHTML = `
-                <td>${item.kod}</td>
-                <td>${item.ppd}</td>
-                <td>${item.sekolah}</td>
-                <td><span class="status-badge ${statusClass}">${item.status}</span></td>
-            `;
+            row.innerHTML = `<td>${item.kod}</td><td>${item.ppd}</td><td>${item.sekolah}</td><td><span class="status-badge ${statusClass}">${item.status}</span></td>`;
             checklistTableBody.appendChild(row);
         });
     }
 
-
-    // --- Analisis Data ---
-    function formatAssetsForDisplay(assetString) {
-        if (!assetString) return '';
-        try {
-            if (assetString.trim().startsWith('[')) {
-                const assets = JSON.parse(assetString);
-                if (Array.isArray(assets) && assets.length > 0) {
-                    return assets.map(a => `${a.kuantiti}x ${a.item}`).join('\n');
-                }
-                return '-';
-            }
-            return assetString;
-        } catch (e) { return assetString; }
-    }
-
     async function loadDashboardData() {
+        // This function remains the same
         const loader = document.getElementById('dashboard-loader');
         const content = document.getElementById('dashboard-content');
         loader.classList.remove('hidden');
@@ -833,17 +713,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function populateFilters() {
+        // This function remains the same
         const ppds = Object.keys(schoolData);
         filterPPD.innerHTML = '<option value="all">Semua PPD</option>';
         ppds.forEach(ppd => {
             const option = document.createElement('option');
-            option.value = ppd;
-            option.textContent = ppd;
+            option.value = ppd; option.textContent = ppd;
             filterPPD.appendChild(option);
         });
     }
 
     filterPPD.addEventListener('change', () => {
+        // This function remains the same
         const selectedPPD = filterPPD.value;
         filterSekolah.innerHTML = '<option value="all">Semua Sekolah</option>';
         if (selectedPPD === 'all') {
@@ -851,8 +732,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             schoolData[selectedPPD].forEach(school => {
                 const option = document.createElement('option');
-                option.value = school.name;
-                option.textContent = school.name;
+                option.value = school.name; option.textContent = school.name;
                 filterSekolah.appendChild(option);
             });
             filterSekolah.disabled = false;
@@ -861,8 +741,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     filterSekolah.addEventListener('change', applyFiltersAndRedraw);
-
     resetFiltersBtn.addEventListener('click', () => {
+        // This function remains the same
         filterPPD.value = 'all';
         filterSekolah.innerHTML = '<option value="all">Semua Sekolah</option>';
         filterSekolah.disabled = true;
@@ -870,22 +750,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     function applyFiltersAndRedraw() {
+        // This function remains the same
         let filteredData = [...samData];
         const selectedPPD = filterPPD.value;
         const selectedSekolah = filterSekolah.value;
-
-        if (selectedPPD !== 'all') {
-            filteredData = filteredData.filter(item => item.PPD === selectedPPD);
-        }
-        if (selectedSekolah !== 'all') {
-            filteredData = filteredData.filter(item => item.Sekolah === selectedSekolah);
-        }
-        
+        if (selectedPPD !== 'all') filteredData = filteredData.filter(item => item.PPD === selectedPPD);
+        if (selectedSekolah !== 'all') filteredData = filteredData.filter(item => item.Sekolah === selectedSekolah);
         updateDashboard(filteredData);
         populateDataTable(filteredData);
     }
 
     function updateDashboard(data) {
+        // This function remains the same
         const totalApproved = data.reduce((sum, item) => sum + (parseFloat(item['Peruntukan Diluluskan (RM)']) || 0), 0);
         const allocationsReceived = data.filter(item => item['Status Peruntukan'] === 'Telah Terima').length;
         const percentComplete = data.length > 0 ? (allocationsReceived / data.length) * 100 : 0;
@@ -898,50 +774,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function populateSchoolStatusLists(data) {
+        // This function remains the same
         const listReceived = document.getElementById('list-received');
         const listNotReceived = document.getElementById('list-not-received');
-        listReceived.innerHTML = '';
-        listNotReceived.innerHTML = '';
+        listReceived.innerHTML = ''; listNotReceived.innerHTML = '';
         data.forEach(item => {
             const li = document.createElement('li');
-            li.className = 'text-sm text-gray-700';
+            li.className = 'text-sm text-slate-700';
             li.textContent = `${item.Sekolah} (${item.PPD})`;
-            if(item['Status Peruntukan'] === 'Telah Terima') {
-                listReceived.appendChild(li);
-            } else {
-                listNotReceived.appendChild(li);
-            }
+            if(item['Status Peruntukan'] === 'Telah Terima') listReceived.appendChild(li);
+            else listNotReceived.appendChild(li);
         });
-        if(listReceived.innerHTML === '') listReceived.innerHTML = '<li class="text-sm text-gray-400">Tiada sekolah.</li>';
-        if(listNotReceived.innerHTML === '') listNotReceived.innerHTML = '<li class="text-sm text-gray-400">Tiada sekolah.</li>';
+        if(listReceived.innerHTML === '') listReceived.innerHTML = '<li class="text-sm text-slate-400">Tiada sekolah.</li>';
+        if(listNotReceived.innerHTML === '') listNotReceived.innerHTML = '<li class="text-sm text-slate-400">Tiada sekolah.</li>';
     }
     
     function populateDataTable(data) {
+        // This function remains the same
         const tableBody = document.getElementById('data-table-body');
         tableBody.innerHTML = '';
-        if(data.length === 0){
-             tableBody.innerHTML = '<tr><td colspan="9" class="text-center text-gray-500 py-4">Tiada data untuk dipaparkan.</td></tr>';
-             return;
-        }
+        if(data.length === 0){ tableBody.innerHTML = '<tr><td colspan="9" class="text-center text-slate-500 py-4">Tiada data.</td></tr>'; return; }
         data.forEach(item => {
             const row = document.createElement('tr');
             const formattedDate = item['Tarikh Terima'] ? new Date(item['Tarikh Terima']).toLocaleDateString('ms-MY') : '-';
-            row.innerHTML = `
-                <td>${item['Kod Sekolah'] || ''}</td>
-                <td>${item.PPD || ''}</td>
-                <td>${item.Sekolah || ''}</td>
-                <td>${item.Agensi || ''}</td>
-                <td>${(parseFloat(item['Peruntukan Diluluskan (RM)']) || 0).toLocaleString('ms-MY')}</td>
-                <td>${item['Status Peruntukan'] || ''}</td>
-                <td>${formattedDate}</td>
-                <td class="whitespace-pre-wrap">${formatAssetsForDisplay(item['Senarai Aset Peralatan'])}</td>
-                <td>${item.Catatan || ''}</td>
-            `;
+            row.innerHTML = `<td>${item['Kod Sekolah']||''}</td><td>${item.PPD||''}</td><td>${item.Sekolah||''}</td><td>${item.Agensi||''}</td><td>${(parseFloat(item['Peruntukan Diluluskan (RM)'])||0).toLocaleString('ms-MY')}</td><td>${item['Status Peruntukan']||''}</td><td>${formattedDate}</td><td class="whitespace-pre-wrap">${formatAssetsForDisplay(item['Senarai Aset Peralatan'])}</td><td>${item.Catatan||''}</td>`;
             tableBody.appendChild(row);
         });
     }
 
     function updatePPDChart(data) {
+        // This function remains the same
         const ctx = document.getElementById('allocation-by-ppd-chart').getContext('2d');
         const dataByPPD = data.reduce((acc, item) => {
             const ppd = item['PPD'];
@@ -952,14 +814,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const labels = Object.keys(dataByPPD).sort();
         const values = labels.map(ppd => dataByPPD[ppd]);
         if (charts.ppd) charts.ppd.destroy();
-        charts.ppd = new Chart(ctx, {
-            type: 'bar',
-            data: { labels, datasets: [ { label: 'Jumlah Peruntukan (RM)', data: values, backgroundColor: 'rgba(54, 162, 235, 0.6)' } ] },
-            options: { responsive: true, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
-        });
+        charts.ppd = new Chart(ctx, { type: 'bar', data: { labels, datasets: [ { label: 'Jumlah Peruntukan (RM)', data: values, backgroundColor: 'rgba(59, 130, 246, 0.7)' } ] }, options: { responsive: true, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } } });
     }
 
     function updateAssetBreakdownChart(data) {
+        // This function remains the same
         const ctx = document.getElementById('asset-breakdown-chart').getContext('2d');
         const assetTotals = {};
         data.forEach(row => {
@@ -969,28 +828,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     assets.forEach(asset => {
                         const itemName = asset.item.trim();
                         const quantity = parseInt(asset.kuantiti, 10);
-                        if(itemName && !isNaN(quantity)) {
-                           assetTotals[itemName] = (assetTotals[itemName] || 0) + quantity;
-                        }
+                        if(itemName && !isNaN(quantity)) { assetTotals[itemName] = (assetTotals[itemName] || 0) + quantity; }
                     });
                 }
-            } catch(e) { /* Abaikan jika JSON tidak sah */ }
+            } catch(e) {}
         });
         const labels = Object.keys(assetTotals).sort();
         const values = labels.map(label => assetTotals[label]);
         if (charts.asset) charts.asset.destroy();
-        charts.asset = new Chart(ctx, {
-            type: 'bar',
-            data: { labels, datasets: [{ label: 'Jumlah Kuantiti', data: values, backgroundColor: 'rgba(75, 192, 192, 0.6)', borderColor: 'rgba(75, 192, 192, 1)', borderWidth: 1 }] },
-            options: { indexAxis: 'y', responsive: true, scales: { x: { beginAtZero: true } }, plugins: { legend: { display: false } } }
-        });
+        charts.asset = new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ label: 'Jumlah Kuantiti', data: values, backgroundColor: 'rgba(22, 163, 74, 0.7)' }] }, options: { indexAxis: 'y', responsive: true, scales: { x: { beginAtZero: true } }, plugins: { legend: { display: false } } } });
     }
 
     // Initialize
     setActivePage('allocation');
     createAssetRow();
+    populatePPDDropdown(ppdSelect);
+    sekolahSelect.innerHTML = '<option value="" disabled selected>-- Sila Pilih PPD Dahulu --</option>';
+
 });
 </script>
 
 </body>
 </html>
+
