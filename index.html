@@ -115,7 +115,7 @@
                                 </div>
                                 <div class="md:col-span-2">
                                     <label for="agensi" class="block text-sm font-medium text-gray-700 mb-1">Agensi</label>
-                                    <input type="text" id="agensi" name="Agensi" class="w-full p-3 bg-gray-200 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Akan diisi secara automatik" required readonly>
+                                    <input type="text" id="agensi" name="Agensi" class="w-full p-3 bg-gray-200 border border-gray-300 rounded-lg cursor-not-allowed" placeholder="Akan diisi secara automatik" required readonly>
                                 </div>
                                 <div class="md:col-span-1">
                                     <label for="peruntukan" class="block text-sm font-medium text-gray-700 mb-1">Peruntukan Diluluskan (RM)</label>
@@ -344,7 +344,7 @@
             ["21","PAHANG","PPD KUANTAN","CBA4067","SEKOLAH KEBANGSAAN SUNGAI KARANG","RENDAH","SK","KHAZANAH NASIONAL BERHAD","SWASTA","YA","Taklimat Penyelarasan oleh Khazanah pada 28 Ogos 2025",""],
             ["22","PAHANG","PPD KUANTAN","CBA4128","SEKOLAH KEBANGSAAN SUNGAI ISAP MURNI","RENDAH","SK","PETRONAS","SWASTA","TIDAK","",""],
             ["23","PAHANG","PPD KUANTAN","CBA4080","SEKOLAH KEBANGSAAN WIRA","RENDAH","SK","BANK ISLAM","KERAJAAN","YA","Sekolah sudah berhubung dengan pegawai Bank Islam.",""],
-            ["24","PAhang","PPD KUANTAN","CEA4068","SEKOLAH MENENGAH KEBANGSAAN ABDUL RAHMAN TALIB","MENENGAH","SMK","CIMB","SWASTA","YA","Taklimat Penyelarasan oleh CIMB pada 28 Ogos 2025",""],
+            ["24","PAHANG","PPD KUANTAN","CEA4068","SEKOLAH MENENGAH KEBANGSAAN ABDUL RAHMAN TALIB","MENENGAH","SMK","CIMB","SWASTA","YA","Taklimat Penyelarasan oleh CIMB pada 28 Ogos 2025",""],
             ["25","PAHANG","PPD KUANTAN","CEA4076","SEKOLAH MENENGAH KEBANGSAAN PAYA BESAR","MENENGAH","SMK","PERMODALAN NASIONAL BERHAD","SWASTA","YA","Khidmat Bantu dari PNB pada 24 Julai 2025",""],
             ["26","PAHANG","PPD KUANTAN","CEA4092","SEKOLAH MENENGAH KEBANGSAAN PELABUHAN","MENENGAH","SMK","DRB-HICOM","SWASTA","YA","Surat dari DRB-HICOM pada 18 September 2025.",""],
             ["27","PAHANG","PPD KUANTAN","CEA4085","SEKOLAH MENENGAH KEBANGSAAN TANJUNG LUMPUR","MENENGAH","SMK","MAYBANK","SWASTA","YA","Sesi tuisyen akan bermula September 2025",""],
@@ -549,12 +549,13 @@
             }
             
             function populateSekolahOptions() {
-                const selectedPPD = ppdInput.value.replace('PPD ', '');
+                const selectedPPD = ppdInput.value;
                 sekolahInput.innerHTML = '<option value="" disabled selected>-- Sila Pilih Sekolah --</option>';
-                agensiInput.value = ''; // Reset agensi field
+                agensiInput.value = '';
 
-                if (ppdSekolahMap[selectedPPD]) {
-                    ppdSekolahMap[selectedPPD].sort().forEach(namaSekolah => {
+                const ppdKey = selectedPPD.replace('PPD ', '');
+                if (ppdSekolahMap[ppdKey]) {
+                    ppdSekolahMap[ppdKey].sort().forEach(namaSekolah => {
                         const option = document.createElement('option');
                         option.value = namaSekolah;
                         option.textContent = namaSekolah;
@@ -621,14 +622,20 @@
 
                 const formData = new FormData(dataForm);
                 
-                // Combine asset data into single strings
-                const asetJenis = Array.from(dataForm.querySelectorAll('input[name="AsetJenis"]')).map(input => input.value).join('\n');
-                const asetKuantiti = Array.from(dataForm.querySelectorAll('input[name="AsetKuantiti"]')).map(input => input.value).join('\n');
+                // DIBAIKI: Kumpul data aset dalam format JSON
+                const asetJenisInputs = Array.from(dataForm.querySelectorAll('input[name="AsetJenis"]'));
+                const asetKuantitiInputs = Array.from(dataForm.querySelectorAll('input[name="AsetKuantiti"]'));
+                const assets = [];
+                for (let i = 0; i < asetJenisInputs.length; i++) {
+                    const type = asetJenisInputs[i].value;
+                    const qty = asetKuantitiInputs[i].value;
+                    if (type.trim() !== '') {
+                        assets.push({ type: type, qty: qty });
+                    }
+                }
                 
-                // This will be sent as 'action' in doPost
                 formData.append('action', 'submitReport');
-                formData.append('AsetJenis', asetJenis);
-                formData.append('AsetKuantiti', asetKuantiti);
+                formData.append('assetsJSON', JSON.stringify(assets));
 
                 try {
                     const response = await fetch(SCRIPT_URL, {
@@ -641,16 +648,12 @@
                         messageDiv.textContent = result.message || 'Laporan berjaya dihantar!';
                         messageDiv.className = 'p-4 rounded-md bg-green-100 text-green-700';
                         dataForm.reset();
-                        // Reset asset table to one empty row
                         asetTableBody.innerHTML = '';
                         asetCount = 0;
                         addAsetRow();
-                        // Reset sekolah dropdown and agensi field
                         sekolahInput.innerHTML = '<option value="" disabled selected>-- Sila Pilih PPD Dahulu --</option>';
                         sekolahInput.disabled = true;
                         agensiInput.value = '';
-
-
                     } else {
                         throw new Error(result.message || 'Berlaku ralat semasa menghantar data.');
                     }
@@ -690,7 +693,6 @@
                 }
                 data.forEach(row => {
                     const tr = document.createElement('tr');
-                    // Store the original Bil number in a data attribute
                     tr.dataset.bil = row[0];
                     tr.innerHTML = `
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800 bil-cell">${row[0]}</td>
@@ -729,7 +731,7 @@
                 const dataToUpdate = [];
 
                 tableRows.forEach(row => {
-                    const bil = row.dataset.bil; // Get Bil from data attribute
+                    const bil = row.dataset.bil;
                     if (bil) {
                         const dihubungi = row.querySelector('[data-field="dihubungi"]').value;
                         const maklumat = row.querySelector('[data-field="maklumat"]').value;
@@ -752,7 +754,6 @@
                     if (result.result === 'success') {
                         samListMessage.textContent = result.message || 'Perubahan berjaya disimpan!';
                         samListMessage.className = 'p-4 rounded-md bg-green-100 text-green-700';
-                        // Update local data if needed, or simply show success
                     } else {
                         throw new Error(result.message || 'Berlaku ralat semasa menyimpan data.');
                     }
@@ -766,7 +767,6 @@
                     spinner.classList.add('hidden');
                 }
             }
-
 
             function applyFilters() {
                 const ppdValue = ppdFilterSam.value || ppdFilterAnalysis.value;
@@ -783,12 +783,10 @@
             }
             
             function updateDashboard(data) {
-                // Update cards
                 document.getElementById('total-sekolah-card').textContent = data.length;
                 const totalDihubungi = data.filter(row => row[9] === 'YA').length;
                 document.getElementById('total-dihubungi-card').textContent = `${totalDihubungi} / ${data.length}`;
                 
-                // --- Agency Type Chart ---
                 const agencyCounts = data.reduce((acc, row) => {
                     const type = row[8] || 'Tidak Diketahui';
                     acc[type] = (acc[type] || 0) + 1;
@@ -814,13 +812,10 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        plugins: {
-                            legend: { position: 'bottom' }
-                        }
+                        plugins: { legend: { position: 'bottom' } }
                     }
                 });
 
-                // --- PPD Distribution Chart ---
                  const ppdCounts = data.reduce((acc, row) => {
                     const ppd = row[2].replace('PPD ', '') || 'Tidak Diketahui';
                     acc[ppd] = (acc[ppd] || 0) + 1;
@@ -847,19 +842,12 @@
                         indexAxis: 'y',
                         responsive: true,
                         maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false }
-                        },
-                        scales: {
-                            x: {
-                                beginAtZero: true
-                            }
-                        }
+                        plugins: { legend: { display: false } },
+                        scales: { x: { beginAtZero: true } }
                     }
                 });
             }
             
-            // Check login state on page load
             if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
                 showAdminView();
             }
