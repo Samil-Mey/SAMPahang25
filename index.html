@@ -252,7 +252,7 @@
             </div>
             
             <footer class="text-center py-4 mt-auto">
-                <p class="text-sm text-slate-500">Sektor Pengurusan Sekolah @ 2025</p>
+                <p class="text-sm text-slate-500">Sektor Pengurusan Sekolah © 2025</p>
                 <p class="text-sm text-slate-500">Jabatan Pendidikan Negeri Pahang</p>
             </footer>
         </main>
@@ -692,8 +692,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- Analisis Data ---
+    function formatAssetsForDisplay(assetString) {
+        if (!assetString) return '';
+        try {
+            if (assetString.trim().startsWith('[')) {
+                const assets = JSON.parse(assetString);
+                if (Array.isArray(assets) && assets.length > 0) {
+                    return assets.map(a => `${a.kuantiti}x ${a.item}`).join('\n');
+                }
+                return '-';
+            }
+            return assetString;
+        } catch (e) { return assetString; }
+    }
+
     async function loadDashboardData() {
-        // This function remains the same
         const loader = document.getElementById('dashboard-loader');
         const content = document.getElementById('dashboard-content');
         loader.classList.remove('hidden');
@@ -713,7 +727,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function populateFilters() {
-        // This function remains the same
         const ppds = Object.keys(schoolData);
         filterPPD.innerHTML = '<option value="all">Semua PPD</option>';
         ppds.forEach(ppd => {
@@ -724,7 +737,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     filterPPD.addEventListener('change', () => {
-        // This function remains the same
         const selectedPPD = filterPPD.value;
         filterSekolah.innerHTML = '<option value="all">Semua Sekolah</option>';
         if (selectedPPD === 'all') {
@@ -742,7 +754,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     filterSekolah.addEventListener('change', applyFiltersAndRedraw);
     resetFiltersBtn.addEventListener('click', () => {
-        // This function remains the same
         filterPPD.value = 'all';
         filterSekolah.innerHTML = '<option value="all">Semua Sekolah</option>';
         filterSekolah.disabled = true;
@@ -750,7 +761,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     function applyFiltersAndRedraw() {
-        // This function remains the same
         let filteredData = [...samData];
         const selectedPPD = filterPPD.value;
         const selectedSekolah = filterSekolah.value;
@@ -761,7 +771,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateDashboard(data) {
-        // This function remains the same
         const totalApproved = data.reduce((sum, item) => sum + (parseFloat(item['Peruntukan Diluluskan (RM)']) || 0), 0);
         const allocationsReceived = data.filter(item => item['Status Peruntukan'] === 'Telah Terima').length;
         const percentComplete = data.length > 0 ? (allocationsReceived / data.length) * 100 : 0;
@@ -774,7 +783,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function populateSchoolStatusLists(data) {
-        // This function remains the same
         const listReceived = document.getElementById('list-received');
         const listNotReceived = document.getElementById('list-not-received');
         listReceived.innerHTML = ''; listNotReceived.innerHTML = '';
@@ -790,7 +798,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function populateDataTable(data) {
-        // This function remains the same
         const tableBody = document.getElementById('data-table-body');
         tableBody.innerHTML = '';
         if(data.length === 0){ tableBody.innerHTML = '<tr><td colspan="9" class="text-center text-slate-500 py-4">Tiada data.</td></tr>'; return; }
@@ -803,7 +810,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updatePPDChart(data) {
-        // This function remains the same
         const ctx = document.getElementById('allocation-by-ppd-chart').getContext('2d');
         const dataByPPD = data.reduce((acc, item) => {
             const ppd = item['PPD'];
@@ -818,7 +824,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateAssetBreakdownChart(data) {
-        // This function remains the same
         const ctx = document.getElementById('asset-breakdown-chart').getContext('2d');
         const assetTotals = {};
         data.forEach(row => {
