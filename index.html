@@ -599,13 +599,31 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 const actionText = formActionInput.value === 'update' ? 'dikemaskini' : 'dihantar';
                 if(data.result === 'success') {
-                    formMessage.textContent = `Data laporan berjaya ${actionText}.`;
-                    formMessage.className = 'text-green-600 mt-4 text-center';
-                    if(formActionInput.value === 'create') {
-                       sekolahSelect.value = '';
-                       clearReportDetails();
-                    }
-                } else { throw new Error(data.message || 'Unknown error'); }
+                    formMessage.innerHTML = `<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md" role="alert">
+                                                <p class="font-bold">Berjaya!</p>
+                                                <p>Laporan anda telah berjaya ${actionText}. Borang akan ditetapkan semula dalam 3 saat.</p>
+                                             </div>`;
+                    
+                    setTimeout(() => {
+                        allocationForm.reset();
+                        sekolahSelect.innerHTML = '<option value="" disabled selected>-- Sila Pilih PPD Dahulu --</option>';
+                        sekolahSelect.disabled = true;
+                        agensiInput.value = '';
+                        kodSekolahInput.value = '';
+                        assetListContainer.innerHTML = '';
+                        assetCounter = 0;
+                        createAssetRow();
+                        tarikhContainer.classList.add('hidden');
+                        formMessage.innerHTML = '';
+                        
+                        submitBtn.textContent = 'Hantar Laporan';
+                        submitBtn.className = 'w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500';
+                        formActionInput.value = 'create';
+                    }, 3000);
+
+                } else { 
+                    throw new Error(data.message || 'Ralat tidak diketahui'); 
+                }
             })
             .catch(error => {
                 formMessage.textContent = `Ralat: ${error.message}`;
