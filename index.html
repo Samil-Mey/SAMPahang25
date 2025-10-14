@@ -234,9 +234,12 @@
                          </div>
                          <div id="dashboard-content" class="hidden">
                              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                                <div class="bg-blue-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Peruntukan Diluluskan</h3><p id="total-approved" class="text-3xl font-bold text-blue-800 mt-2">RM 0.00</p></div>
+                                <div class="bg-blue-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Diluluskan</h3><p id="total-approved" class="text-3xl font-bold text-blue-800 mt-2">RM 0.00</p></div>
+                                <div class="bg-orange-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Dibelanjakan</h3><p id="total-spent" class="text-3xl font-bold text-orange-800 mt-2">RM 0.00</p></div>
+                                <div class="bg-red-100 p-6 rounded-lg"><h3 class="text-slate-600">Baki Perbelanjaan</h3><p id="total-balance" class="text-3xl font-bold text-red-800 mt-2">RM 0.00</p></div>
                                 <div class="bg-green-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Laporan Diterima</h3><p id="total-allocations" class="text-3xl font-bold text-green-800 mt-2">0</p></div>
                                 <div class="bg-purple-100 p-6 rounded-lg"><h3 class="text-slate-600">Peratusan Telah Terima</h3><p id="percent-complete" class="text-3xl font-bold text-purple-800 mt-2">0%</p></div>
+                                <div class="bg-teal-100 p-6 rounded-lg"><h3 class="text-slate-600">Peratus Perbelanjaan</h3><p id="percent-spent" class="text-3xl font-bold text-teal-800 mt-2">0%</p></div>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
                                 <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-hourglass-half text-yellow-500 mr-3"></i>Sekolah Belum Terima</h3><ul id="list-not-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
@@ -833,11 +836,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateDashboard(data) {
         const totalApproved = data.reduce((sum, item) => sum + (parseFloat(item['Peruntukan Diluluskan (RM)']) || 0), 0);
+        const totalSpent = data.reduce((sum, item) => sum + (parseFloat(item['Peruntukan Dibelanjakan (RM)']) || 0), 0);
+        const totalBalance = totalApproved - totalSpent;
+        const percentSpent = totalApproved > 0 ? (totalSpent / totalApproved) * 100 : 0;
+        
         const allocationsReceived = data.filter(item => item['Status Peruntukan'] === 'Telah Terima').length;
         const percentComplete = data.length > 0 ? (allocationsReceived / data.length) * 100 : 0;
+        
         document.getElementById('total-approved').textContent = `RM ${totalApproved.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        document.getElementById('total-spent').textContent = `RM ${totalSpent.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        document.getElementById('total-balance').textContent = `RM ${totalBalance.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         document.getElementById('total-allocations').textContent = data.length;
         document.getElementById('percent-complete').textContent = `${percentComplete.toFixed(1)}%`;
+        document.getElementById('percent-spent').textContent = `${percentSpent.toFixed(1)}%`;
+        
         populateSchoolStatusLists(data);
         updatePPDChart(data);
         updateAssetBreakdownChart(data);
