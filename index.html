@@ -80,7 +80,7 @@
         <!-- Sidebar Navigation -->
         <aside class="w-64 sidebar p-4 flex flex-col flex-shrink-0">
             <div class="flex items-center justify-center py-4 mb-6">
-                <img src="imej1.png" alt="Logo JPN" class="h-40 w-auto">
+                <img src="imej1.png" alt="Logo JPN" class="h-20 w-auto">
             </div>
             <nav class="space-y-2">
                 <a href="#" id="nav-allocation" class="sidebar-link active"><i class="fas fa-file-alt fa-fw mr-3 w-5 text-center"></i>Borang Laporan</a>
@@ -94,47 +94,61 @@
             <div class="p-8 flex-grow">
                 <!-- PAGE: Borang Peruntukan -->
                 <div id="page-allocation" class="page-content">
-                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-2/3 h-auto max-h-40 rounded-lg mb-8 shadow-md mx-auto block">
+                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full h-auto rounded-lg mb-8 shadow-md">
                     <div class="content-container max-w-4xl mx-auto p-8">
                         <h2 class="text-2xl font-bold mb-1 text-slate-800">Laporan Program Sekolah Angkat Madani (SAM)</h2>
-                        <p class="mb-6 text-slate-600">Sila isikan maklumat peruntukan di bawah.</p>
+                        <p class="mb-6 text-slate-600">Sila isikan maklumat peruntukan di bawah. Medan bertanda (*) adalah wajib.</p>
                         <form id="allocation-form" class="space-y-6">
-                            <!-- Form content remains the same -->
                             <input type="hidden" id="kod-sekolah" name="Kod Sekolah">
                             <input type="hidden" id="form-action" name="action" value="create">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label for="ppd" class="block text-sm font-medium text-slate-700">PPD</label>
+                                    <label for="ppd" class="block text-sm font-medium text-slate-700">PPD (*)</label>
                                     <select id="ppd" name="PPD" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
                                 </div>
                                 <div>
-                                    <label for="sekolah" class="block text-sm font-medium text-slate-700">Sekolah</label>
+                                    <label for="sekolah" class="block text-sm font-medium text-slate-700">Sekolah (*)</label>
                                     <select id="sekolah" name="Sekolah" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled></select>
                                 </div>
                             </div>
                             <div>
-                               <label for="agensi" class="block text-sm font-medium text-slate-700">Agensi</label>
+                               <label for="agensi" class="block text-sm font-medium text-slate-700">Agensi (*)</label>
                                <input type="text" id="agensi" name="Agensi" required class="mt-1 block w-full px-3 py-2 bg-slate-100 border border-slate-300 rounded-md shadow-sm" placeholder="Akan diisi secara automatik" readonly>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label for="peruntukan-diluluskan" class="block text-sm font-medium text-slate-700">Peruntukan Diluluskan (RM)</label>
+                                    <label for="peruntukan-diluluskan" class="block text-sm font-medium text-slate-700">Peruntukan Diluluskan (RM) (*)</label>
                                     <input type="text" id="peruntukan-diluluskan" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Cth: 100,000">
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700">Status Peruntukan</label>
-                                    <div class="mt-2 flex items-center space-x-6">
-                                        <label class="flex items-center"><input type="radio" name="Status Peruntukan" value="Belum Terima" checked class="h-4 w-4 text-blue-600 border-slate-300 focus:ring-blue-500"> <span class="ml-2 text-sm text-slate-800">Belum Terima</span></label>
-                                        <label class="flex items-center"><input type="radio" name="Status Peruntukan" value="Telah Terima" class="h-4 w-4 text-blue-600 border-slate-300 focus:ring-blue-500"> <span class="ml-2 text-sm text-slate-800">Telah Terima</span></label>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700">Status Peruntukan</label>
+                                <div class="mt-2 flex items-center space-x-6">
+                                    <label class="flex items-center"><input type="radio" name="Status Peruntukan" value="Belum Terima" checked class="h-4 w-4 text-blue-600 border-slate-300 focus:ring-blue-500"> <span class="ml-2 text-sm text-slate-800">Belum Terima</span></label>
+                                    <label class="flex items-center"><input type="radio" name="Status Peruntukan" value="Telah Terima" class="h-4 w-4 text-blue-600 border-slate-300 focus:ring-blue-500"> <span class="ml-2 text-sm text-slate-800">Telah Terima</span></label>
+                                </div>
+                            </div>
+
+                            <!-- Container for fields shown only when "Telah Terima" is selected -->
+                            <div id="received-details-container" class="hidden space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                                    <div>
+                                        <label for="peruntukan-dibelanjakan" class="block text-sm font-medium text-slate-700">Peruntukan Dibelanjakan (RM)</label>
+                                        <input type="text" id="peruntukan-dibelanjakan" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Cth: 75,000">
+                                    </div>
+                                    <div>
+                                        <label for="baki-peruntukan" class="block text-sm font-medium text-slate-700">Baki Peruntukan (RM)</label>
+                                        <input type="text" id="baki-peruntukan" class="mt-1 block w-full px-3 py-2 bg-slate-100 border border-slate-300 rounded-md shadow-sm" readonly>
                                     </div>
                                 </div>
-                                <div id="tarikh-terima-container" class="hidden">
+                                <div>
                                     <label for="tarikh-terima" class="block text-sm font-medium text-slate-700">Tarikh Terima</label>
                                     <input type="date" id="tarikh-terima" name="Tarikh Terima" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                                 </div>
                             </div>
+
+
                             <div>
                                 <label class="block text-sm font-medium text-slate-700">Senarai Aset / Peralatan</label>
                                 <div id="asset-list" class="mt-2 space-y-3"></div>
@@ -154,7 +168,7 @@
                 
                 <!-- PAGE: Senarai Semak -->
                 <div id="page-checklist" class="page-content hidden">
-                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-2/3 h-auto max-h-40 rounded-lg mb-8 shadow-md mx-auto block">
+                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full h-auto rounded-lg mb-8 shadow-md">
                      <div class="content-container !max-w-7xl mx-auto p-8">
                          <h2 class="text-3xl font-bold text-slate-800 mb-6">Senarai Semak Penghantaran Laporan</h2>
                          <div id="checklist-loader" class="hidden"><div class="loader"></div></div>
@@ -189,7 +203,7 @@
                 <div id="page-password" class="page-content hidden h-full flex items-center justify-center">
                      <div class="content-container max-w-sm mx-auto p-8">
                          <h2 class="text-2xl font-bold mb-4 text-slate-800 text-center">Akses Terhad</h2>
-                         <p class="text-center text-slate-600 mb-6">Sila masukkan kata laluan untuk akses halaman ini.</p>
+                         <p class="text-center text-slate-600 mb-6">Sila masukkan kata laluan untuk melihat halaman analisis.</p>
                          <form id="password-form">
                              <label for="password" class="block text-sm font-medium text-slate-700">Kata Laluan</label>
                              <input type="password" id="password" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
@@ -201,7 +215,7 @@
 
                 <!-- PAGE: Analisis Data -->
                 <div id="page-analysis" class="page-content hidden">
-                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-2/3 h-auto max-h-40 rounded-lg mb-8 shadow-md mx-auto block">
+                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full h-auto rounded-lg mb-8 shadow-md">
                     <div class="content-container !max-w-7xl mx-auto p-8">
                          <h2 class="text-3xl font-bold text-slate-800 mb-6">Papan Pemuka Analisis SAM</h2>
                          <div id="dashboard-loader" class="hidden"><div class="loader"></div></div>
@@ -219,7 +233,6 @@
                              </div>
                          </div>
                          <div id="dashboard-content" class="hidden">
-                            <!-- Dashboard content remains the same -->
                              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                                 <div class="bg-blue-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Peruntukan Diluluskan</h3><p id="total-approved" class="text-3xl font-bold text-blue-800 mt-2">RM 0.00</p></div>
                                 <div class="bg-green-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Laporan Diterima</h3><p id="total-allocations" class="text-3xl font-bold text-green-800 mt-2">0</p></div>
@@ -239,7 +252,17 @@
                                      <table class="data-table">
                                          <thead>
                                              <tr>
-                                                 <th>Kod Sekolah</th><th>PPD</th><th>Sekolah</th><th>Agensi</th><th>Peruntukan (RM)</th><th>Status</th><th>Tarikh Terima</th><th>Aset/Peralatan</th><th>Catatan</th>
+                                                 <th>Kod Sekolah</th>
+                                                 <th>PPD</th>
+                                                 <th>Sekolah</th>
+                                                 <th>Agensi</th>
+                                                 <th>Peruntukan Diluluskan (RM)</th>
+                                                 <th>Peruntukan Dibelanjakan (RM)</th>
+                                                 <th>Baki Peruntukan (RM)</th>
+                                                 <th>Status</th>
+                                                 <th>Tarikh Terima</th>
+                                                 <th>Aset/Peralatan</th>
+                                                 <th>Catatan</th>
                                              </tr>
                                          </thead>
                                          <tbody id="data-table-body"></tbody>
@@ -279,90 +302,95 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // --- Pangkalan Data Sekolah SAM (DIKEMASKINI MENGIKUT PDF) ---
     const schoolData = {
-        'BENTONG': [
+        'Bentong': [
             { name: 'SMK KARAK', kod: 'CEE0016', agensi: 'TENAGA NASIONAL BERHAD' },
             { name: 'SMK KHAI MUN', kod: 'CEB0021', agensi: 'AXIATA FOUNDATION' },
             { name: 'SK BUKIT PLATU', kod: 'CBA0019', agensi: 'AXIATA FOUNDATION' },
             { name: 'SMK SULAIMAN', kod: 'CEE0018', agensi: 'YAYASAN PETRONAS' },
             { name: 'SMK TELEMONG', kod: 'CEB0017', agensi: 'BURSA MALAYSIA BERHAD' },
-            { name: 'SMK (LKTP) KG SERTIK', kod: 'CEA0015', agensi: 'GENTING MALAYSIA BHD' },
-            { name: 'SK (FELDA) SG KEMAHAL', kod: 'CBA0021', agensi: 'GENTING MALAYSIA BHD' },
-            { name: 'SK SUNGAI DUA', kod: 'CBA0006', agensi: 'MYKASIH FOUNDATION' },
-            { name: 'SK LEBU', kod: 'CBA0002', agensi: 'JABATAN PERDANA MENTERI' }
+            { name: 'SMK KETARI', kod: 'CEE0017', agensi: 'MAYBANK' }
         ],
-        'CAMERON HIGHLANDS': [
-            { name: 'SK LEMOI (JHEOA)', kod: 'CBA1003', agensi: 'SIME DARBY BERHAD' }
+        'Bera': [
+            { name: 'SMK SERI BERA', kod: 'CEA0053', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK MENGKARAK', kod: 'CEA0045', agensi: 'PERMODALAN NASIONAL BERHAD' },
+            { name: 'SMK TRIANG 3', kod: 'CEA0060', agensi: 'YAYASAN PETRONAS' }
         ],
-        'JERANTUT': [
-            { name: 'SK KG PAGI', kod: 'CBA2023', agensi: 'YAYASAN HASANAH' },
-            { name: 'SK MERTING', kod: 'CBA2021', agensi: 'YAYASAN HASANAH' },
-            { name: 'SK KUALA SAT', kod: 'CBA2024', agensi: 'KEMENTERIAN SUMBER ASLI DAN KELESTARIAN ALAM' },
-            { name: 'SK TANAH ROM', kod: 'CBA2006', agensi: 'JABATAN PERDANA MENTERI' },
-            { name: 'SMK KUALA TEMBELING', kod: 'CEA2030', agensi: 'KEMENTERIAN PERPADUAN NEGARA' },
-            { name: 'SK KUALA TAHAN', kod: 'CBA2022', agensi: 'MYKASIH FOUNDATION' },
-            { name: 'SK PASIR DURIAN', kod: 'CBA2019', agensi: 'JABATAN PERDANA MENTERI' }
+        'Cameron Highlands': [
+            { name: 'SMK SULTAN AHMAD SHAH', kod: 'CEE1036', agensi: 'YAYASAN PETRONAS' }
         ],
-        'KUANTAN': [
-            { name: 'SMK TANJUNG LUMPUR', kod: 'CEA4074', agensi: 'YAYASAN UEM' },
-            { name: 'SK BUNUT RENDANG', kod: 'CBA4106', agensi: 'YAYASAN UEM' },
-            { name: 'SK TOK SERA', kod: 'CBA4092', agensi: 'YAYASAN UEM' },
-            { name: 'SK TERUNTUM', kod: 'CBA4001', agensi: 'YAYASAN UEM' },
-            { name: 'SK PELINDUNG', kod: 'CBA4107', agensi: 'YAYASAN UEM' },
-            { name: 'SMK BUKIT SAGU', kod: 'CEA4097', agensi: 'YAYASAN UEM' },
-            { name: 'SMK TELUK CHEMPEDAK', kod: 'CEA4093', agensi: 'YAYASAN UEM' },
-            { name: 'SK SUNGAI ULAR', kod: 'CBA4005', agensi: 'IJM CORPORATION BERHAD' },
-            { name: 'SK BESERAH', kod: 'CBA4003', agensi: 'KEMENTERIAN PEMBANGUNAN KERAJAAN TEMPATAN' },
-            { name: 'SK CHEROK PALOH', kod: 'CBA4017', agensi: 'KEMENTERIAN PENDIDIKAN TINGGI' },
-            { name: 'SK WIRA', kod: 'CBA4090', agensi: 'KEMENTERIAN SUMBER ASLI DAN KELESTARIAN ALAM' },
-            { name: 'SMK SUNGAI BAGİNG', kod: 'CEA4091', agensi: 'KEMENTERIAN DALAM NEGERI' },
-            { name: 'SK PENGKALAN TENTERA', kod: 'CBB4030', agensi: 'LEMBAGA TABUNG ANGKATAN TENTERA (LTAT)' },
-            { name: 'SK SUNGAI KARANG', kod: 'CBA4004', agensi: 'JABATAN PERDANA MENTERI' }
+        'Jerantut': [
+            { name: 'SK GINTONG', kod: 'CBA2033', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK INDERAPURA', kod: 'CEA2043', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK KOTA GELANGGI 2', kod: 'CEA2041', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SK PULAU TAWAR', kod: 'CBA2015', agensi: 'TENAGA NASIONAL BERHAD' },
+            { name: 'SK TEMPINI', kod: 'CBA2048', agensi: 'YAYASAN TM' },
+            { name: 'SMK JERANTUT', kod: 'CEA2030', agensi: 'TENAGA NASIONAL BERHAD' }
         ],
-        'LIPIS': [
-            { name: 'SMK SETIA WANGSA', kod: 'CEB3038', agensi: 'SD GUTHRIE' },
-            { name: 'SMK AGAMA KUALA LIPIS', kod: 'CRA3001', agensi: 'BANK RAKYAT' },
-            { name: 'SK KUALA KOYAN (JHEOA)', kod: 'CBA3056', agensi: 'MYKASIH FOUNDATION' },
-            { name: 'SK LUBOK KULIT', kod: 'CBA3022', agensi: 'KEMENTERIAN PEMBANGUNAN KERAJAAN TEMPATAN' },
-            { name: 'SK KG KELEDEK', kod: 'CBA3004', agensi: 'JABATAN PERDANA MENTERI' }
+        'Kuantan': [
+            { name: 'SK (FELDA) BUKIT KUANTAN', kod: 'CBA4039', agensi: 'SIME DARBY' },
+            { name: 'SK (FELDA) BUKIT SAGU 1', kod: 'CBA4042', agensi: 'SIME DARBY' },
+            { name: 'SK BALOK', kod: 'CBA4017', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SK CHEROK PALOH', kod: 'CBA4061', agensi: 'UMPSAS' },
+            { name: 'SK FAKEH ABD SAMAD', kod: 'CBA4027', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SK KEMPADANG', kod: 'CBA4051', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SK SUNGAI ISAP MURNI', kod: 'CBA4081', agensi: 'TENAGA NASIONAL BERHAD' },
+            { name: 'SK SUNGAI KARANG', kod: 'CBA4022', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK ABDUL RAHMAN TALIB', kod: 'CEB4048', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK AIR PUTIH', kod: 'CEA4076', agensi: 'TENAGA NASIONAL BERHAD' },
+            { name: 'SMK BUKIT RANGIN', kod: 'CEA4085', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK PAYA BESAR', kod: 'CEA4065', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK PELINDUNG', kod: 'CEA4080', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK SERI PANCHING', kod: 'CEA4088', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK SUNGAI ISAP', kod: 'CEA4083', agensi: 'TENAGA NASIONAL BERHAD' },
+            { name: 'SMK TANAH PUTEH', kod: 'CEB4049', agensi: 'BANK RAKYAT' },
+            { name: 'SMK TENGKU AFZAN', kod: 'CEB4050', agensi: 'YAYASAN PETRONAS' }
         ],
-        'MARAN': [
-            { name: 'SK ULU LUIT', kod: 'CBA9002', agensi: 'TENAGA NASIONAL BERHAD' },
-            { name: 'SMK MARAN 2', kod: 'CEA9164', agensi: 'YAYASAN UEM' },
-            { name: 'SK (FELDA) JENGKA 19', kod: 'CBA9139', agensi: 'JABATAN PERDANA MENTERI' },
-            { name: 'SK SENTOSA', kod: 'CBA9142', agensi: 'MALAYSIA RAIL LINK SDN BHD (MRL)' }
+        'Lipis': [
+            { name: 'SK CLIFFORD', kod: 'CBB3035', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SK KUALA LANAR', kod: 'CBA3021', agensi: 'TENAGA NASIONAL BERHAD' },
+            { name: 'SK WAN IBRAHIM', kod: 'CBA3045', agensi: 'TENAGA NASIONAL BERHAD' },
+            { name: 'SMK CHUNG HWA', kod: 'CEB3041', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK ORANG KAYA HAJI', kod: 'CEA3038', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK PADANG TENGKU', kod: 'CEA3037', agensi: 'YAYASAN PETRONAS' }
         ],
-        'PEKAN': [
-            { name: 'SMK PERAMU JAYA', kod: 'CEA5079', agensi: 'BANK ISLAM' },
-            { name: 'SK TEMAI', kod: 'CBA5029', agensi: 'KEMENTERIAN PERALIHAN TENAGA DAN TRANSFORMASI AIR' },
-            { name: 'SK PERMATANG KELEDANG', kod: 'CBA5023', agensi: 'MYKASIH FOUNDATION' },
-            { name: 'SK TASIK CINI PEKAN (JHEOA)', kod: 'CBA5086', agensi: 'MYKASIH FOUNDATION' },
-            { name: 'SK TANJUNG BATU', kod: 'CBA5013', agensi: 'YAYASAN TM' }
+        'Maran': [
+            { name: 'SMK (FELDA) JENGKA PUSAT', kod: 'CEA5056', agensi: 'SIME DARBY' },
+            { name: 'SK JENGKA PUSAT 2', kod: 'CBA5026', agensi: 'SIME DARBY' },
+            { name: 'SMK JENGKA 2', kod: 'CEA5067', agensi: 'SIME DARBY' },
+            { name: 'SK JENGKA 18', kod: 'CBA5043', agensi: 'SIME DARBY' },
+            { name: 'SMK MARAN', kod: 'CEA5055', agensi: 'TENAGA NASIONAL BERHAD' }
         ],
-        'RAUB': [
-            { name: 'SMK MAHMUD', kod: 'CEB6026', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK DATO SHAHBANDAR HUSSAIN', kod: 'CEB6027', agensi: 'BURSA MALAYSIA BERHAD' },
-            { name: 'SK SATAK', kod: 'CBA6026', agensi: 'MYKASIH FOUNDATION' }
+        'Pekan': [
+            { name: 'KOLEJ VOKASIONAL PEKAN', kod: 'CHA6002', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SK (FELDA) CHINI TIMUR 1', kod: 'CBA6024', agensi: 'SIME DARBY' },
+            { name: 'SK INDERA SHAHBANDAR', kod: 'CBB6056', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SK KUALA PEKAN', kod: 'CBA6007', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SK PEKAN JAYA', kod: 'CBA6039', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SK SERI TERENTANG', kod: 'CBA6032', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK AHMAD', kod: 'CEE6061', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK PERAMU JAYA', kod: 'CEA6019', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK TENGKU ABDULLAH', kod: 'CEA6014', agensi: 'TENAGA NASIONAL BERHAD' }
         ],
-        'ROMPIN': [
-            { name: 'SMK SERI ROMPIN', kod: 'CEA8025', agensi: 'YAYASAN UEM' },
-            { name: 'SMK SUNGAI PUTERI', kod: 'CEA8028', agensi: 'YAYASAN UEM' },
-            { name: 'SMK ROMPIN', kod: 'CEA8017', agensi: 'YAYASAN UEM' },
-            { name: 'SMK PONTIAN JAYA', kod: 'CEA8030', agensi: 'YAYASAN UEM' },
-            { name: 'SMK TANJUNG GEMOK', kod: 'CEA8019', agensi: 'YAYASAN UEM' },
-            { name: 'SMK SELENDANG', kod: 'CEA8029', agensi: 'YAYASAN UEM' },
-            { name: 'SMK TEKEK', kod: 'CEA8022', agensi: 'YAYASAN TM' },
-            { name: 'SK TEKEK', kod: 'CBA8009', agensi: 'YAYASAN TM' },
-            { name: 'SK JUARA', kod: 'CBA8032', agensi: 'YAYASAN TM' },
+        'Raub': [
+            { name: 'SMK (P) METHODIST', kod: 'CEB7054', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SK RAUB JAYA', kod: 'CBA7071', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK DATO SHAHBANDAR HUSSEIN', kod: 'CEA7058', agensi: 'YAYASAN PETRONAS' }
+        ],
+        'Rompin': [
             { name: 'SK MUKUT', kod: 'CBA8031', agensi: 'YAYASAN TM' },
-            { name: 'SMK MUADZAM SHAH', kod: 'CEA8032', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK MUADZAM SHAH', kod: 'CEAB032', agensi: 'YAYASAN PETRONAS' },
             { name: 'SMK PERANTAU DAMAI', kod: 'CEA8021', agensi: 'YAYASAN PETRONAS' },
             { name: 'SK ROMPIN', kod: 'CBA8001', agensi: 'MAYBANK' }
         ],
-        'TEMERLOH': [
-            { name: 'SMK TEMERLOH', kod: 'CEA7063', agensi: 'PERMODALAN NASIONAL BERHAD' },
+        'Temerloh': [
+            { name: 'SMK TEMERLOH', kod: 'CEA7063', agensi: 'PERMODIALAN NASIONAL BERHAD' },
             { name: 'SMK LANCHANG', kod: 'CEA7073', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SJK (TAMIL) LDG MENTAKAB', kod: 'CBD7091', agensi: 'SD GUTHRIE' },
-            { name: 'SMK SEBERANG TEMERLOH', kod: 'CEA7160', agensi: 'TENAGA NASIONAL BERHAD' }
+            { name: 'SMK ABU BAKAR', kod: 'CEE7080', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK DATUK BAHAMAN', kod: 'CEA7072', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SK MENTAKAB (P)', kod: 'CBB7067', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SK SERI BAHAGIA', kod: 'CBA7068', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SK PENDERAS', kod: 'CBO7094', agensi: 'YAYASAN TM' },
+            { name: 'SJKT LADANG MENTAKAB', kod: 'CBD7090', agensi: 'YAYASAN PETRONAS' }
         ]
     };
     
@@ -382,8 +410,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitBtn = document.getElementById('submit-allocation-btn');
     const formMessage = document.getElementById('allocation-form-message');
     const peruntukanInput = document.getElementById('peruntukan-diluluskan');
+    const peruntukanDibelanjakanInput = document.getElementById('peruntukan-dibelanjakan');
+    const bakiPeruntukanInput = document.getElementById('baki-peruntukan');
     const catatanInput = document.getElementById('catatan');
-    const tarikhContainer = document.getElementById('tarikh-terima-container');
+    const receivedDetailsContainer = document.getElementById('received-details-container');
     const tarikhInput = document.getElementById('tarikh-terima');
     const passwordForm = document.getElementById('password-form');
     const passwordError = document.getElementById('password-error');
@@ -482,12 +512,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function clearReportDetails() {
         peruntukanInput.value = '';
+        peruntukanDibelanjakanInput.value = '';
+        bakiPeruntukanInput.value = '';
         catatanInput.value = '';
         agensiInput.value = '';
         kodSekolahInput.value = '';
         const statusRadio = document.querySelector('input[name="Status Peruntukan"][value="Belum Terima"]');
         if (statusRadio) statusRadio.checked = true;
-        tarikhContainer.classList.add('hidden');
+        receivedDetailsContainer.classList.add('hidden');
         tarikhInput.value = '';
         assetListContainer.innerHTML = '';
         assetCounter = 0;
@@ -496,6 +528,13 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtn.textContent = 'Hantar Laporan';
         submitBtn.className = 'w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500';
         formActionInput.value = 'create';
+    }
+
+    function calculateBalance() {
+        const approved = parseFloat(peruntukanInput.value.replace(/,/g, '')) || 0;
+        const spent = parseFloat(peruntukanDibelanjakanInput.value.replace(/,/g, '')) || 0;
+        const balance = approved - spent;
+        bakiPeruntukanInput.value = balance.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
     async function fetchAndPopulateRecord(kodSekolah) {
@@ -512,13 +551,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 formMessage.className = 'text-blue-600 mt-4 text-center';
                 peruntukanInput.value = parseFloat(data['Peruntukan Diluluskan (RM)'] || 0).toLocaleString('ms-MY');
                 catatanInput.value = data['Catatan'];
-                document.querySelector(`input[name="Status Peruntukan"][value="${data['Status Peruntukan']}"]`).checked = true;
-                if (data['Status Peruntukan'] === 'Telah Terima') {
-                    tarikhContainer.classList.remove('hidden');
+                
+                const status = data['Status Peruntukan'];
+                document.querySelector(`input[name="Status Peruntukan"][value="${status}"]`).checked = true;
+
+                if (status === 'Telah Terima') {
+                    receivedDetailsContainer.classList.remove('hidden');
                     if (data['Tarikh Terima']) {
                        tarikhInput.value = new Date(data['Tarikh Terima']).toISOString().split('T')[0];
                     }
+                    peruntukanDibelanjakanInput.value = parseFloat(data['Peruntukan Dibelanjakan (RM)'] || 0).toLocaleString('ms-MY');
+                } else {
+                    receivedDetailsContainer.classList.add('hidden');
+                    peruntukanDibelanjakanInput.value = '';
                 }
+                
+                calculateBalance(); // Calculate balance after populating
+
                 assetListContainer.innerHTML = '';
                 assetCounter = 0;
                 const assets = JSON.parse(data['Senarai Aset Peralatan'] || '[]');
@@ -527,6 +576,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     createAssetRow();
                 }
+
                 formActionInput.value = 'update';
                 submitBtn.textContent = 'Kemaskini Laporan';
                 submitBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
@@ -575,18 +625,25 @@ document.addEventListener('DOMContentLoaded', function() {
     
     document.querySelectorAll('input[name="Status Peruntukan"]').forEach(radio => {
         radio.addEventListener('change', function() {
-            tarikhContainer.classList.toggle('hidden', this.value !== 'Telah Terima');
-            if(this.value !== 'Telah Terima') tarikhInput.value = '';
+            receivedDetailsContainer.classList.toggle('hidden', this.value !== 'Telah Terima');
+            if(this.value !== 'Telah Terima') {
+                tarikhInput.value = '';
+                peruntukanDibelanjakanInput.value = '';
+                calculateBalance();
+            }
         });
     });
 
-    peruntukanInput.addEventListener('input', (e) => {
-        let value = e.target.value.replace(/[^0-9.]/g, '');
-        let parts = value.split('.');
-        let integerPart = parts[0];
-        let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
-        integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        e.target.value = integerPart + decimalPart;
+    [peruntukanInput, peruntukanDibelanjakanInput].forEach(input => {
+        input.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/[^0-9.]/g, '');
+            let parts = value.split('.');
+            let integerPart = parts[0];
+            let decimalPart = parts.length > 1 ? '.' + parts[1].slice(0,2) : '';
+            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            e.target.value = integerPart + decimalPart;
+            calculateBalance();
+        });
     });
 
     allocationForm.addEventListener('submit', function(e) {
@@ -604,8 +661,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const dataObject = {};
         formData.forEach((value, key) => dataObject[key] = value);
         
-        // Unformat the amount before sending
         dataObject['Peruntukan Diluluskan (RM)'] = peruntukanInput.value.replace(/,/g, '');
+        dataObject['Peruntukan Dibelanjakan (RM)'] = peruntukanDibelanjakanInput.value.replace(/,/g, '');
 
         dataObject['Senarai Aset Peralatan'] = JSON.stringify(assets);
         fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(dataObject) })
@@ -619,7 +676,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         sekolahSelect.innerHTML = '<option value="" disabled selected>-- Sila Pilih PPD Dahulu --</option>';
                         sekolahSelect.disabled = true;
                         clearReportDetails();
-                        populatePPDDropdown(ppdSelect); // Repopulate PPD dropdown to reset it
+                        populatePPDDropdown(ppdSelect);
                     }, 3000);
                 } else { throw new Error(data.message || 'Ralat tidak diketahui'); }
             })
@@ -784,7 +841,7 @@ document.addEventListener('DOMContentLoaded', function() {
         populateSchoolStatusLists(data);
         updatePPDChart(data);
         updateAssetBreakdownChart(data);
-        populateDataTable(data); // This was the missing call
+        populateDataTable(data);
     }
 
     function populateSchoolStatusLists(data) {
@@ -805,11 +862,26 @@ document.addEventListener('DOMContentLoaded', function() {
     function populateDataTable(data) {
         const tableBody = document.getElementById('data-table-body');
         tableBody.innerHTML = '';
-        if(data.length === 0){ tableBody.innerHTML = '<tr><td colspan="9" class="text-center text-slate-500 py-4">Tiada data.</td></tr>'; return; }
+        if(data.length === 0){ tableBody.innerHTML = '<tr><td colspan="11" class="text-center text-slate-500 py-4">Tiada data.</td></tr>'; return; }
         data.forEach(item => {
             const row = document.createElement('tr');
             const formattedDate = item['Tarikh Terima'] ? new Date(item['Tarikh Terima']).toLocaleDateString('ms-MY') : '-';
-            row.innerHTML = `<td>${item['Kod Sekolah']||''}</td><td>${item.PPD||''}</td><td>${item.Sekolah||''}</td><td>${item.Agensi||''}</td><td>${(parseFloat(item['Peruntukan Diluluskan (RM)'])||0).toLocaleString('ms-MY')}</td><td>${item['Status Peruntukan']||''}</td><td>${formattedDate}</td><td class="whitespace-pre-wrap">${formatAssetsForDisplay(item['Senarai Aset Peralatan'])}</td><td>${item.Catatan||''}</td>`;
+            const approved = parseFloat(item['Peruntukan Diluluskan (RM)'] || 0);
+            const spent = parseFloat(item['Peruntukan Dibelanjakan (RM)'] || 0);
+            const balance = approved - spent;
+
+            row.innerHTML = `
+                <td>${item['Kod Sekolah']||''}</td>
+                <td>${item.PPD||''}</td>
+                <td>${item.Sekolah||''}</td>
+                <td>${item.Agensi||''}</td>
+                <td>${approved.toLocaleString('ms-MY')}</td>
+                <td>${spent.toLocaleString('ms-MY')}</td>
+                <td>${balance.toLocaleString('ms-MY')}</td>
+                <td>${item['Status Peruntukan']||''}</td>
+                <td>${formattedDate}</td>
+                <td class="whitespace-pre-wrap">${formatAssetsForDisplay(item['Senarai Aset Peralatan'])}</td>
+                <td>${item.Catatan||''}</td>`;
             tableBody.appendChild(row);
         });
     }
