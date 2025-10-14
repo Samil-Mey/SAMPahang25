@@ -237,9 +237,7 @@
                                 <div class="bg-blue-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Diluluskan</h3><p id="total-approved" class="text-3xl font-bold text-blue-800 mt-2">RM 0.00</p></div>
                                 <div class="bg-orange-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Dibelanjakan</h3><p id="total-spent" class="text-3xl font-bold text-orange-800 mt-2">RM 0.00</p></div>
                                 <div class="bg-red-100 p-6 rounded-lg"><h3 class="text-slate-600">Baki Perbelanjaan</h3><p id="total-balance" class="text-3xl font-bold text-red-800 mt-2">RM 0.00</p></div>
-                                <div class="bg-green-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Laporan Diterima</h3><p id="total-allocations" class="text-3xl font-bold text-green-800 mt-2">0</p></div>
-                                <div class="bg-purple-100 p-6 rounded-lg"><h3 class="text-slate-600">Peratusan Telah Terima</h3><p id="percent-complete" class="text-3xl font-bold text-purple-800 mt-2">0%</p></div>
-                                <div class="bg-teal-100 p-6 rounded-lg"><h3 class="text-slate-600">Peratus Perbelanjaan</h3><p id="percent-spent" class="text-3xl font-bold text-teal-800 mt-2">0%</p></div>
+                                <div class="bg-green-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Laporan Diterima</h3><p id="total-allocations" class="text-3xl font-bold text-green-800 mt-2">0</p></div>                                <div class="bg-teal-100 p-6 rounded-lg"><h3 class="text-slate-600">Peratus Perbelanjaan</h3><p id="percent-spent" class="text-3xl font-bold text-teal-800 mt-2">0%</p></div>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
                                 <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-hourglass-half text-yellow-500 mr-3"></i>Sekolah Belum Terima</h3><ul id="list-not-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
@@ -303,97 +301,92 @@ document.addEventListener('DOMContentLoaded', function() {
         password: document.getElementById('page-password'),
     };
     
-    // --- Pangkalan Data Sekolah SAM (DIKEMASKINI MENGIKUT PDF) ---
+   // --- Pangkalan Data Sekolah SAM (DIKEMASKINI MENGIKUT PDF) ---
     const schoolData = {
-        'Bentong': [
+        'BENTONG': [
             { name: 'SMK KARAK', kod: 'CEE0016', agensi: 'TENAGA NASIONAL BERHAD' },
             { name: 'SMK KHAI MUN', kod: 'CEB0021', agensi: 'AXIATA FOUNDATION' },
             { name: 'SK BUKIT PLATU', kod: 'CBA0019', agensi: 'AXIATA FOUNDATION' },
             { name: 'SMK SULAIMAN', kod: 'CEE0018', agensi: 'YAYASAN PETRONAS' },
             { name: 'SMK TELEMONG', kod: 'CEB0017', agensi: 'BURSA MALAYSIA BERHAD' },
-            { name: 'SMK KETARI', kod: 'CEE0017', agensi: 'MAYBANK' }
+            { name: 'SMK (LKTP) KG SERTIK', kod: 'CEA0015', agensi: 'GENTING MALAYSIA BHD' },
+            { name: 'SK (FELDA) SG KEMAHAL', kod: 'CBA0021', agensi: 'GENTING MALAYSIA BHD' },
+            { name: 'SK SUNGAI DUA', kod: 'CBA0006', agensi: 'MYKASIH FOUNDATION' },
+            { name: 'SK LEBU', kod: 'CBA0002', agensi: 'JABATAN PERDANA MENTERI' }
         ],
-        'Bera': [
-            { name: 'SMK SERI BERA', kod: 'CEA0053', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK MENGKARAK', kod: 'CEA0045', agensi: 'PERMODALAN NASIONAL BERHAD' },
-            { name: 'SMK TRIANG 3', kod: 'CEA0060', agensi: 'YAYASAN PETRONAS' }
+        'CAMERON HIGHLANDS': [
+            { name: 'SK LEMOI (JHEOA)', kod: 'CBA1003', agensi: 'SIME DARBY BERHAD' }
         ],
-        'Cameron Highlands': [
-            { name: 'SMK SULTAN AHMAD SHAH', kod: 'CEE1036', agensi: 'YAYASAN PETRONAS' }
+        'JERANTUT': [
+            { name: 'SK KG PAGI', kod: 'CBA2023', agensi: 'YAYASAN HASANAH' },
+            { name: 'SK MERTING', kod: 'CBA2021', agensi: 'YAYASAN HASANAH' },
+            { name: 'SK KUALA SAT', kod: 'CBA2024', agensi: 'KEMENTERIAN SUMBER ASLI DAN KELESTARIAN ALAM' },
+            { name: 'SK TANAH ROM', kod: 'CBA2006', agensi: 'JABATAN PERDANA MENTERI' },
+            { name: 'SMK KUALA TEMBELING', kod: 'CEA2030', agensi: 'KEMENTERIAN PERPADUAN NEGARA' },
+            { name: 'SK KUALA TAHAN', kod: 'CBA2022', agensi: 'MYKASIH FOUNDATION' },
+            { name: 'SK PASIR DURIAN', kod: 'CBA2019', agensi: 'JABATAN PERDANA MENTERI' }
         ],
-        'Jerantut': [
-            { name: 'SK GINTONG', kod: 'CBA2033', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK INDERAPURA', kod: 'CEA2043', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK KOTA GELANGGI 2', kod: 'CEA2041', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK PULAU TAWAR', kod: 'CBA2015', agensi: 'TENAGA NASIONAL BERHAD' },
-            { name: 'SK TEMPINI', kod: 'CBA2048', agensi: 'YAYASAN TM' },
-            { name: 'SMK JERANTUT', kod: 'CEA2030', agensi: 'TENAGA NASIONAL BERHAD' }
+        'KUANTAN': [
+            { name: 'SMK TANJUNG LUMPUR', kod: 'CEA4074', agensi: 'YAYASAN UEM' },
+            { name: 'SK BUNUT RENDANG', kod: 'CBA4106', agensi: 'YAYASAN UEM' },
+            { name: 'SK TOK SERA', kod: 'CBA4092', agensi: 'YAYASAN UEM' },
+            { name: 'SK TERUNTUM', kod: 'CBA4001', agensi: 'YAYASAN UEM' },
+            { name: 'SK PELINDUNG', kod: 'CBA4107', agensi: 'YAYASAN UEM' },
+            { name: 'SMK BUKIT SAGU', kod: 'CEA4097', agensi: 'YAYASAN UEM' },
+            { name: 'SMK TELUK CHEMPEDAK', kod: 'CEA4093', agensi: 'YAYASAN UEM' },
+            { name: 'SK SUNGAI ULAR', kod: 'CBA4005', agensi: 'IJM CORPORATION BERHAD' },
+            { name: 'SK BESERAH', kod: 'CBA4003', agensi: 'KEMENTERIAN PEMBANGUNAN KERAJAAN TEMPATAN' },
+            { name: 'SK CHEROK PALOH', kod: 'CBA4017', agensi: 'KEMENTERIAN PENDIDIKAN TINGGI' },
+            { name: 'SK WIRA', kod: 'CBA4090', agensi: 'KEMENTERIAN SUMBER ASLI DAN KELESTARIAN ALAM' },
+            { name: 'SMK SUNGAI BAGİNG', kod: 'CEA4091', agensi: 'KEMENTERIAN DALAM NEGERI' },
+            { name: 'SK PENGKALAN TENTERA', kod: 'CBB4030', agensi: 'LEMBAGA TABUNG ANGKATAN TENTERA (LTAT)' },
+            { name: 'SK SUNGAI KARANG', kod: 'CBA4004', agensi: 'JABATAN PERDANA MENTERI' }
         ],
-        'Kuantan': [
-            { name: 'SK (FELDA) BUKIT KUANTAN', kod: 'CBA4039', agensi: 'SIME DARBY' },
-            { name: 'SK (FELDA) BUKIT SAGU 1', kod: 'CBA4042', agensi: 'SIME DARBY' },
-            { name: 'SK BALOK', kod: 'CBA4017', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK CHEROK PALOH', kod: 'CBA4061', agensi: 'UMPSAS' },
-            { name: 'SK FAKEH ABD SAMAD', kod: 'CBA4027', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK KEMPADANG', kod: 'CBA4051', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK SUNGAI ISAP MURNI', kod: 'CBA4081', agensi: 'TENAGA NASIONAL BERHAD' },
-            { name: 'SK SUNGAI KARANG', kod: 'CBA4022', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK ABDUL RAHMAN TALIB', kod: 'CEB4048', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK AIR PUTIH', kod: 'CEA4076', agensi: 'TENAGA NASIONAL BERHAD' },
-            { name: 'SMK BUKIT RANGIN', kod: 'CEA4085', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK PAYA BESAR', kod: 'CEA4065', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK PELINDUNG', kod: 'CEA4080', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK SERI PANCHING', kod: 'CEA4088', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK SUNGAI ISAP', kod: 'CEA4083', agensi: 'TENAGA NASIONAL BERHAD' },
-            { name: 'SMK TANAH PUTEH', kod: 'CEB4049', agensi: 'BANK RAKYAT' },
-            { name: 'SMK TENGKU AFZAN', kod: 'CEB4050', agensi: 'YAYASAN PETRONAS' }
+        'LIPIS': [
+            { name: 'SMK SETIA WANGSA', kod: 'CEB3038', agensi: 'SD GUTHRIE' },
+            { name: 'SMK AGAMA KUALA LIPIS', kod: 'CRA3001', agensi: 'BANK RAKYAT' },
+            { name: 'SK KUALA KOYAN (JHEOA)', kod: 'CBA3056', agensi: 'MYKASIH FOUNDATION' },
+            { name: 'SK LUBOK KULIT', kod: 'CBA3022', agensi: 'KEMENTERIAN PEMBANGUNAN KERAJAAN TEMPATAN' },
+            { name: 'SK KG KELEDEK', kod: 'CBA3004', agensi: 'JABATAN PERDANA MENTERI' }
         ],
-        'Lipis': [
-            { name: 'SK CLIFFORD', kod: 'CBB3035', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK KUALA LANAR', kod: 'CBA3021', agensi: 'TENAGA NASIONAL BERHAD' },
-            { name: 'SK WAN IBRAHIM', kod: 'CBA3045', agensi: 'TENAGA NASIONAL BERHAD' },
-            { name: 'SMK CHUNG HWA', kod: 'CEB3041', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK ORANG KAYA HAJI', kod: 'CEA3038', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK PADANG TENGKU', kod: 'CEA3037', agensi: 'YAYASAN PETRONAS' }
+        'MARAN': [
+            { name: 'SK ULU LUIT', kod: 'CBA9002', agensi: 'TENAGA NASIONAL BERHAD' },
+            { name: 'SMK MARAN 2', kod: 'CEA9164', agensi: 'YAYASAN UEM' },
+            { name: 'SK (FELDA) JENGKA 19', kod: 'CBA9139', agensi: 'JABATAN PERDANA MENTERI' },
+            { name: 'SK SENTOSA', kod: 'CBA9142', agensi: 'MALAYSIA RAIL LINK SDN BHD (MRL)' }
         ],
-        'Maran': [
-            { name: 'SMK (FELDA) JENGKA PUSAT', kod: 'CEA5056', agensi: 'SIME DARBY' },
-            { name: 'SK JENGKA PUSAT 2', kod: 'CBA5026', agensi: 'SIME DARBY' },
-            { name: 'SMK JENGKA 2', kod: 'CEA5067', agensi: 'SIME DARBY' },
-            { name: 'SK JENGKA 18', kod: 'CBA5043', agensi: 'SIME DARBY' },
-            { name: 'SMK MARAN', kod: 'CEA5055', agensi: 'TENAGA NASIONAL BERHAD' }
+        'PEKAN': [
+            { name: 'SMK PERAMU JAYA', kod: 'CEA5079', agensi: 'BANK ISLAM' },
+            { name: 'SK TEMAI', kod: 'CBA5029', agensi: 'KEMENTERIAN PERALIHAN TENAGA DAN TRANSFORMASI AIR' },
+            { name: 'SK PERMATANG KELEDANG', kod: 'CBA5023', agensi: 'MYKASIH FOUNDATION' },
+            { name: 'SK TASIK CINI PEKAN (JHEOA)', kod: 'CBA5086', agensi: 'MYKASIH FOUNDATION' },
+            { name: 'SK TANJUNG BATU', kod: 'CBA5013', agensi: 'YAYASAN TM' }
         ],
-        'Pekan': [
-            { name: 'KOLEJ VOKASIONAL PEKAN', kod: 'CHA6002', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK (FELDA) CHINI TIMUR 1', kod: 'CBA6024', agensi: 'SIME DARBY' },
-            { name: 'SK INDERA SHAHBANDAR', kod: 'CBB6056', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK KUALA PEKAN', kod: 'CBA6007', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK PEKAN JAYA', kod: 'CBA6039', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK SERI TERENTANG', kod: 'CBA6032', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK AHMAD', kod: 'CEE6061', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK PERAMU JAYA', kod: 'CEA6019', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK TENGKU ABDULLAH', kod: 'CEA6014', agensi: 'TENAGA NASIONAL BERHAD' }
+        'RAUB': [
+            { name: 'SMK MAHMUD', kod: 'CEB6026', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK DATO SHAHBANDAR HUSSAIN', kod: 'CEB6027', agensi: 'BURSA MALAYSIA BERHAD' },
+            { name: 'SK SATAK', kod: 'CBA6026', agensi: 'MYKASIH FOUNDATION' }
         ],
-        'Raub': [
-            { name: 'SMK (P) METHODIST', kod: 'CEB7054', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK RAUB JAYA', kod: 'CBA7071', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK DATO SHAHBANDAR HUSSEIN', kod: 'CEA7058', agensi: 'YAYASAN PETRONAS' }
-        ],
-        'Rompin': [
+        'ROMPIN': [
+            { name: 'SMK SERI ROMPIN', kod: 'CEA8025', agensi: 'YAYASAN UEM' },
+            { name: 'SMK SUNGAI PUTERI', kod: 'CEA8028', agensi: 'YAYASAN UEM' },
+            { name: 'SMK ROMPIN', kod: 'CEA8017', agensi: 'YAYASAN UEM' },
+            { name: 'SMK PONTIAN JAYA', kod: 'CEA8030', agensi: 'YAYASAN UEM' },
+            { name: 'SMK TANJUNG GEMOK', kod: 'CEA8019', agensi: 'YAYASAN UEM' },
+            { name: 'SMK SELENDANG', kod: 'CEA8029', agensi: 'YAYASAN UEM' },
+            { name: 'SMK TEKEK', kod: 'CEA8022', agensi: 'YAYASAN TM' },
+            { name: 'SK TEKEK', kod: 'CBA8009', agensi: 'YAYASAN TM' },
+            { name: 'SK JUARA', kod: 'CBA8032', agensi: 'YAYASAN TM' },
             { name: 'SK MUKUT', kod: 'CBA8031', agensi: 'YAYASAN TM' },
-            { name: 'SMK MUADZAM SHAH', kod: 'CEAB032', agensi: 'YAYASAN PETRONAS' },
+            { name: 'SMK MUADZAM SHAH', kod: 'CEA8032', agensi: 'YAYASAN PETRONAS' },
             { name: 'SMK PERANTAU DAMAI', kod: 'CEA8021', agensi: 'YAYASAN PETRONAS' },
             { name: 'SK ROMPIN', kod: 'CBA8001', agensi: 'MAYBANK' }
         ],
-        'Temerloh': [
-            { name: 'SMK TEMERLOH', kod: 'CEA7063', agensi: 'PERMODIALAN NASIONAL BERHAD' },
+        'TEMERLOH': [
+            { name: 'SMK TEMERLOH', kod: 'CEA7063', agensi: 'PERMODALAN NASIONAL BERHAD' },
             { name: 'SMK LANCHANG', kod: 'CEA7073', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK ABU BAKAR', kod: 'CEE7080', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK DATUK BAHAMAN', kod: 'CEA7072', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK MENTAKAB (P)', kod: 'CBB7067', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK SERI BAHAGIA', kod: 'CBA7068', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK PENDERAS', kod: 'CBO7094', agensi: 'YAYASAN TM' },
-            { name: 'SJKT LADANG MENTAKAB', kod: 'CBD7090', agensi: 'YAYASAN PETRONAS' }
+            { name: 'SJK (TAMIL) LDG MENTAKAB', kod: 'CBD7091', agensi: 'SD GUTHRIE' },
+            { name: 'SMK SEBERANG TEMERLOH', kod: 'CEA7160', agensi: 'TENAGA NASIONAL BERHAD' }
         ]
     };
     
@@ -841,13 +834,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const percentSpent = totalApproved > 0 ? (totalSpent / totalApproved) * 100 : 0;
         
         const allocationsReceived = data.filter(item => item['Status Peruntukan'] === 'Telah Terima').length;
-        const percentComplete = data.length > 0 ? (allocationsReceived / data.length) * 100 : 0;
         
         document.getElementById('total-approved').textContent = `RM ${totalApproved.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         document.getElementById('total-spent').textContent = `RM ${totalSpent.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         document.getElementById('total-balance').textContent = `RM ${totalBalance.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         document.getElementById('total-allocations').textContent = data.length;
-        document.getElementById('percent-complete').textContent = `${percentComplete.toFixed(1)}%`;
         document.getElementById('percent-spent').textContent = `${percentSpent.toFixed(1)}%`;
         
         populateSchoolStatusLists(data);
