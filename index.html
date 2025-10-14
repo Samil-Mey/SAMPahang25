@@ -76,9 +76,9 @@
 </head>
 <body class="bg-slate-100">
 
-    <div class="flex h-screen">
+    <div class="relative flex min-h-screen">
         <!-- Sidebar Navigation -->
-        <aside class="w-64 sidebar p-4 flex flex-col flex-shrink-0">
+        <aside id="sidebar" class="w-64 sidebar p-4 flex-col flex-shrink-0 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-20">
             <div class="flex items-center justify-center py-4 mb-6">
                 <img src="imej1.png" alt="Logo JPN" class="h-40 w-auto">
             </div>
@@ -91,10 +91,13 @@
 
         <!-- Main Content -->
         <main class="flex-1 flex flex-col overflow-y-auto">
-            <div class="p-8 flex-grow">
+            <button id="menu-btn" class="md:hidden p-4 text-slate-800">
+                <i class="fas fa-bars fa-xl"></i>
+            </button>
+            <div class="p-4 md:p-8 flex-grow">
                 <!-- PAGE: Borang Peruntukan -->
                 <div id="page-allocation" class="page-content">
-                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-2/3 h-auto max-h-48 rounded-lg mb-8 shadow-md mx-auto block">
+                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full md:w-2/3 h-auto max-h-48 rounded-lg mb-8 shadow-md mx-auto block">
                     <div class="content-container max-w-4xl mx-auto p-8">
                         <h2 class="text-2xl font-bold mb-1 text-slate-800">Laporan Program Sekolah Angkat Madani (SAM)</h2>
                         <p class="mb-6 text-slate-600">Sila isikan maklumat peruntukan di bawah.</p>
@@ -168,7 +171,7 @@
                 
                 <!-- PAGE: Senarai Semak -->
                 <div id="page-checklist" class="page-content hidden">
-                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-3/4 h-auto max-h-48 rounded-lg mb-8 shadow-md mx-auto block">
+                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full md:w-2/3 h-auto max-h-48 rounded-lg mb-8 shadow-md mx-auto block">
                      <div class="content-container !max-w-7xl mx-auto p-8">
                          <h2 class="text-3xl font-bold text-slate-800 mb-6">Senarai Semak Penghantaran Laporan</h2>
                          <div id="checklist-loader" class="hidden"><div class="loader"></div></div>
@@ -215,7 +218,7 @@
 
                 <!-- PAGE: Analisis Data -->
                 <div id="page-analysis" class="page-content hidden">
-                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-2/3 h-auto max-h-48 rounded-lg mb-8 shadow-md mx-auto block">
+                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full md:w-2/3 h-auto max-h-48 rounded-lg mb-8 shadow-md mx-auto block">
                     <div class="content-container !max-w-7xl mx-auto p-8">
                          <h2 class="text-3xl font-bold text-slate-800 mb-6">Papan Pemuka Analisis SAM</h2>
                          <div id="dashboard-loader" class="hidden"><div class="loader"></div></div>
@@ -287,6 +290,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- GANTI DENGAN URL GOOGLE APPS SCRIPT ANDA ---
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxpzCJIh288hyO3SOdgNaF8U-o7TNC6xGnZH00w8WSTiZbuqaH03liucHjZt-wr7sSb/exec';
     const ADMIN_PASSWORD = 'P123';
+    // --- Kod untuk Sidebar Mobile ---
+    const menuBtn = document.getElementById('menu-btn');
+    const sidebar = document.getElementById('sidebar');
+
+    menuBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+    });
 
     // All elements references from previous script are maintained
     const navLinks = {
