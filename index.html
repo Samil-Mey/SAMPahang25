@@ -171,36 +171,54 @@
                 
                 <!-- PAGE: Senarai Semak -->
                 <div id="page-checklist" class="page-content hidden">
-                    <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full md:w-2/3 h-auto max-h-48 rounded-lg mb-8 shadow-md mx-auto block">
-                     <div class="content-container !max-w-7xl mx-auto p-8">
-                         <h2 class="text-3xl font-bold text-slate-800 mb-6">Senarai Semak Penghantaran Laporan</h2>
-                         <div id="checklist-loader" class="hidden"><div class="loader"></div></div>
-                         <div class="flex flex-wrap items-center gap-4 mb-6 bg-slate-50 p-4 rounded-lg">
-                             <div>
-                                 <label for="checklist-filter-ppd" class="block text-sm font-medium text-slate-700">Tapis PPD:</label>
-                                 <select id="checklist-filter-ppd" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
-                             </div>
-                             <div class="self-end">
-                                 <button id="checklist-reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Set Semula</button>
-                             </div>
-                         </div>
-                         <div id="checklist-content" class="hidden">
-                            <div class="overflow-x-auto bg-white rounded-lg shadow">
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Kod Sekolah</th>
-                                            <th>PPD</th>
-                                            <th>Sekolah</th>
-                                            <th>Status Laporan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="checklist-table-body"></tbody>
-                                </table>
-                            </div>
-                         </div>
-                    </div>
-                </div>
+                    <img src="[https://placehold.co/800x200/cccccc/333333?text=Header+Program](https://placehold.co/800x200/cccccc/333333?text=Header+Program)" alt="Header Program Sekolah Angkat Madani" class="w-full md:w-2/3 h-auto max-h-48 rounded-lg mb-8 shadow-md mx-auto block">
+                      <div class="content-container !max-w-7xl mx-auto p-8">
+                          <h2 class="text-3xl font-bold text-slate-800 mb-6">Senarai Semak Penghantaran Laporan</h2>
+                          <div id="checklist-loader" class="hidden"><div class="loader"></div></div>
+          
+                  <!-- Bahagian Penapis (Filters) yang dikemaskini -->
+                  <div class="flex flex-wrap items-center gap-4 mb-6 bg-slate-50 p-4 rounded-lg">
+                      <div>
+                          <label for="checklist-filter-ppd" class="block text-sm font-medium text-slate-700">Tapis PPD:</label>
+                          <select id="checklist-filter-ppd" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
+                      </div>
+                      <!-- [TAMBAHAN BARU] Penapis Status Laporan -->
+                      <div>
+                        <label for="checklist-filter-status" class="block text-sm font-medium text-slate-700">Tapis Status Laporan:</label>
+                        <select id="checklist-filter-status" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <option value="all">Semua Status</option>
+                            <option value="Telah Hantar">Telah Hantar</option>
+                            <option value="Belum Hantar">Belum Hantar</option>
+                        </select>
+                      </div>
+                      <div class="self-end">
+                          <button id="checklist-reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Set Semula</button>
+                      </div>
+                  </div>
+
+                  <!-- Bahagian Jadual yang dikemaskini -->
+                  <div id="checklist-content" class="hidden">
+                      <div class="overflow-x-auto bg-white rounded-lg shadow">
+                          <table class="data-table">
+                          <!-- [PERUBAHAN] Kepala Jadual Diubahsuai -->
+                          <thead>
+                              <tr>
+                              <th>Bil</th>
+                              <th>PPD</th>
+                              <th>Kod Sekolah</th>
+                              <th>Sekolah</th>
+                              <th>Status Laporan</th>
+                              <th>Status Peruntukkan</th>
+                              <th>Peruntukkan Diluluskan (RM)</th>
+                              <th>Baki Peruntukkan (RM)</th>
+                          </tr>
+                      </thead>
+                      <tbody id="checklist-table-body"></tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+</div>
 
                 <!-- PAGE: Password Prompt -->
                 <div id="page-password" class="page-content hidden h-full flex items-center justify-center">
@@ -432,6 +450,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const resetFiltersBtn = document.getElementById('reset-filters-btn');
 
     const checklistFilterPPD = document.getElementById('checklist-filter-ppd');
+    const checklistFilterStatus = document.getElementById('checklist-filter-status'); 
     const checklistResetFiltersBtn = document.getElementById('checklist-reset-filters-btn');
     const checklistTableBody = document.getElementById('checklist-table-body');
 
@@ -699,32 +718,58 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     async function loadChecklistData() {
-        const loader = document.getElementById('checklist-loader');
-        const content = document.getElementById('checklist-content');
-        loader.classList.remove('hidden');
-        content.classList.add('hidden');
-        try {
-            const response = await fetch(GOOGLE_SCRIPT_URL);
-            if (!response.ok) throw new Error('Gagal memuatkan data dari server.');
-            const submittedData = await response.json();
-            const submittedCodes = submittedData.map(item => item['Kod Sekolah']);
-            fullChecklistData = [];
-            for (const ppd in schoolData) {
-                schoolData[ppd].forEach(school => {
+    const loader = document.getElementById('checklist-loader');
+    const content = document.getElementById('checklist-content');
+    loader.classList.remove('hidden');
+    content.classList.add('hidden');
+    try {
+        const response = await fetch(GOOGLE_SCRIPT_URL);
+        if (!response.ok) throw new Error('Gagal memuatkan data dari server.');
+        const submittedData = await response.json();
+        
+        // Cipta 'Map' untuk carian data yang lebih pantas
+        const submittedDataMap = new Map(submittedData.map(item => [item['Kod Sekolah'], item]));
+
+        fullChecklistData = [];
+        for (const ppd in schoolData) {
+            schoolData[ppd].forEach(school => {
+                const submission = submittedDataMap.get(school.kod);
+                if (submission) {
+                    // Jika laporan wujud, ambil data terperinci
+                    const approved = parseFloat(submission['Peruntukan Diluluskan (RM)'] || 0);
+                    const spent = parseFloat(submission['Peruntukan Dibelanjakan (RM)'] || 0);
+                    const balance = approved - spent;
                     fullChecklistData.push({
-                        kod: school.kod, ppd: ppd, sekolah: school.name,
-                        status: submittedCodes.includes(school.kod) ? 'Telah Hantar' : 'Belum Hantar'
+                        ppd: ppd,
+                        kod: school.kod,
+                        sekolah: school.name,
+                        statusLaporan: 'Telah Hantar',
+                        statusPeruntukan: submission['Status Peruntukan'] || '-',
+                        peruntukanDiluluskan: approved,
+                        bakiPeruntukan: balance
                     });
-                });
-            }
-            populateChecklistFilters();
-            applyChecklistFiltersAndRedraw();
-            loader.classList.add('hidden');
-            content.classList.remove('hidden');
-        } catch (error) {
-            loader.innerHTML = `<p class="text-red-500 text-center">${error.message}</p>`;
+                } else {
+                    // Jika laporan tidak wujud, guna nilai lalai
+                    fullChecklistData.push({
+                        ppd: ppd,
+                        kod: school.kod,
+                        sekolah: school.name,
+                        statusLaporan: 'Belum Hantar',
+                        statusPeruntukan: '-',
+                        peruntukanDiluluskan: 0,
+                        bakiPeruntukan: 0
+                    });
+                }
+            });
         }
+        populateChecklistFilters();
+        applyChecklistFiltersAndRedraw();
+        loader.classList.add('hidden');
+        content.classList.remove('hidden');
+    } catch (error) {
+        loader.innerHTML = `<p class="text-red-500 text-center">${error.message}</p>`;
     }
+}
 
     function populateChecklistFilters() {
         const ppds = Object.keys(schoolData);
@@ -737,31 +782,58 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     checklistFilterPPD.addEventListener('change', applyChecklistFiltersAndRedraw);
+    checklistFilterStatus.addEventListener('change', applyChecklistFiltersAndRedraw); // [TAMBAHAN BARU]
+
     checklistResetFiltersBtn.addEventListener('click', () => {
-        checklistFilterPPD.value = 'all'; applyChecklistFiltersAndRedraw();
+    checklistFilterPPD.value = 'all'; 
+    checklistFilterStatus.value = 'all'; // [TAMBAHAN BARU]
+    applyChecklistFiltersAndRedraw();
     });
 
     function applyChecklistFiltersAndRedraw() {
-        let filteredData = [...fullChecklistData];
-        const selectedPPD = checklistFilterPPD.value;
-        if (selectedPPD !== 'all') {
-            filteredData = filteredData.filter(item => item.ppd === selectedPPD);
-        }
-        populateChecklistTable(filteredData);
+    let filteredData = [...fullChecklistData];
+    const selectedPPD = checklistFilterPPD.value;
+    const selectedStatus = checklistFilterStatus.value; // [TAMBAHAN BARU]
+
+    if (selectedPPD !== 'all') {
+        filteredData = filteredData.filter(item => item.ppd === selectedPPD);
     }
+
+    if (selectedStatus !== 'all') { // [TAMBAHAN BARU]
+        filteredData = filteredData.filter(item => item.statusLaporan === selectedStatus);
+    }
+
+    populateChecklistTable(filteredData);
+}
     
     function populateChecklistTable(data) {
-        checklistTableBody.innerHTML = '';
-        if (data.length === 0) {
-            checklistTableBody.innerHTML = '<tr><td colspan="4" class="text-center text-slate-500 py-4">Tiada data.</td></tr>'; return;
-        }
-        data.forEach(item => {
-            const row = document.createElement('tr');
-            const statusClass = item.status === 'Telah Hantar' ? 'status-sent' : 'status-pending';
-            row.innerHTML = `<td>${item.kod}</td><td>${item.ppd}</td><td>${item.sekolah}</td><td><span class="status-badge ${statusClass}">${item.status}</span></td>`;
-            checklistTableBody.appendChild(row);
-        });
+    checklistTableBody.innerHTML = '';
+    if (data.length === 0) {
+        // Kemas kini colspan kepada 8
+        checklistTableBody.innerHTML = '<tr><td colspan="8" class="text-center text-slate-500 py-4">Tiada data sepadan.</td></tr>';
+        return;
     }
+    data.forEach((item, index) => {
+        const row = document.createElement('tr');
+        const statusLaporanClass = item.statusLaporan === 'Telah Hantar' ? 'status-sent' : 'status-pending';
+
+        // Format mata wang, paparkan '-' jika laporan belum dihantar
+        const approvedText = item.statusLaporan === 'Telah Hantar' ? item.peruntukanDiluluskan.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-';
+        const balanceText = item.statusLaporan === 'Telah Hantar' ? item.bakiPeruntukan.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-';
+
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${item.ppd}</td>
+            <td>${item.kod}</td>
+            <td>${item.sekolah}</td>
+            <td><span class="status-badge ${statusLaporanClass}">${item.statusLaporan}</span></td>
+            <td>${item.statusPeruntukan}</td>
+            <td class="text-right">${approvedText}</td>
+            <td class="text-right">${balanceText}</td>
+        `;
+        checklistTableBody.appendChild(row);
+    });
+}
 
     // --- Analisis Data ---
     function formatAssetsForDisplay(assetString) {
