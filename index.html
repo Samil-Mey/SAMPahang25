@@ -68,6 +68,7 @@
         .data-table th, .data-table td { padding: 12px 15px; border: 1px solid #e2e8f0; text-align: left; font-size: 14px; }
         .data-table thead th { background-color: #f8fafc; font-weight: 600; color: #334155; }
         .data-table tbody tr:nth-child(even) { background-color: #f8fafc; }
+        .data-table td.text-right { text-align: right; }
 
         .status-badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
         .status-sent { background-color: #dcfce7; color: #166534; }
@@ -133,7 +134,6 @@
                                 </div>
                             </div>
 
-                            <!-- Container for fields shown only when "Telah Terima" is selected -->
                             <div id="received-details-container" class="hidden space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                                     <div>
@@ -150,7 +150,6 @@
                                     <input type="date" id="tarikh-terima" name="Tarikh Terima" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                                 </div>
                             </div>
-
 
                             <div>
                                 <label class="block text-sm font-medium text-slate-700">Senarai Aset / Peralatan</label>
@@ -172,127 +171,135 @@
                 <!-- PAGE: Senarai Semak -->
                 <div id="page-checklist" class="page-content hidden">
                     <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full md:w-2/3 h-auto max-h-48 rounded-lg mb-8 shadow-md mx-auto block">
-                    <div class="content-container !max-w-7xl mx-auto p-8">
                       <div class="content-container !max-w-7xl mx-auto p-8">
                           <h2 class="text-3xl font-bold text-slate-800 mb-6">Senarai Semak Penghantaran Laporan</h2>
                           <div id="checklist-loader" class="hidden"><div class="loader"></div></div>
-          
-                  <!-- Bahagian Penapis (Filters) yang dikemaskini -->
-                  <div class="flex flex-wrap items-center gap-4 mb-6 bg-slate-50 p-4 rounded-lg">
-                      <div>
-                          <label for="checklist-filter-ppd" class="block text-sm font-medium text-slate-700">Tapis PPD:</label>
-                          <select id="checklist-filter-ppd" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
+                          <div class="flex flex-wrap items-center gap-4 mb-6 bg-slate-50 p-4 rounded-lg">
+                              <div>
+                                  <label for="checklist-filter-ppd" class="block text-sm font-medium text-slate-700">Tapis PPD:</label>
+                                  <select id="checklist-filter-ppd" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
+                              </div>
+                              <div>
+                                <label for="checklist-filter-status" class="block text-sm font-medium text-slate-700">Tapis Status Laporan:</label>
+                                <select id="checklist-filter-status" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="all">Semua Status</option>
+                                    <option value="Telah Hantar">Telah Hantar</option>
+                                    <option value="Belum Hantar">Belum Hantar</option>
+                                </select>
+                              </div>
+                              <div class="self-end">
+                                  <button id="checklist-reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Set Semula</button>
+                              </div>
+                          </div>
+                          <div id="checklist-content" class="hidden">
+                              <div class="overflow-x-auto bg-white rounded-lg shadow">
+                                  <table class="data-table">
+                                      <thead>
+                                          <tr>
+                                              <th>Bil</th>
+                                              <th>PPD</th>
+                                              <th>Kod Sekolah</th>
+                                              <th>Sekolah</th>
+                                              <th>Status Laporan</th>
+                                              <th>Status Peruntukkan</th>
+                                              <th>Peruntukkan Diluluskan (RM)</th>
+                                              <th>Baki Peruntukkan (RM)</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody id="checklist-table-body"></tbody>
+                                  </table>
+                              </div>
+                          </div>
                       </div>
-                      <!-- [TAMBAHAN BARU] Penapis Status Laporan -->
-                      <div>
-                        <label for="checklist-filter-status" class="block text-sm font-medium text-slate-700">Tapis Status Laporan:</label>
-                        <select id="checklist-filter-status" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option value="all">Semua Status</option>
-                            <option value="Telah Hantar">Telah Hantar</option>
-                            <option value="Belum Hantar">Belum Hantar</option>
-                        </select>
-                      </div>
-                      <div class="self-end">
-                          <button id="checklist-reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Set Semula</button>
-                      </div>
-                  </div>
+                </div>
+                
+                <!-- [BARU] PAGE: Password Prompt for Checklist -->
+                <div id="page-password-checklist" class="page-content hidden h-full flex items-center justify-center">
+                    <div class="content-container max-w-sm mx-auto p-8">
+                        <h2 class="text-2xl font-bold mb-4 text-slate-800 text-center">Akses Terhad</h2>
+                        <p class="text-center text-slate-600 mb-6">Sila masukkan kata laluan untuk melihat halaman Senarai Semak.</p>
+                        <form id="password-form-checklist">
+                            <label for="password-checklist" class="block text-sm font-medium text-slate-700">Kata Laluan</label>
+                            <input type="password" id="password-checklist" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <button type="submit" class="mt-6 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Masuk</button>
+                        </form>
+                        <p id="password-error-checklist" class="text-red-500 text-center mt-4 text-sm"></p>
+                    </div>
+                </div>
 
-                  <!-- Bahagian Jadual yang dikemaskini -->
-                  <div id="checklist-content" class="hidden">
-                      <div class="overflow-x-auto bg-white rounded-lg shadow">
-                          <table class="data-table">
-                          <!-- [PERUBAHAN] Kepala Jadual Diubahsuai -->
-                          <thead>
-                              <tr>
-                              <th>Bil</th>
-                              <th>PPD</th>
-                              <th>Kod Sekolah</th>
-                              <th>Sekolah</th>
-                              <th>Status Laporan</th>
-                              <th>Status Peruntukkan</th>
-                              <th>Peruntukkan Diluluskan (RM)</th>
-                              <th>Baki Peruntukkan (RM)</th>
-                          </tr>
-                      </thead>
-                      <tbody id="checklist-table-body"></tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
-</div>
-
-                <!-- PAGE: Password Prompt -->
-                <div id="page-password" class="page-content hidden h-full flex items-center justify-center">
-                     <div class="content-container max-w-sm mx-auto p-8">
-                         <h2 class="text-2xl font-bold mb-4 text-slate-800 text-center">Akses Terhad</h2>
-                         <p class="text-center text-slate-600 mb-6">Sila masukkan kata laluan untuk melihat halaman analisis.</p>
-                         <form id="password-form">
-                             <label for="password" class="block text-sm font-medium text-slate-700">Kata Laluan</label>
-                             <input type="password" id="password" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                             <button type="submit" class="mt-6 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Masuk</button>
-                         </form>
-                         <p id="password-error" class="text-red-500 text-center mt-4 text-sm"></p>
-                     </div>
+                <!-- [DIUBAHSUAI] PAGE: Password Prompt for Analysis -->
+                <div id="page-password-analysis" class="page-content hidden h-full flex items-center justify-center">
+                       <div class="content-container max-w-sm mx-auto p-8">
+                           <h2 class="text-2xl font-bold mb-4 text-slate-800 text-center">Akses Terhad</h2>
+                           <p class="text-center text-slate-600 mb-6">Sila masukkan kata laluan untuk melihat halaman analisis.</p>
+                           <form id="password-form-analysis">
+                               <label for="password-analysis" class="block text-sm font-medium text-slate-700">Kata Laluan</label>
+                               <input type="password" id="password-analysis" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                               <button type="submit" class="mt-6 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Masuk</button>
+                           </form>
+                           <p id="password-error-analysis" class="text-red-500 text-center mt-4 text-sm"></p>
+                       </div>
                 </div>
 
                 <!-- PAGE: Analisis Data -->
                 <div id="page-analysis" class="page-content hidden">
                     <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full md:w-2/3 h-auto max-h-48 rounded-lg mb-8 shadow-md mx-auto block">
                     <div class="content-container !max-w-7xl mx-auto p-8">
-                         <h2 class="text-3xl font-bold text-slate-800 mb-6">Papan Pemuka Analisis SAM</h2>
-                         <div id="dashboard-loader" class="hidden"><div class="loader"></div></div>
-                         <div class="flex flex-wrap items-center gap-4 mb-6 bg-slate-50 p-4 rounded-lg">
-                             <div>
-                                 <label for="filter-ppd" class="block text-sm font-medium text-slate-700">Tapis PPD:</label>
-                                 <select id="filter-ppd" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
-                             </div>
-                             <div>
-                                 <label for="filter-sekolah" class="block text-sm font-medium text-slate-700">Tapis Sekolah:</label>
-                                 <select id="filter-sekolah" class="mt-1 block w-full md:w-64 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled></select>
-                             </div>
-                             <div class="self-end">
-                                 <button id="reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Set Semula</button>
-                             </div>
-                         </div>
-                         <div id="dashboard-content" class="hidden">
-                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                                <div class="bg-blue-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Diluluskan</h3><p id="total-approved" class="text-3xl font-bold text-blue-800 mt-2">RM 0.00</p></div>
-                                <div class="bg-orange-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Dibelanjakan</h3><p id="total-spent" class="text-3xl font-bold text-orange-800 mt-2">RM 0.00</p></div>
-                                <div class="bg-red-100 p-6 rounded-lg"><h3 class="text-slate-600">Baki Perbelanjaan</h3><p id="total-balance" class="text-3xl font-bold text-red-800 mt-2">RM 0.00</p></div>
-                                <div class="bg-green-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Laporan Diterima</h3><p id="total-allocations" class="text-3xl font-bold text-green-800 mt-2">0</p></div>                                <div class="bg-teal-100 p-6 rounded-lg"><h3 class="text-slate-600">Peratus Perbelanjaan</h3><p id="percent-spent" class="text-3xl font-bold text-teal-800 mt-2">0%</p></div>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                                <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-hourglass-half text-yellow-500 mr-3"></i>Sekolah Belum Terima</h3><ul id="list-not-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
-                                <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Sekolah Telah Terima</h3><ul id="list-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
-                            </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
-                                <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4">Peruntukan mengikut PPD</h3><canvas id="allocation-by-ppd-chart"></canvas></div>
-                                <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4">Pecahan Aset/Peralatan</h3><canvas id="asset-breakdown-chart"></canvas></div>
-                            </div>
-                            <div>
-                                 <h3 class="font-bold text-lg text-slate-700 mb-4">Semua Data Laporan</h3>
-                                 <div class="overflow-x-auto bg-white rounded-lg shadow">
-                                     <table class="data-table">
-                                         <thead>
-                                             <tr>
-                                                 <th>Kod Sekolah</th>
-                                                 <th>PPD</th>
-                                                 <th>Sekolah</th>
-                                                 <th>Agensi</th>
-                                                 <th>Peruntukan Diluluskan (RM)</th>
-                                                 <th>Peruntukan Dibelanjakan (RM)</th>
-                                                 <th>Baki Peruntukan (RM)</th>
-                                                 <th>Status</th>
-                                                 <th>Tarikh Terima</th>
-                                                 <th>Aset/Peralatan</th>
-                                                 <th>Catatan</th>
-                                             </tr>
-                                         </thead>
-                                         <tbody id="data-table-body"></tbody>
-                                     </table>
-                                 </div>
-                            </div>
-                         </div>
+                          <h2 class="text-3xl font-bold text-slate-800 mb-6">Papan Pemuka Analisis SAM</h2>
+                          <div id="dashboard-loader" class="hidden"><div class="loader"></div></div>
+                          <div class="flex flex-wrap items-center gap-4 mb-6 bg-slate-50 p-4 rounded-lg">
+                              <div>
+                                  <label for="filter-ppd" class="block text-sm font-medium text-slate-700">Tapis PPD:</label>
+                                  <select id="filter-ppd" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
+                              </div>
+                              <div>
+                                  <label for="filter-sekolah" class="block text-sm font-medium text-slate-700">Tapis Sekolah:</label>
+                                  <select id="filter-sekolah" class="mt-1 block w-full md:w-64 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled></select>
+                              </div>
+                              <div class="self-end">
+                                  <button id="reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Set Semula</button>
+                              </div>
+                          </div>
+                          <div id="dashboard-content" class="hidden">
+                              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                                  <div class="bg-blue-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Diluluskan</h3><p id="total-approved" class="text-3xl font-bold text-blue-800 mt-2">RM 0.00</p></div>
+                                  <div class="bg-orange-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Dibelanjakan</h3><p id="total-spent" class="text-3xl font-bold text-orange-800 mt-2">RM 0.00</p></div>
+                                  <div class="bg-red-100 p-6 rounded-lg"><h3 class="text-slate-600">Baki Perbelanjaan</h3><p id="total-balance" class="text-3xl font-bold text-red-800 mt-2">RM 0.00</p></div>
+                                  <div class="bg-green-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Laporan Diterima</h3><p id="total-allocations" class="text-3xl font-bold text-green-800 mt-2">0</p></div>
+                                  <div class="bg-teal-100 p-6 rounded-lg"><h3 class="text-slate-600">Peratus Perbelanjaan</h3><p id="percent-spent" class="text-3xl font-bold text-teal-800 mt-2">0%</p></div>
+                              </div>
+                              <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                                  <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-hourglass-half text-yellow-500 mr-3"></i>Sekolah Belum Terima</h3><ul id="list-not-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
+                                  <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Sekolah Telah Terima</h3><ul id="list-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
+                              </div>
+                              <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+                                  <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4">Peruntukan mengikut PPD</h3><canvas id="allocation-by-ppd-chart"></canvas></div>
+                                  <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4">Pecahan Aset/Peralatan</h3><canvas id="asset-breakdown-chart"></canvas></div>
+                              </div>
+                              <div>
+                                    <h3 class="font-bold text-lg text-slate-700 mb-4">Semua Data Laporan</h3>
+                                    <div class="overflow-x-auto bg-white rounded-lg shadow">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Kod Sekolah</th>
+                                                    <th>PPD</th>
+                                                    <th>Sekolah</th>
+                                                    <th>Agensi</th>
+                                                    <th>Peruntukan Diluluskan (RM)</th>
+                                                    <th>Peruntukan Dibelanjakan (RM)</th>
+                                                    <th>Baki Peruntukan (RM)</th>
+                                                    <th>Status</th>
+                                                    <th>Tarikh Terima</th>
+                                                    <th>Aset/Peralatan</th>
+                                                    <th>Catatan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="data-table-body"></tbody>
+                                        </table>
+                                    </div>
+                              </div>
+                          </div>
                     </div>
                 </div>
             </div>
@@ -306,10 +313,10 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // --- GANTI DENGAN URL GOOGLE APPS SCRIPT ANDA ---
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxpzCJIh288hyO3SOdgNaF8U-o7TNC6xGnZH00w8WSTiZbuqaH03liucHjZt-wr7sSb/exec';
-    const ADMIN_PASSWORD = 'P123';
-    // --- Kod untuk Sidebar Mobile ---
+    const ANALYSIS_PASSWORD = 'P123';
+    const CHECKLIST_PASSWORD = 'sam1234';
+
     const menuBtn = document.getElementById('menu-btn');
     const sidebar = document.getElementById('sidebar');
 
@@ -317,112 +324,24 @@ document.addEventListener('DOMContentLoaded', function() {
         sidebar.classList.toggle('-translate-x-full');
     });
 
-    // All elements references from previous script are maintained
     const navLinks = {
         allocation: document.getElementById('nav-allocation'),
         checklist: document.getElementById('nav-checklist'),
         analysis: document.getElementById('nav-analysis'),
     };
+    
     const pages = {
         allocation: document.getElementById('page-allocation'),
         checklist: document.getElementById('page-checklist'),
         analysis: document.getElementById('page-analysis'),
-        password: document.getElementById('page-password'),
+        passwordChecklist: document.getElementById('page-password-checklist'),
+        passwordAnalysis: document.getElementById('page-password-analysis'),
     };
     
-   // --- Pangkalan Data Sekolah SAM (DIKEMASKINI MENGIKUT PDF) ---
-    const schoolData = {
-        'BENTONG': [
-            { name: 'SMK KARAK', kod: 'CEE0016', agensi: 'TENAGA NASIONAL BERHAD' },
-            { name: 'SMK KHAI MUN', kod: 'CEB0021', agensi: 'AXIATA FOUNDATION' },
-            { name: 'SK BUKIT PIATU', kod: 'CBA0019', agensi: 'AXIATA FOUNDATION' },
-            { name: 'SMK SULAIMAN', kod: 'CEE0018', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK TELEMONG', kod: 'CEB0017', agensi: 'BURSA MALAYSIA BERHAD' },
-            { name: 'SMK (LKTP) KG SERTIK', kod: 'CEA0015', agensi: 'GENTING MALAYSIA BHD' },
-            { name: 'SK (FELDA) SG KEMAHAL', kod: 'CBA0021', agensi: 'GENTING MALAYSIA BHD' },
-            { name: 'SK SUNGAI DUA', kod: 'CBA0006', agensi: 'MYKASIH FOUNDATION' },
-            { name: 'SK LEBU', kod: 'CBA0002', agensi: 'JABATAN PERDANA MENTERI' }
-        ],
-        'CAMERON HIGHLANDS': [
-            { name: 'SK LEMOI (JHEOA)', kod: 'CBA1003', agensi: 'SIME DARBY BERHAD' }
-        ],
-        'JERANTUT': [
-            { name: 'SK KG PAGI', kod: 'CBA2023', agensi: 'YAYASAN HASANAH' },
-            { name: 'SK MERTING', kod: 'CBA2021', agensi: 'YAYASAN HASANAH' },
-            { name: 'SK KUALA SAT', kod: 'CBA2024', agensi: 'KEMENTERIAN SUMBER ASLI DAN KELESTARIAN ALAM' },
-            { name: 'SK TANAH ROM', kod: 'CBA2006', agensi: 'JABATAN PERDANA MENTERI' },
-            { name: 'SMK KUALA TEMBELING', kod: 'CEA2030', agensi: 'KEMENTERIAN PERPADUAN NEGARA' },
-            { name: 'SK KUALA TAHAN', kod: 'CBA2022', agensi: 'MYKASIH FOUNDATION' },
-            { name: 'SK PASIR DURIAN', kod: 'CBA2019', agensi: 'JABATAN PERDANA MENTERI' }
-        ],
-        'KUANTAN': [
-            { name: 'SMK BUKIT RANGIN', kod: 'CEA4081', agensi: 'LTH (KIV)' },
-            { name: 'SK KEMPADANG', kod: 'CBA4015', agensi: 'YAYASAN UEM' },
-            { name: 'SK TANJUNG LUMPUR', kod: 'CBA4014', agensi: 'YAYASAN UEM' },
-            { name: 'SMK TANJUNG LUMPUR', kod: 'CEA4074', agensi: 'YAYASAN UEM' },
-            { name: 'SK BUNUT RENDANG', kod: 'CBA4106', agensi: 'YAYASAN UEM' },
-            { name: 'SK TOK SERA', kod: 'CBA4092', agensi: 'YAYASAN UEM' },
-            { name: 'SK TERUNTUM', kod: 'CBA4001', agensi: 'YAYASAN UEM' },
-            { name: 'SK PELINDUNG', kod: 'CBA4107', agensi: 'YAYASAN UEM' },
-            { name: 'SMK BUKIT SAGU', kod: 'CEA4097', agensi: 'YAYASAN UEM' },
-            { name: 'SMK TELUK CHEMPEDAK', kod: 'CEA4093', agensi: 'YAYASAN UEM' },
-            { name: 'SK SUNGAI ULAR', kod: 'CBA4005', agensi: 'IJM CORPORATION BERHAD' },
-            { name: 'SK BESERAH', kod: 'CBA4003', agensi: 'KEMENTERIAN PEMBANGUNAN KERAJAAN TEMPATAN' },
-            { name: 'SK CHEROK PALOH', kod: 'CBA4017', agensi: 'KEMENTERIAN PENDIDIKAN TINGGI' },
-            { name: 'SK WIRA', kod: 'CBA4090', agensi: 'KEMENTERIAN SUMBER ASLI DAN KELESTARIAN ALAM' },
-            { name: 'SMK SUNGAI BAGİNG', kod: 'CEA4091', agensi: 'KEMENTERIAN DALAM NEGERI' },
-            { name: 'SK PENGKALAN TENTERA', kod: 'CBB4030', agensi: 'LEMBAGA TABUNG ANGKATAN TENTERA (LTAT)' },
-            { name: 'SK SUNGAI KARANG', kod: 'CBA4004', agensi: 'JABATAN PERDANA MENTERI' }
-        ],
-        'LIPIS': [
-            { name: 'SMK SETIA WANGSA', kod: 'CEB3038', agensi: 'SD GUTHRIE' },
-            { name: 'SMK AGAMA KUALA LIPIS', kod: 'CRA3001', agensi: 'BANK RAKYAT' },
-            { name: 'SK KUALA KOYAN (JHEOA)', kod: 'CBA3056', agensi: 'MYKASIH FOUNDATION' },
-            { name: 'SK LUBOK KULIT', kod: 'CBA3022', agensi: 'KEMENTERIAN PEMBANGUNAN KERAJAAN TEMPATAN' },
-            { name: 'SK KG KELEDEK', kod: 'CBA3004', agensi: 'JABATAN PERDANA MENTERI' }
-        ],
-        'MARAN': [
-            { name: 'SK ULU LUIT', kod: 'CBA9002', agensi: 'TENAGA NASIONAL BERHAD' },
-            { name: 'SMK MARAN 2', kod: 'CEA9164', agensi: 'YAYASAN UEM' },
-            { name: 'SK (FELDA) JENGKA 19', kod: 'CBA9139', agensi: 'JABATAN PERDANA MENTERI' },
-            { name: 'SK SENTOSA', kod: 'CBA9142', agensi: 'MALAYSIA RAIL LINK SDN BHD (MRL)' }
-        ],
-        'PEKAN': [
-            { name: 'SMK PERAMU JAYA', kod: 'CEA5079', agensi: 'BANK ISLAM' },
-            { name: 'SK TEMAI', kod: 'CBA5029', agensi: 'KEMENTERIAN PERALIHAN TENAGA DAN TRANSFORMASI AIR' },
-            { name: 'SK PERMATANG KELEDANG', kod: 'CBA5023', agensi: 'MYKASIH FOUNDATION' },
-            { name: 'SK TASIK CINI PEKAN (JHEOA)', kod: 'CBA5086', agensi: 'MYKASIH FOUNDATION' },
-            { name: 'SK TANJUNG BATU', kod: 'CBA5013', agensi: 'YAYASAN TM' }
-        ],
-        'RAUB': [
-            { name: 'SMK MAHMUD', kod: 'CEB6026', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK DATO SHAHBANDAR HUSSAIN', kod: 'CEB6027', agensi: 'BURSA MALAYSIA BERHAD' },
-            { name: 'SK SATAK', kod: 'CBA6026', agensi: 'MYKASIH FOUNDATION' }
-        ],
-        'ROMPIN': [
-            { name: 'SMK SERI ROMPIN', kod: 'CEA8025', agensi: 'YAYASAN UEM' },
-            { name: 'SMK SUNGAI PUTERI', kod: 'CEA8028', agensi: 'YAYASAN UEM' },
-            { name: 'SMK ROMPIN', kod: 'CEA8017', agensi: 'YAYASAN UEM' },
-            { name: 'SMK PONTIAN JAYA', kod: 'CEA8030', agensi: 'YAYASAN UEM' },
-            { name: 'SMK TANJUNG GEMOK', kod: 'CEA8019', agensi: 'YAYASAN UEM' },
-            { name: 'SMK SELENDANG', kod: 'CEA8029', agensi: 'YAYASAN UEM' },
-            { name: 'SMK TEKEK', kod: 'CEA8022', agensi: 'YAYASAN TM' },
-            { name: 'SK TEKEK', kod: 'CBA8009', agensi: 'YAYASAN TM' },
-            { name: 'SK JUARA', kod: 'CBA8032', agensi: 'YAYASAN TM' },
-            { name: 'SK MUKUT', kod: 'CBA8031', agensi: 'YAYASAN TM' },
-            { name: 'SMK MUADZAM SHAH', kod: 'CEA8032', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SMK PERANTAU DAMAI', kod: 'CEA8021', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SK ROMPIN', kod: 'CBA8001', agensi: 'MAYBANK' }
-        ],
-        'TEMERLOH': [
-            { name: 'SMK TEMERLOH', kod: 'CEA7063', agensi: 'PERMODALAN NASIONAL BERHAD' },
-            { name: 'SMK LANCHANG', kod: 'CEA7073', agensi: 'YAYASAN PETRONAS' },
-            { name: 'SJK (TAMIL) LDG MENTAKAB', kod: 'CBD7091', agensi: 'SD GUTHRIE' },
-            { name: 'SMK SEBERANG TEMERLOH', kod: 'CEA7160', agensi: 'TENAGA NASIONAL BERHAD' }
-        ]
-    };
+    const schoolData = { 'BENTONG': [ { name: 'SMK KARAK', kod: 'CEE0016', agensi: 'TENAGA NASIONAL BERHAD' }, { name: 'SMK KHAI MUN', kod: 'CEB0021', agensi: 'AXIATA FOUNDATION' }, { name: 'SK BUKIT PLATU', kod: 'CBA0019', agensi: 'AXIATA FOUNDATION' }, { name: 'SMK SULAIMAN', kod: 'CEE0018', agensi: 'YAYASAN PETRONAS' }, { name: 'SMK TELEMONG', kod: 'CEB0017', agensi: 'BURSA MALAYSIA BERHAD' }, { name: 'SMK (LKTP) KG SERTIK', kod: 'CEA0015', agensi: 'GENTING MALAYSIA BHD' }, { name: 'SK (FELDA) SG KEMAHAL', kod: 'CBA0021', agensi: 'GENTING MALAYSIA BHD' }, { name: 'SK SUNGAI DUA', kod: 'CBA0006', agensi: 'MYKASIH FOUNDATION' }, { name: 'SK LEBU', kod: 'CBA0002', agensi: 'JABATAN PERDANA MENTERI' } ], 'CAMERON HIGHLANDS': [ { name: 'SK LEMOI (JHEOA)', kod: 'CBA1003', agensi: 'SIME DARBY BERHAD' } ], 'JERANTUT': [ { name: 'SK KG PAGI', kod: 'CBA2023', agensi: 'YAYASAN HASANAH' }, { name: 'SK MERTING', kod: 'CBA2021', agensi: 'YAYASAN HASANAH' }, { name: 'SK KUALA SAT', kod: 'CBA2024', agensi: 'KEMENTERIAN SUMBER ASLI DAN KELESTARIAN ALAM' }, { name: 'SK TANAH ROM', kod: 'CBA2006', agensi: 'JABATAN PERDANA MENTERI' }, { name: 'SMK KUALA TEMBELING', kod: 'CEA2030', agensi: 'KEMENTERIAN PERPADUAN NEGARA' }, { name: 'SK KUALA TAHAN', kod: 'CBA2022', agensi: 'MYKASIH FOUNDATION' }, { name: 'SK PASIR DURIAN', kod: 'CBA2019', agensi: 'JABATAN PERDANA MENTERI' } ], 'KUANTAN': [ { name: 'SMK BUKIT RANGIN', kod: 'CEA4081', agensi: 'LTH (KIV)' }, { name: 'SK KEMPADANG', kod: 'CBA4015', agensi: 'YAYASAN UEM' }, { name: 'SK TANJUNG LUMPUR', kod: 'CBA4014', agensi: 'YAYASAN UEM' }, { name: 'SMK TANJUNG LUMPUR', kod: 'CEA4074', agensi: 'YAYASAN UEM' }, { name: 'SK BUNUT RENDANG', kod: 'CBA4106', agensi: 'YAYASAN UEM' }, { name: 'SK TOK SERA', kod: 'CBA4092', agensi: 'YAYASAN UEM' }, { name: 'SK TERUNTUM', kod: 'CBA4001', agensi: 'YAYASAN UEM' }, { name: 'SK PELINDUNG', kod: 'CBA4107', agensi: 'YAYASAN UEM' }, { name: 'SMK BUKIT SAGU', kod: 'CEA4097', agensi: 'YAYASAN UEM' }, { name: 'SMK TELUK CHEMPEDAK', kod: 'CEA4093', agensi: 'YAYASAN UEM' }, { name: 'SK SUNGAI ULAR', kod: 'CBA4005', agensi: 'IJM CORPORATION BERHAD' }, { name: 'SK BESERAH', kod: 'CBA4003', agensi: 'KEMENTERIAN PEMBANGUNAN KERAJAAN TEMPATAN' }, { name: 'SK CHEROK PALOH', kod: 'CBA4017', agensi: 'KEMENTERIAN PENDIDIKAN TINGGI' }, { name: 'SK WIRA', kod: 'CBA4090', agensi: 'KEMENTERIAN SUMBER ASLI DAN KELESTARIAN ALAM' }, { name: 'SMK SUNGAI BAGİNG', kod: 'CEA4091', agensi: 'KEMENTERIAN DALAM NEGERI' }, { name: 'SK PENGKALAN TENTERA', kod: 'CBB4030', agensi: 'LEMBAGA TABUNG ANGKATAN TENTERA (LTAT)' }, { name: 'SK SUNGAI KARANG', kod: 'CBA4004', agensi: 'JABATAN PERDANA MENTERI' } ], 'LIPIS': [ { name: 'SMK SETIA WANGSA', kod: 'CEB3038', agensi: 'SD GUTHRIE' }, { name: 'SMK AGAMA KUALA LIPIS', kod: 'CRA3001', agensi: 'BANK RAKYAT' }, { name: 'SK KUALA KOYAN (JHEOA)', kod: 'CBA3056', agensi: 'MYKASIH FOUNDATION' }, { name: 'SK LUBOK KULIT', kod: 'CBA3022', agensi: 'KEMENTERIAN PEMBANGUNAN KERAJAAN TEMPATAN' }, { name: 'SK KG KELEDEK', kod: 'CBA3004', agensi: 'JABATAN PERDANA MENTERI' } ], 'MARAN': [ { name: 'SK ULU LUIT', kod: 'CBA9002', agensi: 'TENAGA NASIONAL BERHAD' }, { name: 'SMK MARAN 2', kod: 'CEA9164', agensi: 'YAYASAN UEM' }, { name: 'SK (FELDA) JENGKA 19', kod: 'CBA9139', agensi: 'JABATAN PERDANA MENTERI' }, { name: 'SK SENTOSA', kod: 'CBA9142', agensi: 'MALAYSIA RAIL LINK SDN BHD (MRL)' } ], 'PEKAN': [ { name: 'SMK PERAMU JAYA', kod: 'CEA5079', agensi: 'BANK ISLAM' }, { name: 'SK TEMAI', kod: 'CBA5029', agensi: 'KEMENTERIAN PERALIHAN TENAGA DAN TRANSFORMASI AIR' }, { name: 'SK PERMATANG KELEDANG', kod: 'CBA5023', agensi: 'MYKASIH FOUNDATION' }, { name: 'SK TASIK CINI PEKAN (JHEOA)', kod: 'CBA5086', agensi: 'MYKASIH FOUNDATION' }, { name: 'SK TANJUNG BATU', kod: 'CBA5013', agensi: 'YAYASAN TM' } ], 'RAUB': [ { name: 'SMK MAHMUD', kod: 'CEB6026', agensi: 'YAYASAN PETRONAS' }, { name: 'SMK DATO SHAHBANDAR HUSSAIN', kod: 'CEB6027', agensi: 'BURSA MALAYSIA BERHAD' }, { name: 'SK SATAK', kod: 'CBA6026', agensi: 'MYKASIH FOUNDATION' } ], 'ROMPIN': [ { name: 'SMK SERI ROMPIN', kod: 'CEA8025', agensi: 'YAYASAN UEM' }, { name: 'SMK SUNGAI PUTERI', kod: 'CEA8028', agensi: 'YAYASAN UEM' }, { name: 'SMK ROMPIN', kod: 'CEA8017', agensi: 'YAYASAN UEM' }, { name: 'SMK PONTIAN JAYA', kod: 'CEA8030', agensi: 'YAYASAN UEM' }, { name: 'SMK TANJUNG GEMOK', kod: 'CEA8019', agensi: 'YAYASAN UEM' }, { name: 'SMK SELENDANG', kod: 'CEA8029', agensi: 'YAYASAN UEM' }, { name: 'SMK TEKEK', kod: 'CEA8022', agensi: 'YAYASAN TM' }, { name: 'SK TEKEK', kod: 'CBA8009', agensi: 'YAYASAN TM' }, { name: 'SK JUARA', kod: 'CBA8032', agensi: 'YAYASAN TM' }, { name: 'SK MUKUT', kod: 'CBA8031', agensi: 'YAYASAN TM' }, { name: 'SMK MUADZAM SHAH', kod: 'CEA8032', agensi: 'YAYASAN PETRONAS' }, { name: 'SMK PERANTAU DAMAI', kod: 'CEA8021', agensi: 'YAYASAN PETRONAS' }, { name: 'SK ROMPIN', kod: 'CBA8001', agensi: 'MAYBANK' } ], 'TEMERLOH': [ { name: 'SMK TEMERLOH', kod: 'CEA7063', agensi: 'PERMODALAN NASIONAL BERHAD' }, { name: 'SMK LANCHANG', kod: 'CEA7073', agensi: 'YAYASAN PETRONAS' }, { name: 'SJK (TAMIL) LDG MENTAKAB', kod: 'CBD7091', agensi: 'SD GUTHRIE' }, { name: 'SMK SEBERANG TEMERLOH', kod: 'CEA7160', agensi: 'TENAGA NASIONAL BERHAD' } ] };
     
-    let isAuthenticated = false;
+    let isChecklistAuthenticated = false;
+    let isAnalysisAuthenticated = false;
     let samData = [];
     let fullChecklistData = [];
     let charts = {};
@@ -443,15 +362,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const catatanInput = document.getElementById('catatan');
     const receivedDetailsContainer = document.getElementById('received-details-container');
     const tarikhInput = document.getElementById('tarikh-terima');
-    const passwordForm = document.getElementById('password-form');
-    const passwordError = document.getElementById('password-error');
+    
+    const passwordFormChecklist = document.getElementById('password-form-checklist');
+    const passwordErrorChecklist = document.getElementById('password-error-checklist');
+    const passwordFormAnalysis = document.getElementById('password-form-analysis');
+    const passwordErrorAnalysis = document.getElementById('password-error-analysis');
     
     const filterPPD = document.getElementById('filter-ppd');
     const filterSekolah = document.getElementById('filter-sekolah');
     const resetFiltersBtn = document.getElementById('reset-filters-btn');
 
     const checklistFilterPPD = document.getElementById('checklist-filter-ppd');
-    const checklistFilterStatus = document.getElementById('checklist-filter-status'); 
+    const checklistFilterStatus = document.getElementById('checklist-filter-status');
     const checklistResetFiltersBtn = document.getElementById('checklist-reset-filters-btn');
     const checklistTableBody = document.getElementById('checklist-table-body');
 
@@ -469,7 +391,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function setActivePage(pageId) {
-        Object.values(pages).forEach(page => page.classList.add('hidden'));
+        Object.values(pages).forEach(page => {
+            if (page) page.classList.add('hidden');
+        });
         Object.values(navLinks).forEach(link => link.classList.remove('active'));
         
         const pageToShow = pages[pageId];
@@ -478,7 +402,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const linkToActivate = navLinks[pageId];
         if(linkToActivate) linkToActivate.classList.add('active');
         
-        if (pageId === 'password') {
+        if (pageId === 'passwordChecklist') {
+            navLinks.checklist.classList.add('active');
+        }
+        if (pageId === 'passwordAnalysis') {
             navLinks.analysis.classList.add('active');
         }
     }
@@ -487,30 +414,47 @@ document.addEventListener('DOMContentLoaded', function() {
     
     navLinks.checklist.addEventListener('click', (e) => {
         e.preventDefault();
-        setActivePage('checklist');
-        loadChecklistData();
+        if (isChecklistAuthenticated) {
+            setActivePage('checklist');
+            loadChecklistData();
+        } else {
+            setActivePage('passwordChecklist');
+        }
     });
 
     navLinks.analysis.addEventListener('click', (e) => {
         e.preventDefault();
-        if (isAuthenticated) {
+        if (isAnalysisAuthenticated) {
             setActivePage('analysis');
             loadDashboardData();
         } else {
-            setActivePage('password');
+            setActivePage('passwordAnalysis');
         }
     });
 
-    passwordForm.addEventListener('submit', (e) => {
+    passwordFormChecklist.addEventListener('submit', (e) => {
         e.preventDefault();
-        const password = document.getElementById('password').value;
-        if (password === ADMIN_PASSWORD) {
-            isAuthenticated = true;
-            passwordError.textContent = '';
+        const password = document.getElementById('password-checklist').value;
+        if (password === CHECKLIST_PASSWORD) {
+            isChecklistAuthenticated = true;
+            passwordErrorChecklist.textContent = '';
+            setActivePage('checklist');
+            loadChecklistData();
+        } else {
+            passwordErrorChecklist.textContent = 'Kata laluan salah. Sila cuba lagi.';
+        }
+    });
+
+    passwordFormAnalysis.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const password = document.getElementById('password-analysis').value;
+        if (password === ANALYSIS_PASSWORD) {
+            isAnalysisAuthenticated = true;
+            passwordErrorAnalysis.textContent = '';
             setActivePage('analysis');
             loadDashboardData();
         } else {
-            passwordError.textContent = 'Kata laluan salah. Sila cuba lagi.';
+            passwordErrorAnalysis.textContent = 'Kata laluan salah. Sila cuba lagi.';
         }
     });
 
@@ -595,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     peruntukanDibelanjakanInput.value = '';
                 }
                 
-                calculateBalance(); // Calculate balance after populating
+                calculateBalance(); 
 
                 assetListContainer.innerHTML = '';
                 assetCounter = 0;
@@ -717,65 +661,62 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.textContent = formActionInput.value === 'update' ? 'Kemaskini Laporan' : 'Hantar Laporan';
             });
     });
-
+    
     async function loadChecklistData() {
-    const loader = document.getElementById('checklist-loader');
-    const content = document.getElementById('checklist-content');
-    loader.classList.remove('hidden');
-    content.classList.add('hidden');
-    try {
-        const response = await fetch(GOOGLE_SCRIPT_URL);
-        if (!response.ok) throw new Error('Gagal memuatkan data dari server.');
-        const submittedData = await response.json();
-        
-        // Cipta 'Map' untuk carian data yang lebih pantas
-        const submittedDataMap = new Map(submittedData.map(item => [item['Kod Sekolah'], item]));
+        const loader = document.getElementById('checklist-loader');
+        const content = document.getElementById('checklist-content');
+        loader.classList.remove('hidden');
+        content.classList.add('hidden');
+        try {
+            const response = await fetch(GOOGLE_SCRIPT_URL);
+            if (!response.ok) throw new Error('Gagal memuatkan data dari server.');
+            const submittedData = await response.json();
+            
+            const submittedDataMap = new Map(submittedData.map(item => [item['Kod Sekolah'], item]));
 
-        fullChecklistData = [];
-        for (const ppd in schoolData) {
-            schoolData[ppd].forEach(school => {
-                const submission = submittedDataMap.get(school.kod);
-                if (submission) {
-                    // Jika laporan wujud, ambil data terperinci
-                    const approved = parseFloat(submission['Peruntukan Diluluskan (RM)'] || 0);
-                    const spent = parseFloat(submission['Peruntukan Dibelanjakan (RM)'] || 0);
-                    const balance = approved - spent;
-                    fullChecklistData.push({
-                        ppd: ppd,
-                        kod: school.kod,
-                        sekolah: school.name,
-                        statusLaporan: 'Telah Hantar',
-                        statusPeruntukan: submission['Status Peruntukan'] || '-',
-                        peruntukanDiluluskan: approved,
-                        bakiPeruntukan: balance
-                    });
-                } else {
-                    // Jika laporan tidak wujud, guna nilai lalai
-                    fullChecklistData.push({
-                        ppd: ppd,
-                        kod: school.kod,
-                        sekolah: school.name,
-                        statusLaporan: 'Belum Hantar',
-                        statusPeruntukan: '-',
-                        peruntukanDiluluskan: 0,
-                        bakiPeruntukan: 0
-                    });
-                }
-            });
+            fullChecklistData = [];
+            for (const ppd in schoolData) {
+                schoolData[ppd].forEach(school => {
+                    const submission = submittedDataMap.get(school.kod);
+                    if (submission) {
+                        const approved = parseFloat(submission['Peruntukan Diluluskan (RM)'] || 0);
+                        const spent = parseFloat(submission['Peruntukan Dibelanjakan (RM)'] || 0);
+                        const balance = approved - spent;
+                        fullChecklistData.push({
+                            ppd: ppd,
+                            kod: school.kod,
+                            sekolah: school.name,
+                            statusLaporan: 'Telah Hantar',
+                            statusPeruntukan: submission['Status Peruntukan'] || '-',
+                            peruntukanDiluluskan: approved,
+                            bakiPeruntukan: balance
+                        });
+                    } else {
+                        fullChecklistData.push({
+                            ppd: ppd,
+                            kod: school.kod,
+                            sekolah: school.name,
+                            statusLaporan: 'Belum Hantar',
+                            statusPeruntukan: '-',
+                            peruntukanDiluluskan: 0,
+                            bakiPeruntukan: 0
+                        });
+                    }
+                });
+            }
+            populateChecklistFilters();
+            applyChecklistFiltersAndRedraw();
+            loader.classList.add('hidden');
+            content.classList.remove('hidden');
+        } catch (error) {
+            loader.innerHTML = `<p class="text-red-500 text-center">${error.message}</p>`;
         }
-        populateChecklistFilters();
-        applyChecklistFiltersAndRedraw();
-        loader.classList.add('hidden');
-        content.classList.remove('hidden');
-    } catch (error) {
-        loader.innerHTML = `<p class="text-red-500 text-center">${error.message}</p>`;
     }
-}
 
     function populateChecklistFilters() {
-        const ppds = Object.keys(schoolData);
+        const ppds = [...new Set(fullChecklistData.map(item => item.ppd))];
         checklistFilterPPD.innerHTML = '<option value="all">Semua PPD</option>';
-        ppds.forEach(ppd => {
+        ppds.sort().forEach(ppd => {
             const option = document.createElement('option');
             option.value = ppd; option.textContent = ppd;
             checklistFilterPPD.appendChild(option);
@@ -783,58 +724,55 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     checklistFilterPPD.addEventListener('change', applyChecklistFiltersAndRedraw);
-    checklistFilterStatus.addEventListener('change', applyChecklistFiltersAndRedraw); // [TAMBAHAN BARU]
-
+    checklistFilterStatus.addEventListener('change', applyChecklistFiltersAndRedraw);
+    
     checklistResetFiltersBtn.addEventListener('click', () => {
-    checklistFilterPPD.value = 'all'; 
-    checklistFilterStatus.value = 'all'; // [TAMBAHAN BARU]
-    applyChecklistFiltersAndRedraw();
+        checklistFilterPPD.value = 'all'; 
+        checklistFilterStatus.value = 'all';
+        applyChecklistFiltersAndRedraw();
     });
 
     function applyChecklistFiltersAndRedraw() {
-    let filteredData = [...fullChecklistData];
-    const selectedPPD = checklistFilterPPD.value;
-    const selectedStatus = checklistFilterStatus.value; // [TAMBAHAN BARU]
+        let filteredData = [...fullChecklistData];
+        const selectedPPD = checklistFilterPPD.value;
+        const selectedStatus = checklistFilterStatus.value;
 
-    if (selectedPPD !== 'all') {
-        filteredData = filteredData.filter(item => item.ppd === selectedPPD);
+        if (selectedPPD !== 'all') {
+            filteredData = filteredData.filter(item => item.ppd === selectedPPD);
+        }
+
+        if (selectedStatus !== 'all') {
+            filteredData = filteredData.filter(item => item.statusLaporan === selectedStatus);
+        }
+
+        populateChecklistTable(filteredData);
     }
-
-    if (selectedStatus !== 'all') { // [TAMBAHAN BARU]
-        filteredData = filteredData.filter(item => item.statusLaporan === selectedStatus);
-    }
-
-    populateChecklistTable(filteredData);
-}
     
     function populateChecklistTable(data) {
-    checklistTableBody.innerHTML = '';
-    if (data.length === 0) {
-        // Kemas kini colspan kepada 8
-        checklistTableBody.innerHTML = '<tr><td colspan="8" class="text-center text-slate-500 py-4">Tiada data sepadan.</td></tr>';
-        return;
+        checklistTableBody.innerHTML = '';
+        if (data.length === 0) {
+            checklistTableBody.innerHTML = '<tr><td colspan="8" class="text-center text-slate-500 py-4">Tiada data sepadan.</td></tr>';
+            return;
+        }
+        data.forEach((item, index) => {
+            const row = document.createElement('tr');
+            const statusLaporanClass = item.statusLaporan === 'Telah Hantar' ? 'status-sent' : 'status-pending';
+            const approvedText = item.statusLaporan === 'Telah Hantar' ? item.peruntukanDiluluskan.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-';
+            const balanceText = item.statusLaporan === 'Telah Hantar' ? item.bakiPeruntukan.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-';
+
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${item.ppd}</td>
+                <td>${item.kod}</td>
+                <td>${item.sekolah}</td>
+                <td><span class="status-badge ${statusLaporanClass}">${item.statusLaporan}</span></td>
+                <td>${item.statusPeruntukan}</td>
+                <td class="text-right">${approvedText}</td>
+                <td class="text-right">${balanceText}</td>
+            `;
+            checklistTableBody.appendChild(row);
+        });
     }
-    data.forEach((item, index) => {
-        const row = document.createElement('tr');
-        const statusLaporanClass = item.statusLaporan === 'Telah Hantar' ? 'status-sent' : 'status-pending';
-
-        // Format mata wang, paparkan '-' jika laporan belum dihantar
-        const approvedText = item.statusLaporan === 'Telah Hantar' ? item.peruntukanDiluluskan.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-';
-        const balanceText = item.statusLaporan === 'Telah Hantar' ? item.bakiPeruntukan.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-';
-
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${item.ppd}</td>
-            <td>${item.kod}</td>
-            <td>${item.sekolah}</td>
-            <td><span class="status-badge ${statusLaporanClass}">${item.statusLaporan}</span></td>
-            <td>${item.statusPeruntukan}</td>
-            <td class="text-right">${approvedText}</td>
-            <td class="text-right">${balanceText}</td>
-        `;
-        checklistTableBody.appendChild(row);
-    });
-}
 
     // --- Analisis Data ---
     function formatAssetsForDisplay(assetString) {
@@ -919,8 +857,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalBalance = totalApproved - totalSpent;
         const percentSpent = totalApproved > 0 ? (totalSpent / totalApproved) * 100 : 0;
         
-        const allocationsReceived = data.filter(item => item['Status Peruntukan'] === 'Telah Terima').length;
-        
         document.getElementById('total-approved').textContent = `RM ${totalApproved.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         document.getElementById('total-spent').textContent = `RM ${totalSpent.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         document.getElementById('total-balance').textContent = `RM ${totalBalance.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -964,9 +900,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${item.PPD||''}</td>
                 <td>${item.Sekolah||''}</td>
                 <td>${item.Agensi||''}</td>
-                <td>${approved.toLocaleString('ms-MY')}</td>
-                <td>${spent.toLocaleString('ms-MY')}</td>
-                <td>${balance.toLocaleString('ms-MY')}</td>
+                <td class="text-right">${approved.toLocaleString('ms-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                <td class="text-right">${spent.toLocaleString('ms-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                <td class="text-right">${balance.toLocaleString('ms-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                 <td>${item['Status Peruntukan']||''}</td>
                 <td>${formattedDate}</td>
                 <td class="whitespace-pre-wrap">${formatAssetsForDisplay(item['Senarai Aset Peralatan'])}</td>
