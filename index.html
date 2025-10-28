@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Tema Korporat */
-        body { 
-            font-family: 'Inter', sans-serif; 
+        body {
+            font-family: 'Inter', sans-serif;
             background-color: #f1f5f9; /* slate-100 */
         }
         .sidebar {
@@ -59,7 +59,7 @@
             -webkit-appearance: none; margin: 0;
         }
         input[type='number'] { -moz-appearance: textfield; }
-        
+
         /* Table styles */
         .data-table { width: 100%; border-collapse: collapse; }
         .data-table th, .data-table td { padding: 12px 15px; border: 1px solid #e2e8f0; text-align: left; font-size: 14px; }
@@ -119,7 +119,7 @@
                                     <input type="text" id="peruntukan-diluluskan" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Cth: 100,000">
                                 </div>
                             </div>
-                            
+
                             <div>
                                 <label class="block text-sm font-medium text-slate-700">Status Peruntukan</label>
                                 <div class="mt-2 flex items-center space-x-6">
@@ -161,7 +161,7 @@
                         <div id="allocation-form-message" class="mt-4 text-center"></div>
                     </div>
                 </div>
-                
+
                 <div id="page-checklist" class="page-content hidden">
                     <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full md:w-2/3 h-auto max-h-48 rounded-lg mb-8 shadow-md mx-auto block">
                       <div class="content-container !max-w-7xl mx-auto p-8">
@@ -173,12 +173,12 @@
                                   <select id="checklist-filter-ppd" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
                               </div>
                               <div>
-                                <label for="checklist-filter-status" class="block text-sm font-medium text-slate-700">Tapis Status Laporan:</label>
-                                <select id="checklist-filter-status" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                    <option value="all">Semua Status</option>
-                                    <option value="Telah Hantar">Telah Hantar</option>
-                                    <option value="Belum Hantar">Belum Hantar</option>
-                                </select>
+                                  <label for="checklist-filter-status" class="block text-sm font-medium text-slate-700">Tapis Status Laporan:</label>
+                                  <select id="checklist-filter-status" class="mt-1 block w-full md:w-56 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                      <option value="all">Semua Status</option>
+                                      <option value="Telah Hantar">Telah Hantar</option>
+                                      <option value="Belum Hantar">Belum Hantar</option>
+                                  </select>
                               </div>
                               <div class="self-end">
                                   <button id="checklist-reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Set Semula</button>
@@ -205,7 +205,7 @@
                           </div>
                       </div>
                 </div>
-                
+
                 <div id="page-password-checklist" class="page-content hidden h-full flex items-center justify-center">
                     <div class="content-container max-w-sm mx-auto p-8">
                         <h2 class="text-2xl font-bold mb-4 text-slate-800 text-center">Akses Terhad</h2>
@@ -235,88 +235,87 @@
                 <div id="page-analysis" class="page-content hidden">
                     <img src="imej2.png" alt="Header Program Sekolah Angkat Madani" class="w-full md:w-2/3 h-auto max-h-48 rounded-lg mb-8 shadow-md mx-auto block">
                     <div class="content-container !max-w-7xl mx-auto p-8">
-                          <h2 class="text-3xl font-bold text-slate-800 mb-6">Papan Pemuka Analisis SAM</h2>
-                          <div id="dashboard-loader" class="hidden"><div class="loader"></div></div>
+                        <h2 class="text-3xl font-bold text-slate-800 mb-6">Papan Pemuka Analisis SAM</h2>
+                        <div id="dashboard-loader" class="hidden"><div class="loader"></div></div>
 
-                                                    <div class="flex flex-wrap items-end gap-4 mb-6 bg-slate-50 p-4 rounded-lg">
-                                                            <div class="flex-1 min-w-[180px] md:flex-none md:w-56"> {/* Lebar minimum + lebar tetap md */}
-                                  <label for="filter-ppd" class="block text-sm font-medium text-slate-700">Tapis PPD:</label>
-                                  <select id="filter-ppd" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
-                              </div>
-                                                            <div class="flex-1 min-w-[200px] md:flex-none md:w-64"> {/* Lebar minimum + lebar tetap md */}
-                                  <label for="filter-sekolah" class="block text-sm font-medium text-slate-700">Tapis Sekolah:</label>
-                                  <select id="filter-sekolah" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled></select>
-                              </div>
-                                                            <div class="flex-1 min-w-[180px] md:flex-none md:w-56"> {/* Lebar minimum + lebar tetap md */}
-                                  <label for="filter-agensi-type" class="block text-sm font-medium text-slate-700">Tapis Jenis Agensi:</label>
-                                  <select id="filter-agensi-type" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                      <option value="all">Semua Jenis</option>
-                                      <option value="KERAJAAN">Kerajaan</option>
-                                      <option value="GLC/GLIC/SWASTA">GLC/GLIC/Swasta</option>
-                                  </select>
-                              </div>
-                                                            <div class="mt-1 md:mt-0"> {/* Komen JSX dibuang */}
-                                  <button id="reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Set Semula</button>
-                              </div>
-                          </div>
-                          <div id="dashboard-content" class="hidden">
-                              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                                  <div class="bg-blue-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Diluluskan</h3><p id="total-approved" class="text-3xl font-bold text-blue-800 mt-2">RM 0.00</p></div>
-                                  <div class="bg-orange-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Dibelanjakan</h3><p id="total-spent" class="text-3xl font-bold text-orange-800 mt-2">RM 0.00</p></div>
-                                  <div class="bg-red-100 p-6 rounded-lg"><h3 class="text-slate-600">Baki Perbelanjaan</h3><p id="total-balance" class="text-3xl font-bold text-red-800 mt-2">RM 0.00</p></div>
-                                  <div class="bg-green-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Laporan Diterima</h3><p id="total-allocations" class="text-3xl font-bold text-green-800 mt-2">0</p></div>
-                                  <div class="bg-teal-100 p-6 rounded-lg"><h3 class="text-slate-600">Peratus Perbelanjaan</h3><p id="percent-spent" class="text-3xl font-bold text-teal-800 mt-2">0%</p></div>
-                              </div>
-                              <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                                  <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-hourglass-half text-yellow-500 mr-3"></i>Sekolah Belum Terima</h3><ul id="list-not-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
-                                  <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Sekolah Telah Terima</h3><ul id="list-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
-                              </div>
-                              <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
-                                  <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4">Peruntukan mengikut PPD</h3><canvas id="allocation-by-ppd-chart"></canvas></div>
-                                  <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4">Pecahan Aset/Peralatan</h3><canvas id="asset-breakdown-chart"></canvas></div>
-                              </div>
-                              
-                              <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                                  <div class="bg-white p-6 rounded-lg shadow">
-                                      <h3 class="font-bold text-lg text-slate-700 mb-4">Pecahan Laporan mengikut Jenis Agensi</h3>
-                                      <div class="max-w-xs mx-auto">
-                                          <canvas id="agency-type-chart"></canvas>
-                                      </div>
-                                  </div>
-                                  <div class="bg-white p-6 rounded-lg shadow flex flex-col items-center justify-center">
-                                      <h3 class="font-bold text-lg text-slate-700 mb-4">Ringkasan Jenis Agensi (dari Laporan)</h3>
-                                      <div id="agency-type-summary" class="text-2xl space-y-4 text-center">
-                                          </div>
-                                  </div>
-                              </div>
-                              <div>
-                                    <h3 class="font-bold text-lg text-slate-700 mb-4">Semua Data Laporan</h3>
-                                    <div class="overflow-x-auto bg-white rounded-lg shadow">
-                                        <table class="data-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Kod Sekolah</th>
-                                                    <th>PPD</th>
-                                                    <th>Sekolah</th>
-                                                    <th>Agensi</th>
-                                                    <th>Peruntukan Diluluskan (RM)</th>
-                                                    <th>Peruntukan Dibelanjakan (RM)</th>
-                                                    <th>Baki Peruntukan (RM)</th>
-                                                    <th>Status</th>
-                                                    <th>Tarikh Terima</th>
-                                                    <th>Aset/Peralatan</th>
-                                                    <th>Catatan</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="data-table-body"></tbody>
-                                        </table>
+                        <div class="flex flex-wrap items-end gap-4 mb-6 bg-slate-50 p-4 rounded-lg">
+                            <div class="flex-1 min-w-[180px] md:flex-none md:w-56">
+                                <label for="filter-ppd" class="block text-sm font-medium text-slate-700">Tapis PPD:</label>
+                                <select id="filter-ppd" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
+                            </div>
+                            <div class="flex-1 min-w-[200px] md:flex-none md:w-64">
+                                <label for="filter-sekolah" class="block text-sm font-medium text-slate-700">Tapis Sekolah:</label>
+                                <select id="filter-sekolah" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled></select>
+                            </div>
+                            <div class="flex-1 min-w-[180px] md:flex-none md:w-56">
+                                <label for="filter-agensi-type" class="block text-sm font-medium text-slate-700">Tapis Jenis Agensi:</label>
+                                <select id="filter-agensi-type" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="all">Semua Jenis</option>
+                                    <option value="KERAJAAN">Kerajaan</option>
+                                    <option value="GLC/GLIC/SWASTA">GLC/GLIC/Swasta</option>
+                                </select>
+                            </div>
+                            <div class="mt-1 md:mt-0"> <button id="reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Set Semula</button>
+                            </div>
+                        </div>
+                        <div id="dashboard-content" class="hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                                <div class="bg-blue-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Diluluskan</h3><p id="total-approved" class="text-3xl font-bold text-blue-800 mt-2">RM 0.00</p></div>
+                                <div class="bg-orange-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Dibelanjakan</h3><p id="total-spent" class="text-3xl font-bold text-orange-800 mt-2">RM 0.00</p></div>
+                                <div class="bg-red-100 p-6 rounded-lg"><h3 class="text-slate-600">Baki Perbelanjaan</h3><p id="total-balance" class="text-3xl font-bold text-red-800 mt-2">RM 0.00</p></div>
+                                <div class="bg-green-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Laporan Diterima</h3><p id="total-allocations" class="text-3xl font-bold text-green-800 mt-2">0</p></div>
+                                <div class="bg-teal-100 p-6 rounded-lg"><h3 class="text-slate-600">Peratus Perbelanjaan</h3><p id="percent-spent" class="text-3xl font-bold text-teal-800 mt-2">0%</p></div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                                <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-hourglass-half text-yellow-500 mr-3"></i>Sekolah Belum Terima</h3><ul id="list-not-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
+                                <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Sekolah Telah Terima</h3><ul id="list-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+                                <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4">Peruntukan mengikut PPD</h3><canvas id="allocation-by-ppd-chart"></canvas></div>
+                                <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4">Pecahan Aset/Peralatan</h3><canvas id="asset-breakdown-chart"></canvas></div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                                <div class="bg-white p-6 rounded-lg shadow">
+                                    <h3 class="font-bold text-lg text-slate-700 mb-4">Pecahan Laporan mengikut Jenis Agensi</h3>
+                                    <div class="max-w-xs mx-auto">
+                                        <canvas id="agency-type-chart"></canvas>
                                     </div>
-                              </div>
-                          </div>
+                                </div>
+                                <div class="bg-white p-6 rounded-lg shadow flex flex-col items-center justify-center">
+                                    <h3 class="font-bold text-lg text-slate-700 mb-4">Ringkasan Jenis Agensi (dari Laporan)</h3>
+                                    <div id="agency-type-summary" class="text-2xl space-y-4 text-center">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-700 mb-4">Semua Data Laporan</h3>
+                                <div class="overflow-x-auto bg-white rounded-lg shadow">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Kod Sekolah</th>
+                                                <th>PPD</th>
+                                                <th>Sekolah</th>
+                                                <th>Agensi</th>
+                                                <th>Peruntukan Diluluskan (RM)</th>
+                                                <th>Peruntukan Dibelanjakan (RM)</th>
+                                                <th>Baki Peruntukan (RM)</th>
+                                                <th>Status</th>
+                                                <th>Tarikh Terima</th>
+                                                <th>Aset/Peralatan</th>
+                                                <th>Catatan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="data-table-body"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            
+
             <footer class="text-center py-4 mt-auto">
                 <p class="text-sm text-slate-500">Sektor Pengurusan Sekolah © 2025</p>
                 <p class="text-sm text-slate-500">Jabatan Pendidikan Negeri Pahang</p>
@@ -342,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function() {
         checklist: document.getElementById('nav-checklist'),
         analysis: document.getElementById('nav-analysis'),
     };
-    
+
     const pages = {
         allocation: document.getElementById('page-allocation'),
         checklist: document.getElementById('page-checklist'),
@@ -350,8 +349,7 @@ document.addEventListener('DOMContentLoaded', function() {
         passwordChecklist: document.getElementById('page-password-checklist'),
         passwordAnalysis: document.getElementById('page-password-analysis'),
     };
-    
-    // [KOD DIPERBAIKI] - Membuang dari objek
+
     const schoolData = {
         'BENTONG': [
             { name: 'SMK KARAK', kod: 'CEE0016', agensi: 'TENAGA NASIONAL BERHAD', agensiTipe: 'GLC/GLIC/SWASTA' },
@@ -472,16 +470,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const catatanInput = document.getElementById('catatan');
     const receivedDetailsContainer = document.getElementById('received-details-container');
     const tarikhInput = document.getElementById('tarikh-terima');
-    
+
     const passwordFormChecklist = document.getElementById('password-form-checklist');
     const passwordErrorChecklist = document.getElementById('password-error-checklist');
     const passwordFormAnalysis = document.getElementById('password-form-analysis');
     const passwordErrorAnalysis = document.getElementById('password-error-analysis');
-    
+
     const filterPPD = document.getElementById('filter-ppd');
-    const filterSekolah = document.getElementById('filter-sekolah');
-    const filterAgensiType = document.getElementById('filter-agensi-type'); // <-- BARIS BARU
-    const resetFiltersBtn = document.getElementById('reset-filters-btn');
+    const filterSekolah = document.getElementById('filter-sekolah');
+    const filterAgensiType = document.getElementById('filter-agensi-type'); // Guna ID yang betul
+    const resetFiltersBtn = document.getElementById('reset-filters-btn');
 
     const checklistFilterPPD = document.getElementById('checklist-filter-ppd');
     const checklistFilterStatus = document.getElementById('checklist-filter-status');
@@ -506,13 +504,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (page) page.classList.add('hidden');
         });
         Object.values(navLinks).forEach(link => link.classList.remove('active'));
-        
+
         const pageToShow = pages[pageId];
         if(pageToShow) pageToShow.classList.remove('hidden');
 
         const linkToActivate = navLinks[pageId];
         if(linkToActivate) linkToActivate.classList.add('active');
-        
+
         if (pageId === 'passwordChecklist') {
             navLinks.checklist.classList.add('active');
         }
@@ -522,7 +520,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     navLinks.allocation.addEventListener('click', (e) => { e.preventDefault(); setActivePage('allocation'); });
-    
+
     navLinks.checklist.addEventListener('click', (e) => {
         e.preventDefault();
         if (isChecklistAuthenticated) {
@@ -635,7 +633,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 formMessage.className = 'text-blue-600 mt-4 text-center';
                 peruntukanInput.value = parseFloat(data['Peruntukan Diluluskan (RM)'] || 0).toLocaleString('ms-MY');
                 catatanInput.value = data['Catatan'];
-                
+
                 const status = data['Status Peruntukan'];
                 document.querySelector(`input[name="Status Peruntukan"][value="${status}"]`).checked = true;
 
@@ -649,8 +647,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     receivedDetailsContainer.classList.add('hidden');
                     peruntukanDibelanjakanInput.value = '';
                 }
-                
-                calculateBalance(); 
+
+                calculateBalance();
 
                 assetListContainer.innerHTML = '';
                 assetCounter = 0;
@@ -674,9 +672,9 @@ document.addEventListener('DOMContentLoaded', function() {
             formMessage.className = 'text-red-600 mt-4 text-center';
         }
     }
-    
+
     addAssetBtn.addEventListener('click', () => createAssetRow());
-    
+
     ppdSelect.addEventListener('change', function() {
         const selectedPPD = this.value;
         sekolahSelect.innerHTML = '<option value="" disabled selected>-- Sila Pilih Sekolah --</option>';
@@ -692,7 +690,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sekolahSelect.disabled = false;
         }
     });
-    
+
     sekolahSelect.addEventListener('change', function() {
         clearReportDetails();
         const selectedPPD = ppdSelect.value;
@@ -706,7 +704,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
+
     document.querySelectorAll('input[name="Status Peruntukan"]').forEach(radio => {
         radio.addEventListener('change', function() {
             receivedDetailsContainer.classList.toggle('hidden', this.value !== 'Telah Terima');
@@ -744,7 +742,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData(this);
         const dataObject = {};
         formData.forEach((value, key) => dataObject[key] = value);
-        
+
         dataObject['Peruntukan Diluluskan (RM)'] = peruntukanInput.value.replace(/,/g, '');
         dataObject['Peruntukan Dibelanjakan (RM)'] = peruntukanDibelanjakanInput.value.replace(/,/g, '');
 
@@ -772,7 +770,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.textContent = formActionInput.value === 'update' ? 'Kemaskini Laporan' : 'Hantar Laporan';
             });
     });
-    
+
     async function loadChecklistData() {
         const loader = document.getElementById('checklist-loader');
         const content = document.getElementById('checklist-content');
@@ -782,7 +780,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch(GOOGLE_SCRIPT_URL);
             if (!response.ok) throw new Error('Gagal memuatkan data dari server.');
             const submittedData = await response.json();
-            
+
             const submittedDataMap = new Map(submittedData.map(item => [item['Kod Sekolah'], item]));
 
             fullChecklistData = [];
@@ -836,9 +834,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     checklistFilterPPD.addEventListener('change', applyChecklistFiltersAndRedraw);
     checklistFilterStatus.addEventListener('change', applyChecklistFiltersAndRedraw);
-    
+
     checklistResetFiltersBtn.addEventListener('click', () => {
-        checklistFilterPPD.value = 'all'; 
+        checklistFilterPPD.value = 'all';
         checklistFilterStatus.value = 'all';
         applyChecklistFiltersAndRedraw();
     });
@@ -858,7 +856,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         populateChecklistTable(filteredData);
     }
-    
+
     function populateChecklistTable(data) {
         checklistTableBody.innerHTML = '';
         if (data.length === 0) {
@@ -918,17 +916,17 @@ document.addEventListener('DOMContentLoaded', function() {
             loader.innerHTML = `<p class="text-red-500 text-center">${error.message}</p>`;
         }
     }
-    
+
    function populateFilters() {
-        const ppds = Object.keys(schoolData);
-        filterPPD.innerHTML = '<option value="all">Semua PPD</option>';
-        ppds.forEach(ppd => {
-            const option = document.createElement('option');
-            option.value = ppd; option.textContent = ppd;
-            filterPPD.appendChild(option);
-        });
-        // Tidak perlu isi filter jenis agensi di sini kerana ia statik dalam HTML
-    }
+        const ppds = Object.keys(schoolData);
+        filterPPD.innerHTML = '<option value="all">Semua PPD</option>';
+        ppds.forEach(ppd => {
+            const option = document.createElement('option');
+            option.value = ppd; option.textContent = ppd;
+            filterPPD.appendChild(option);
+        });
+        // Tidak perlu isi filter jenis agensi di sini kerana ia statik dalam HTML
+    }
 
     filterPPD.addEventListener('change', () => {
         const selectedPPD = filterPPD.value;
@@ -947,56 +945,56 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     filterSekolah.addEventListener('change', applyFiltersAndRedraw);
-    filterAgensiType.addEventListener('change', applyFiltersAndRedraw);
-    resetFiltersBtn.addEventListener('click', () => {
+    filterAgensiType.addEventListener('change', applyFiltersAndRedraw);
+    resetFiltersBtn.addEventListener('click', () => {
         filterPPD.value = 'all';
         filterSekolah.innerHTML = '<option value="all">Semua Sekolah</option>';
         filterSekolah.disabled = true;
         filterAgensiType.value = 'all';
         applyFiltersAndRedraw();
     });
-    
-    function applyFiltersAndRedraw() {
-        let filteredData = [...samData];
-        const selectedPPD = filterPPD.value;
-        const selectedSekolah = filterSekolah.value;
-        const selectedAgensiType = filterAgensiType.value; // <-- Guna pembolehubah baru
 
-        if (selectedPPD !== 'all') {
-            filteredData = filteredData.filter(item => item.PPD === selectedPPD);
-        }
-        if (selectedSekolah !== 'all') {
-            filteredData = filteredData.filter(item => item.Sekolah === selectedSekolah);
-        }
-        
-        // --- LOGIK PENAPISAN AGENSI DIUBAH SUAI ---
-        if (selectedAgensiType !== 'all') {
-            filteredData = filteredData.filter(item => {
-                const kod = item['Kod Sekolah'];
-                const actualType = agencyTypeLookup.get(kod); // Dapatkan jenis sebenar dari map
-                return actualType === selectedAgensiType; // Bandingkan dengan jenis yang dipilih
-            });
-        }
-        // --- TAMAT UBAH SUAI ---
-        
-        updateDashboard(filteredData);
-    }
+    function applyFiltersAndRedraw() {
+        let filteredData = [...samData];
+        const selectedPPD = filterPPD.value;
+        const selectedSekolah = filterSekolah.value;
+        const selectedAgensiType = filterAgensiType.value; // Guna pembolehubah baru
+
+        if (selectedPPD !== 'all') {
+            filteredData = filteredData.filter(item => item.PPD === selectedPPD);
+        }
+        if (selectedSekolah !== 'all') {
+            filteredData = filteredData.filter(item => item.Sekolah === selectedSekolah);
+        }
+
+        // --- LOGIK PENAPISAN AGENSI DIUBAH SUAI ---
+        if (selectedAgensiType !== 'all') {
+            filteredData = filteredData.filter(item => {
+                const kod = item['Kod Sekolah'];
+                const actualType = agencyTypeLookup.get(kod); // Dapatkan jenis sebenar dari map
+                return actualType === selectedAgensiType; // Bandingkan dengan jenis yang dipilih
+            });
+        }
+        // --- TAMAT UBAH SUAI ---
+
+        updateDashboard(filteredData);
+    }
     function updateDashboard(data) {
         const totalApproved = data.reduce((sum, item) => sum + (parseFloat(item['Peruntukan Diluluskan (RM)']) || 0), 0);
         const totalSpent = data.reduce((sum, item) => sum + (parseFloat(item['Peruntukan Dibelanjakan (RM)']) || 0), 0);
         const totalBalance = totalApproved - totalSpent;
         const percentSpent = totalApproved > 0 ? (totalSpent / totalApproved) * 100 : 0;
-        
+
         document.getElementById('total-approved').textContent = `RM ${totalApproved.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         document.getElementById('total-spent').textContent = `RM ${totalSpent.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         document.getElementById('total-balance').textContent = `RM ${totalBalance.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         document.getElementById('total-allocations').textContent = data.length;
         document.getElementById('percent-spent').textContent = `${percentSpent.toFixed(1)}%`;
-        
+
         populateSchoolStatusLists(data);
         updatePPDChart(data);
         updateAssetBreakdownChart(data);
-        updateAgencyTypeChart(data); // <-- [KOD BARU DITAMBAH] Panggil fungsi graf baru
+        updateAgencyTypeChart(data);
         populateDataTable(data);
     }
 
@@ -1014,7 +1012,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if(listReceived.innerHTML === '') listReceived.innerHTML = '<li class="text-sm text-slate-400">Tiada sekolah.</li>';
         if(listNotReceived.innerHTML === '') listNotReceived.innerHTML = '<li class="text-sm text-slate-400">Tiada sekolah.</li>';
     }
-    
+
     function populateDataTable(data) {
         const tableBody = document.getElementById('data-table-body');
         tableBody.innerHTML = '';
@@ -1087,7 +1085,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data.forEach(item => {
             const kod = item['Kod Sekolah'];
             const tipe = agencyTypeLookup.get(kod); // Guna lookup map
-            
+
             if (tipe === 'KERAJAAN') {
                 counts['KERAJAAN']++;
             } else if (tipe === 'GLC/GLIC/SWASTA') {
