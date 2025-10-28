@@ -246,9 +246,13 @@
                                   <label for="filter-sekolah" class="block text-sm font-medium text-slate-700">Tapis Sekolah:</label>
                                   <select id="filter-sekolah" class="mt-1 block w-full md:w-64 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled></select>
                               </div>
-                              <div class="self-end">
-                                  <button id="reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Set Semula</button>
-                              </div>
+                              <div>
+                                  <label for="filter-agensi" class="block text-sm font-medium text-slate-700">Tapis Agensi:</label>
+                                  <select id="filter-agensi" class="mt-1 block w-full md:w-64 px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></select>
+                              </div>
+                              <div class="self-end">
+                                  <button id="reset-filters-btn" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Set Semula</button>
+                          </div>
                           </div>
                           <div id="dashboard-content" class="hidden">
                               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -470,8 +474,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwordErrorAnalysis = document.getElementById('password-error-analysis');
     
     const filterPPD = document.getElementById('filter-ppd');
-    const filterSekolah = document.getElementById('filter-sekolah');
-    const resetFiltersBtn = document.getElementById('reset-filters-btn');
+    const filterSekolah = document.getElementById('filter-sekolah');
+    const filterAgensi = document.getElementById('filter-agensi'); // <-- BARIS BARU
+    const resetFiltersBtn = document.getElementById('reset-filters-btn');
 
     const checklistFilterPPD = document.getElementById('checklist-filter-ppd');
     const checklistFilterStatus = document.getElementById('checklist-filter-status');
@@ -909,15 +914,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function populateFilters() {
-        const ppds = Object.keys(schoolData);
-        filterPPD.innerHTML = '<option value="all">Semua PPD</option>';
-        ppds.forEach(ppd => {
-            const option = document.createElement('option');
-            option.value = ppd; option.textContent = ppd;
-            filterPPD.appendChild(option);
-        });
-    }
+   function populateFilters() {
+        const ppds = Object.keys(schoolData);
+        filterPPD.innerHTML = '<option value="all">Semua PPD</option>';
+        ppds.forEach(ppd => {
+            const option = document.createElement('option');
+            option.value = ppd; option.textContent = ppd;
+            filterPPD.appendChild(option);
+        });
+        
+        // --- KOD BARU DITAMBAH MULA ---
+        const allSchools = Object.values(schoolData).flat();
+        const agencies = [...new Set(allSchools.map(school => school.agensi))].sort();
+        
+        filterAgensi.innerHTML = '<option value="all">Semua Agensi</option>';
+        agencies.forEach(agensi => {
+            const option = document.createElement('option');
+            option.value = agensi;
+            option.textContent = agensi;
+            filterAgensi.appendChild(option);
+        });
+        // --- KOD BARU DITAMBAH TAMAT ---
+    }
 
     filterPPD.addEventListener('change', () => {
         const selectedPPD = filterPPD.value;
@@ -936,21 +954,27 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     filterSekolah.addEventListener('change', applyFiltersAndRedraw);
-    resetFiltersBtn.addEventListener('click', () => {
+    filterAgensi.addEventListener('change', applyFiltersAndRedraw); // <-- BARIS BARU
+    resetFiltersBtn.addEventListener('click', () => {
         filterPPD.value = 'all';
         filterSekolah.innerHTML = '<option value="all">Semua Sekolah</option>';
         filterSekolah.disabled = true;
+        filterAgensi.value = 'all'; // <-- BARIS BARU
         applyFiltersAndRedraw();
     });
     
     function applyFiltersAndRedraw() {
-        let filteredData = [...samData];
-        const selectedPPD = filterPPD.value;
-        const selectedSekolah = filterSekolah.value;
-        if (selectedPPD !== 'all') filteredData = filteredData.filter(item => item.PPD === selectedPPD);
-        if (selectedSekolah !== 'all') filteredData = filteredData.filter(item => item.Sekolah === selectedSekolah);
-        updateDashboard(filteredData);
-    }
+        let filteredData = [...samData];
+        const selectedPPD = filterPPD.value;
+        const selectedSekolah = filterSekolah.value;
+        const selectedAgensi = filterAgensi.value; // <-- BARIS BARU
+        
+        if (selectedPPD !== 'all') filteredData = filteredData.filter(item => item.PPD === selectedPPD);
+        if (selectedSekolah !== 'all') filteredData = filteredData.filter(item => item.Sekolah === selectedSekolah);
+        if (selectedAgensi !== 'all') filteredData = filteredData.filter(item => item.Agensi === selectedAgensi); // <-- BARIS BARU
+        
+        updateDashboard(filteredData);
+    }
 
     function updateDashboard(data) {
         const totalApproved = data.reduce((sum, item) => sum + (parseFloat(item['Peruntukan Diluluskan (RM)']) || 0), 0);
