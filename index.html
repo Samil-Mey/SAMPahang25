@@ -201,6 +201,7 @@
                                               <th>Status Laporan</th>
                                               <th>Status Peruntukkan</th>
                                               <th>Peruntukkan Diluluskan (RM)</th>
+                                              <th>Peruntukan Diterima (RM)</th>
                                               <th>Baki Peruntukkan (RM)</th>
                                           </tr>
                                       </thead>
@@ -838,7 +839,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             statusLaporan: 'Telah Hantar',
                             statusPeruntukan: submission['Status Peruntukan'] || '-',
                             peruntukanDiluluskan: approved,
-                            peruntukanDiterima: received, // paparkan nilai received dalam kolum sedia ada
+                            peruntukanDiterima: parseFloat(submission['Peruntukan Diterima (RM)'] || 0), // <-- FIX
                             bakiPeruntukan: balance
                         });
                     } else {
@@ -908,17 +909,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const row = document.createElement('tr');
             const statusLaporanClass = item.statusLaporan === 'Telah Hantar' ? 'status-sent' : 'status-pending';
             const approvedText = item.statusLaporan === 'Telah Hantar' ? item.peruntukanDiluluskan.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-';
-            const balanceText = item.statusLaporan === 'Telah Hantar' ? item.bakiPeruntukan.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-';
+const receivedText = item.statusLaporan === 'Telah Hantar' ? (parseFloat(item.peruntukanDiterima || 0)).toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-';
+const balanceText = item.statusLaporan === 'Telah Hantar' ? item.bakiPeruntukan.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-';
 
-            row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${item.ppd}</td>
-                <td>${item.kod}</td>
-                <td>${item.sekolah}</td>
-                <td><span class="status-badge ${statusLaporanClass}">${item.statusLaporan}</span></td>
-                <td>${item.statusPeruntukan}</td>
-                <td class="text-right">${approvedText}</td>
-                <td class="text-right">${balanceText}</td>
+row.innerHTML = `
+    <td>${index + 1}</td>
+    <td>${item.ppd}</td>
+    <td>${item.kod}</td>
+    <td>${item.sekolah}</td>
+    <td><span class="status-badge ${statusLaporanClass}">${item.statusLaporan}</span></td>
+    <td>${item.statusPeruntukan}</td>
+    <td class="text-right">${approvedText}</td>
+    <td class="text-right">${receivedText}</td>
+    <td class="text-right">${balanceText}</td>
+`;
+
             `;
             checklistTableBody.appendChild(row);
         });
