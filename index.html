@@ -130,6 +130,11 @@
 
                             <div id="received-details-container" class="hidden space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                                        <div>
+                                          <label for="peruntukan-diterima" class="block text-sm font-medium text-slate-700">Peruntukan Diterima (RM)</label>
+                                          <input type="text" id="peruntukan-diterima" name="Peruntukan Diterima (RM)" class="mt-1 block w-full px-3 py-2 bg-white border rounded-md" placeholder="Cth: 100,000">
+                                        </div>
+
                                     <div>
                                         <label for="peruntukan-dibelanjakan" class="block text-sm font-medium text-slate-700">Peruntukan Dibelanjakan (RM)</label>
                                         <input type="text" id="peruntukan-dibelanjakan" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Cth: 75,000">
@@ -259,13 +264,38 @@
                             </div>
                         </div>
                         <div id="dashboard-content" class="hidden">
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                                <div class="bg-blue-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Diluluskan</h3><p id="total-approved" class="text-3xl font-bold text-blue-800 mt-2">RM 0.00</p></div>
-                                <div class="bg-orange-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Dibelanjakan</h3><p id="total-spent" class="text-3xl font-bold text-orange-800 mt-2">RM 0.00</p></div>
-                                <div class="bg-red-100 p-6 rounded-lg"><h3 class="text-slate-600">Baki Perbelanjaan</h3><p id="total-balance" class="text-3xl font-bold text-red-800 mt-2">RM 0.00</p></div>
-                                <div class="bg-green-100 p-6 rounded-lg"><h3 class="text-slate-600">Jumlah Laporan Diterima</h3><p id="total-allocations" class="text-3xl font-bold text-green-800 mt-2">0</p></div>
-                                <div class="bg-teal-100 p-6 rounded-lg"><h3 class="text-slate-600">Peratus Perbelanjaan</h3><p id="percent-spent" class="text-3xl font-bold text-teal-800 mt-2">0%</p></div>
-                            </div>
+                           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                                    <div class="bg-blue-100 p-6 rounded-lg">
+                                        <h3 class="text-slate-600">Jumlah Diluluskan</h3>
+                                        <p id="total-approved" class="text-3xl font-bold text-blue-800 mt-2">RM 0.00</p>
+                                    </div>
+                                
+                                    <div class="bg-lime-100 p-6 rounded-lg">
+                                        <h3 class="text-slate-600">Jumlah Diterima</h3>
+                                        <p id="total-received" class="text-3xl font-bold text-lime-800 mt-2">RM 0.00</p>
+                                    </div>
+                                
+                                    <div class="bg-orange-100 p-6 rounded-lg">
+                                        <h3 class="text-slate-600">Jumlah Dibelanjakan</h3>
+                                        <p id="total-spent" class="text-3xl font-bold text-orange-800 mt-2">RM 0.00</p>
+                                    </div>
+                                
+                                    <div class="bg-red-100 p-6 rounded-lg">
+                                        <h3 class="text-slate-600">Baki Perbelanjaan</h3>
+                                        <p id="total-balance" class="text-3xl font-bold text-red-800 mt-2">RM 0.00</p>
+                                    </div>
+                                
+                                    <div class="bg-green-100 p-6 rounded-lg">
+                                        <h3 class="text-slate-600">Jumlah Laporan Diterima</h3>
+                                        <p id="total-allocations" class="text-3xl font-bold text-green-800 mt-2">0</p>
+                                    </div>
+                                
+                                    <div class="bg-teal-100 p-6 rounded-lg">
+                                        <h3 class="text-slate-600">Peratus Perbelanjaan</h3>
+                                        <p id="percent-spent" class="text-3xl font-bold text-teal-800 mt-2">0%</p>
+                                    </div>
+                                </div>
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
                                 <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-hourglass-half text-yellow-500 mr-3"></i>Sekolah Belum Terima</h3><ul id="list-not-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
                                 <div class="bg-white p-6 rounded-lg shadow"><h3 class="font-bold text-lg text-slate-700 mb-4 flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Sekolah Telah Terima</h3><ul id="list-received" class="space-y-2 max-h-60 overflow-y-auto pr-2"></ul></div>
@@ -465,6 +495,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitBtn = document.getElementById('submit-allocation-btn');
     const formMessage = document.getElementById('allocation-form-message');
     const peruntukanInput = document.getElementById('peruntukan-diluluskan');
+    const peruntukanDiterimaInput = document.getElementById('peruntukan-diterima');
     const peruntukanDibelanjakanInput = document.getElementById('peruntukan-dibelanjakan');
     const bakiPeruntukanInput = document.getElementById('baki-peruntukan');
     const catatanInput = document.getElementById('catatan');
@@ -594,6 +625,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function clearReportDetails() {
         peruntukanInput.value = '';
+        peruntukanDiterimaInput.value = ''; // <--- tambah ini
         peruntukanDibelanjakanInput.value = '';
         bakiPeruntukanInput.value = '';
         catatanInput.value = '';
@@ -613,11 +645,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function calculateBalance() {
-        const approved = parseFloat(peruntukanInput.value.replace(/,/g, '')) || 0;
-        const spent = parseFloat(peruntukanDibelanjakanInput.value.replace(/,/g, '')) || 0;
-        const balance = approved - spent;
-        bakiPeruntukanInput.value = balance.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
+    const received = parseFloat((peruntukanDiterimaInput && peruntukanDiterimaInput.value ? peruntukanDiterimaInput.value.replace(/,/g, '') : '0')) || 0;
+    const spent = parseFloat((peruntukanDibelanjakanInput && peruntukanDibelanjakanInput.value ? peruntukanDibelanjakanInput.value.replace(/,/g, '') : '0')) || 0;
+    const balance = received - spent; // <--- guna received sahaja
+    bakiPeruntukanInput.value = balance.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 
     async function fetchAndPopulateRecord(kodSekolah) {
         if (!kodSekolah) return;
@@ -642,11 +675,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (data['Tarikh Terima']) {
                        tarikhInput.value = new Date(data['Tarikh Terima']).toISOString().split('T')[0];
                     }
+                    peruntukanDiterimaInput.value = parseFloat(data['Peruntukan Diterima (RM)'] || 0).toLocaleString('ms-MY'); // <--- tambah ini
                     peruntukanDibelanjakanInput.value = parseFloat(data['Peruntukan Dibelanjakan (RM)'] || 0).toLocaleString('ms-MY');
                 } else {
                     receivedDetailsContainer.classList.add('hidden');
+                    peruntukanDiterimaInput.value = ''; // <--- tambah reset
                     peruntukanDibelanjakanInput.value = '';
                 }
+
 
                 calculateBalance();
 
@@ -710,23 +746,25 @@ document.addEventListener('DOMContentLoaded', function() {
             receivedDetailsContainer.classList.toggle('hidden', this.value !== 'Telah Terima');
             if(this.value !== 'Telah Terima') {
                 tarikhInput.value = '';
+                peruntukanDiterimaInput.value = ''; // <--- tambah ini
                 peruntukanDibelanjakanInput.value = '';
                 calculateBalance();
             }
         });
     });
 
-    [peruntukanInput, peruntukanDibelanjakanInput].forEach(input => {
-        input.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/[^0-9.]/g, '');
-            let parts = value.split('.');
-            let integerPart = parts[0];
-            let decimalPart = parts.length > 1 ? '.' + parts[1].slice(0,2) : '';
-            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            e.target.value = integerPart + decimalPart;
-            calculateBalance();
-        });
+    [peruntukanInput, peruntukanDiterimaInput, peruntukanDibelanjakanInput].forEach(input => {
+    input.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/[^0-9.]/g, '');
+        let parts = value.split('.');
+        let integerPart = parts[0];
+        let decimalPart = parts.length > 1 ? '.' + parts[1].slice(0,2) : '';
+        integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        e.target.value = integerPart + decimalPart;
+        calculateBalance();
     });
+});
+
 
     allocationForm.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -745,6 +783,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         dataObject['Peruntukan Diluluskan (RM)'] = peruntukanInput.value.replace(/,/g, '');
         dataObject['Peruntukan Dibelanjakan (RM)'] = peruntukanDibelanjakanInput.value.replace(/,/g, '');
+        dataObject['Peruntukan Diterima (RM)'] = document.getElementById('peruntukan-diterima').value.replace(/,/g, '');
+
 
         dataObject['Senarai Aset Peralatan'] = JSON.stringify(assets);
         fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(dataObject) })
@@ -798,6 +838,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             statusLaporan: 'Telah Hantar',
                             statusPeruntukan: submission['Status Peruntukan'] || '-',
                             peruntukanDiluluskan: approved,
+                            peruntukanDiterima: received, // paparkan nilai received dalam kolum sedia ada
                             bakiPeruntukan: balance
                         });
                     } else {
@@ -907,7 +948,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch(GOOGLE_SCRIPT_URL);
             if (!response.ok) throw new Error('Gagal memuatkan data dari server.');
             const allData = await response.json();
-            samData = allData.filter(item => item.hasOwnProperty('Peruntukan Diluluskan (RM)'));
+            samData = allData.filter(item => item.hasOwnProperty('Peruntukan Diterima (RM)'));
             populateFilters();
             applyFiltersAndRedraw();
             loader.classList.add('hidden');
@@ -980,23 +1021,40 @@ document.addEventListener('DOMContentLoaded', function() {
         updateDashboard(filteredData);
     }
     function updateDashboard(data) {
-        const totalApproved = data.reduce((sum, item) => sum + (parseFloat(item['Peruntukan Diluluskan (RM)']) || 0), 0);
-        const totalSpent = data.reduce((sum, item) => sum + (parseFloat(item['Peruntukan Dibelanjakan (RM)']) || 0), 0);
-        const totalBalance = totalApproved - totalSpent;
-        const percentSpent = totalApproved > 0 ? (totalSpent / totalApproved) * 100 : 0;
+    // total approved (paparan sahaja)
+    const totalApproved = data.reduce((sum, item) => sum + (parseFloat(item['Peruntukan Diluluskan (RM)']) || 0), 0);
+    // total received (nilai baharu — akan digunakan untuk baki)
+    const totalReceived = data.reduce((sum, item) => sum + (parseFloat(item['Peruntukan Diterima (RM)']) || 0), 0);
+    // total spent
+    const totalSpent = data.reduce((sum, item) => sum + (parseFloat(item['Peruntukan Dibelanjakan (RM)']) || 0), 0);
 
-        document.getElementById('total-approved').textContent = `RM ${totalApproved.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-        document.getElementById('total-spent').textContent = `RM ${totalSpent.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-        document.getElementById('total-balance').textContent = `RM ${totalBalance.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-        document.getElementById('total-allocations').textContent = data.length;
-        document.getElementById('percent-spent').textContent = `${percentSpent.toFixed(1)}%`;
+    // baki: guna Peruntukan Diterima - Dibelanjakan (seperti arahan)
+    const totalBalance = totalReceived - totalSpent;
 
-        populateSchoolStatusLists(data);
-        updatePPDChart(data);
-        updateAssetBreakdownChart(data);
-        updateAgencyTypeChart(data);
-        populateDataTable(data);
+    // peratus perbelanjaan: guna received jika ada, jika tidak fallback ke approved (elakkan NaN/div0)
+    const percentBase = totalReceived > 0 ? totalReceived : (totalApproved > 0 ? totalApproved : 0);
+    const percentSpent = percentBase > 0 ? (totalSpent / percentBase) * 100 : 0;
+
+    // update DOM
+    document.getElementById('total-approved').textContent = `RM ${totalApproved.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    // new element: jumlah diterima
+    const totalReceivedEl = document.getElementById('total-received');
+    if (totalReceivedEl) {
+        totalReceivedEl.textContent = `RM ${totalReceived.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
+    document.getElementById('total-spent').textContent = `RM ${totalSpent.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    document.getElementById('total-balance').textContent = `RM ${totalBalance.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    document.getElementById('total-allocations').textContent = data.length;
+    document.getElementById('percent-spent').textContent = `${percentSpent.toFixed(1)}%`;
+
+    // terus panggil fungsi lain (tidak berubah)
+    populateSchoolStatusLists(data);
+    updatePPDChart(data);
+    updateAssetBreakdownChart(data);
+    updateAgencyTypeChart(data);
+    populateDataTable(data);
+}
+
 
     function populateSchoolStatusLists(data) {
         const listReceived = document.getElementById('list-received');
