@@ -831,6 +831,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const submission = submittedDataMap.get(school.kod);
                     if (submission) {
                         const approved = parseFloat(submission['Peruntukan Diluluskan (RM)'] || 0);
+                        const received = parseFloat(submission['Peruntukan Diterima (RM)'] || 0);  // <--- TAMBAH INI
                         const spent = parseFloat(submission['Peruntukan Dibelanjakan (RM)'] || 0);
                         const balance = approved - spent;
                         fullChecklistData.push({
