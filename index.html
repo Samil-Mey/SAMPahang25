@@ -1035,9 +1035,8 @@ row.innerHTML = `
     // baki: guna Peruntukan Diterima - Dibelanjakan (seperti arahan)
     const totalBalance = totalReceived - totalSpent;
 
-    // peratus perbelanjaan: guna received jika ada, jika tidak fallback ke approved (elakkan NaN/div0)
-    const percentBase = totalReceived > 0 ? totalReceived : (totalApproved > 0 ? totalApproved : 0);
-    const percentSpent = percentBase > 0 ? (totalSpent / percentBase) * 100 : 0;
+    // Peratus = (Peruntukan Dibelanjakan ÷ Peruntukan Diterima) * 100
+    const percentSpent = totalReceived > 0 ? (totalSpent / totalReceived) * 100 : 0;
 
     // update DOM
     document.getElementById('total-approved').textContent = `RM ${totalApproved.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
