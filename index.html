@@ -330,6 +330,7 @@
                                                 <th>Sekolah</th>
                                                 <th>Agensi</th>
                                                 <th>Peruntukan Diluluskan (RM)</th>
+                                                <th>Peruntukan Diterima (RM)</th> 
                                                 <th>Peruntukan Dibelanjakan (RM)</th>
                                                 <th>Baki Peruntukan (RM)</th>
                                                 <th>Status</th>
@@ -839,7 +840,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             statusLaporan: 'Telah Hantar',
                             statusPeruntukan: submission['Status Peruntukan'] || '-',
                             peruntukanDiluluskan: approved,
-                            peruntukanDiterima: parseFloat(submission['Peruntukan Diterima (RM)'] || 0), // <-- FIX
+                            peruntukanDiterima: received,
                             bakiPeruntukan: balance
                         });
                     } else {
@@ -1075,31 +1076,40 @@ row.innerHTML = `
     }
 
     function populateDataTable(data) {
-        const tableBody = document.getElementById('data-table-body');
-        tableBody.innerHTML = '';
-        if(data.length === 0){ tableBody.innerHTML = '<tr><td colspan="11" class="text-center text-slate-500 py-4">Tiada data.</td></tr>'; return; }
-        data.forEach(item => {
-            const row = document.createElement('tr');
-            const formattedDate = item['Tarikh Terima'] ? new Date(item['Tarikh Terima']).toLocaleDateString('ms-MY') : '-';
-            const approved = parseFloat(item['Peruntukan Diluluskan (RM)'] || 0);
-            const spent = parseFloat(item['Peruntukan Dibelanjakan (RM)'] || 0);
-            const balance = approved - spent;
-
-            row.innerHTML = `
-                <td>${item['Kod Sekolah']||''}</td>
-                <td>${item.PPD||''}</td>
-                <td>${item.Sekolah||''}</td>
-                <td>${item.Agensi||''}</td>
-                <td class="text-right">${approved.toLocaleString('ms-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                <td class="text-right">${spent.toLocaleString('ms-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                <td class="text-right">${balance.toLocaleString('ms-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                <td>${item['Status Peruntukan']||''}</td>
-                <td>${formattedDate}</td>
-                <td class="whitespace-pre-wrap">${formatAssetsForDisplay(item['Senarai Aset Peralatan'])}</td>
-                <td>${item.Catatan||''}</td>`;
-            tableBody.appendChild(row);
-        });
+    const tableBody = document.getElementById('data-table-body');
+    tableBody.innerHTML = '';
+    if (data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="11" class="text-center text-slate-500 py-4">Tiada data.</td></tr>';
+        return;
     }
+    data.forEach(item => {
+        const row = document.createElement('tr');
+        const formattedDate = item['Tarikh Terima'] ? new Date(item['Tarikh Terima']).toLocaleDateString('ms-MY') : '-';
+
+        const approved = parseFloat(item['Peruntukan Diluluskan (RM)'] || 0);
+        const received = parseFloat(item['Peruntukan Diterima (RM)'] || 0); // <-- parse received
+        const spent = parseFloat(item['Peruntukan Dibelanjakan (RM)'] || 0);
+
+        const balance = received - spent; // <-- gunakan received - spent (bukan approved - spent)
+
+        row.innerHTML = `
+            <td>${item['Kod Sekolah']||''}</td>
+            <td>${item.PPD||''}</td>
+            <td>${item.Sekolah||''}</td>
+            <td>${item.Agensi||''}</td>
+            <td class="text-right">${approved.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td class="text-right">${received.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td class="text-right">${spent.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td class="text-right">${balance.toLocaleString('ms-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td>${item['Status Peruntukan']||''}</td>
+            <td>${formattedDate}</td>
+            <td class="whitespace-pre-wrap">${formatAssetsForDisplay(item['Senarai Aset Peralatan'])}</td>
+            <td>${item.Catatan||''}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
 
     function updatePPDChart(data) {
         const ctx = document.getElementById('allocation-by-ppd-chart').getContext('2d');
